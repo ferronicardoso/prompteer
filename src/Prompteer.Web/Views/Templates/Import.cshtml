@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "Importar Templates";
+}
+
+<div class="max-w-2xl">
+    <div class="flex items-center gap-3 mb-6">
+        <a asp-action="Index" class="text-slate-400 hover:text-slate-600 transition">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </a>
+        <div>
+            <h1 class="text-xl font-semibold text-slate-900">Importar Templates</h1>
+            <p class="text-sm text-slate-500 mt-0.5">Carregue um arquivo .json exportado pelo Prompteer</p>
+        </div>
+    </div>
+
+    <div asp-validation-summary="ModelOnly"
+         class="p-4 mb-5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"></div>
+
+    <form asp-action="Import" method="post" enctype="multipart/form-data"
+          x-data="{ fileName: '', dragging: false, skipDuplicates: true }">
+        @Html.AntiForgeryToken()
+
+        @* Drop zone *@
+        <div class="card space-y-5">
+            <div
+                @@dragover.prevent="dragging = true"
+                @@dragleave.prevent="dragging = false"
+                @@drop.prevent="dragging = false; const f = $event.dataTransfer.files[0]; if(f){ fileName = f.name; $refs.fileInput.files = $event.dataTransfer.files; }"
+                :class="dragging ? 'border-indigo-400 bg-indigo-50' : 'border-slate-200 bg-slate-50 hover:border-slate-300'"
+                class="flex flex-col items-center justify-center gap-3 p-10 border-2 border-dashed rounded-xl cursor-pointer transition-colors"
+                @@click="$refs.fileInput.click()">
+
+                <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                    <i data-lucide="upload-cloud" class="w-6 h-6 text-indigo-500"></i>
+                </div>
+                <div class="text-center">
+                    <p class="font-medium text-slate-700" x-text="fileName || 'Clique ou arraste o arquivo aqui'"></p>
+                    <p class="text-sm text-slate-400 mt-1">Apenas arquivos .json exportados pelo Prompteer</p>
+                </div>
+                <input type="file" name="file" accept=".json" x-ref="fileInput"
+                       @@change="fileName = $event.target.files[0]?.name ?? ''"
+                       class="hidden" />
+            </div>
+
+            @* Options *@
+            <label class="flex items-start gap-3 cursor-pointer group">
+                <input type="checkbox" name="skipDuplicates" value="true"
+                       x-model="skipDuplicates"
+                       class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" checked />
+                <div>
+                    <p class="text-sm font-medium text-slate-700">Pular templates duplicados</p>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                        Se um template com o mesmo nome já existir, ele será ignorado. Desmarque para criar uma cópia.
+                    </p>
+                </div>
+            </label>
+
+            @* Info box *@
+            <div class="flex items-start gap-2.5 p-3.5 rounded-xl bg-blue-50 border border-blue-200">
+                <i data-lucide="info" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                <div class="text-xs text-blue-700 space-y-1">
+                    <p class="font-semibold">O que é importado:</p>
+                    <ul class="list-disc list-inside space-y-0.5">
+                        <li>Nome, descrição e prompt gerado de cada template</li>
+                        <li>Dados estruturados do wizard (para edição futura)</li>
+                        <li>Tecnologias e padrões arquiteturais — criados automaticamente se não existirem</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
+                <button type="submit"
+                        :disabled="!fileName"
+                        :class="fileName ? 'btn btn-primary' : 'btn btn-primary opacity-50 cursor-not-allowed'">
+                    <i data-lucide="upload" class="w-4 h-4"></i>
+                    Importar templates
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </div>
+    </form>
+</div>

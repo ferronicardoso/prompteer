@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Prompteer.Infrastructure.Data;
@@ -11,9 +12,11 @@ using Prompteer.Infrastructure.Data;
 namespace Prompteer.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260302164220_AddApplicationUsers")]
+    partial class AddApplicationUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,9 +134,6 @@ namespace Prompteer.Infrastructure.Data.Migrations
 
                     b.Property<DateTime?>("LastLoginAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
 
                     b.Property<int>("Role")
                         .HasColumnType("integer");

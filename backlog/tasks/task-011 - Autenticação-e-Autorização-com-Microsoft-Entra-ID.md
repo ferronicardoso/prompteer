@@ -1,16 +1,17 @@
 ---
 id: task-011
 title: Autenticação e Autorização com Microsoft Entra ID
-status: Pending
+status: In Progress
 assignee: []
 created_date: '2026-06-01'
-updated_date: '2026-06-01'
+updated_date: '2026-03-02 16:41'
 labels:
   - auth
   - security
   - entra
 dependencies: []
 priority: high
+ordinal: 1000
 ---
 
 ## Description
@@ -146,14 +147,14 @@ Implementar autenticação via Microsoft Entra ID (Azure AD) e controle de acess
 ---
 
 ## Acceptance Criteria
-
-- [ ] Usuário não autenticado é redirecionado para login Microsoft ao acessar qualquer rota
-- [ ] Login via conta Microsoft funciona e retorna à página original
-- [ ] Role Admin consegue acessar `/Users` e alterar roles de outros usuários
-- [ ] Role Editor consegue criar templates; não vê templates privados de outros
-- [ ] Role Viewer não visualiza botões de criação/edição/exclusão
-- [ ] Logout limpa a sessão e redireciona para home pública
-- [ ] Build e docker compose sobem sem erros após implementação
+<!-- AC:BEGIN -->
+- [ ] #1 Usuário não autenticado é redirecionado para login Microsoft ao acessar qualquer rota
+- [ ] #2 Login via conta Microsoft funciona e retorna à página original
+- [ ] #3 Role Admin consegue acessar `/Users` e alterar roles de outros usuários
+- [ ] #4 Role Editor consegue criar templates; não vê templates privados de outros
+- [ ] #5 Role Viewer não visualiza botões de criação/edição/exclusão
+- [ ] #6 Logout limpa a sessão e redireciona para home pública
+- [ ] #7 Build e docker compose sobem sem erros após implementação
 
 ---
 
@@ -165,3 +166,4 @@ Implementar autenticação via Microsoft Entra ID (Azure AD) e controle de acess
 - Evitar armazenar tokens no banco — usar apenas o `oid` para identificar o usuário local
 - Secrets em produção devem usar **Azure Key Vault** ou variáveis de ambiente — nunca em código ou appsettings commitados
 - Para desenvolvimento local: usar `dotnet user-secrets` para `AzureAd:ClientSecret`
+<!-- AC:END -->

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] != null ? ViewData["Title"] + " — Prompteer" : "Prompteer")</title>
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+</head>
+<body class="bg-white text-slate-800 antialiased">
+    @RenderBody()
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.441.0/dist/umd/lucide.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => lucide.createIcons());</script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

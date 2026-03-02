@@ -26,6 +26,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
         return services;
     }
 
@@ -63,6 +66,3 @@ public static class ServiceCollectionExtensions
         await DatabaseSeeder.SeedAsync(db);
     }
 }
-
-
-

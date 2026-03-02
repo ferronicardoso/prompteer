@@ -17,4 +17,6 @@ public interface IPromptTemplateService
     Task<int> GetTotalCountAsync();
     Task<DashboardStatsDto> GetDashboardStatsAsync();
     Task<WizardSessionData?> GetLatestWizardDataAsync(Guid templateId);
+    Task<TemplateExportDto> ExportAsync(IEnumerable<Guid>? templateIds, string exportedBy);
+    Task<ImportResultDto> ImportAsync(TemplateExportDto package, bool skipDuplicates = true);
 }

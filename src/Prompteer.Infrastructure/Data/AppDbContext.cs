@@ -19,6 +19,7 @@ public class AppDbContext : DbContext
     public DbSet<PromptModuleItem> PromptModuleItems => Set<PromptModuleItem>();
     public DbSet<PromptDraft> PromptDrafts => Set<PromptDraft>();
     public DbSet<AppSetting> AppSettings => Set<AppSetting>();
+    public DbSet<ApplicationUser> ApplicationUsers => Set<ApplicationUser>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,6 +40,15 @@ public class AppDbContext : DbContext
             e.HasKey(s => s.Key);
             e.Property(s => s.Key).HasMaxLength(100);
             e.Property(s => s.Value).HasColumnType("text");
+        });
+
+        modelBuilder.Entity<ApplicationUser>(e =>
+        {
+            e.HasIndex(u => u.EntraObjectId).IsUnique();
+            e.Property(u => u.EntraObjectId).HasMaxLength(100).IsRequired();
+            e.Property(u => u.Email).HasMaxLength(256);
+            e.Property(u => u.DisplayName).HasMaxLength(256);
+            e.HasQueryFilter(u => !u.IsDeleted);
         });
     }
 

@@ -1,7 +1,7 @@
-using Prompteer.Application.Services;
-using Microsoft.EntityFrameworkCore;
 using Prompteer.Application.DTOs;
+using Prompteer.Application.Services;
 using Prompteer.Application.Wizard;
+using Microsoft.EntityFrameworkCore;
 using Prompteer.Domain.Entities;
 using Prompteer.Infrastructure.Data;
 using System.Text.Json;
@@ -286,5 +286,152 @@ public class PromptTemplateService : IPromptTemplateService
 
         return JsonSerializer.Deserialize<WizardSessionData>(latest,
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+    }
+
+    // ── Export ────────────────────────────────────────────────────────────────
+
+    public async Task<TemplateExportDto> ExportAsync(IEnumerable<Guid>? templateIds, string exportedBy)
+    {
+        var query = _db.PromptTemplates
+            .Include(t => t.Versions)
+                .ThenInclude(v => v.Technologies).ThenInclude(vt => vt.Technology)
+            .Include(t => t.Versions)
+                .ThenInclude(v => v.Patterns).ThenInclude(vp => vp.Pattern)
+            .AsQueryable();
+
+        if (templateIds is not null)
+            query = query.Where(t => templateIds.Contains(t.Id));
+
+        var templates = await query.OrderBy(t => t.Name).ToListAsync();
+
+        var package = new TemplateExportDto
+        {
+            ExportedAt  = DateTime.UtcNow,
+            ExportedBy  = exportedBy,
+            SchemaVersion = "1.0"
+        };
+
+        foreach (var t in templates)
+        {
+            var latest = t.Versions.OrderByDescending(v => v.VersionNumber).FirstOrDefault();
+            if (latest is null) continue;
+
+            package.Templates.Add(new TemplateExportItemDto
+            {
+                Name              = t.Name,
+                Description       = t.Description,
+                VersionNumber     = latest.VersionNumber,
+                CreatedAt         = t.CreatedAt,
+                GeneratedPrompt   = latest.GeneratedPrompt,
+                WizardDataJson    = latest.WizardDataJson,
+                TechnologyNames   = latest.Technologies.Select(vt => vt.Technology?.Name ?? "").Where(n => n != "").ToList(),
+                PatternNames      = latest.Patterns.Select(vp => vp.Pattern?.Name ?? "").Where(n => n != "").ToList()
+            });
+        }
+
+        return package;
+    }
+
+    // ── Import ────────────────────────────────────────────────────────────────
+
+    public async Task<ImportResultDto> ImportAsync(TemplateExportDto package, bool skipDuplicates = true)
+    {
+        var result = new ImportResultDto();
+
+        // Pre-load existing names for deduplication
+        var existingNames = await _db.PromptTemplates
+            .Select(t => t.Name.ToLower()).ToHashSetAsync();
+
+        // Pre-load technologies and patterns indexed by name (case-insensitive)
+        var allTechs = await _db.Technologies.ToListAsync();
+        var allPatterns = await _db.ArchitecturalPatterns.ToListAsync();
+
+        var techByName = allTechs.ToDictionary(t => t.Name.ToLower(), t => t);
+        var patternByName = allPatterns.ToDictionary(p => p.Name.ToLower(), p => p);
+
+        foreach (var item in package.Templates)
+        {
+            try
+            {
+                if (skipDuplicates && existingNames.Contains(item.Name.ToLower()))
+                {
+                    result.Skipped++;
+                    continue;
+                }
+
+                // Deserialize wizard data
+                WizardSessionData? wizardData = null;
+                if (!string.IsNullOrEmpty(item.WizardDataJson))
+                {
+                    wizardData = JsonSerializer.Deserialize<WizardSessionData>(
+                        item.WizardDataJson,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                }
+                wizardData ??= new WizardSessionData();
+                wizardData.EditingTemplateId = null; // always create new
+
+                // Resolve/create technologies
+                var resolvedTechIds = new List<Guid>();
+                foreach (var techName in item.TechnologyNames)
+                {
+                    var key = techName.ToLower();
+                    if (!techByName.TryGetValue(key, out var tech))
+                    {
+                        tech = new Technology
+                        {
+                            Name      = techName,
+                            Category  = Domain.Enums.TechCategory.Other,
+                            Ecosystem = Domain.Enums.TechEcosystem.Agnostic
+                        };
+                        _db.Technologies.Add(tech);
+                        await _db.SaveChangesAsync();
+                        techByName[key] = tech;
+                        allTechs.Add(tech);
+                    }
+                    resolvedTechIds.Add(tech.Id);
+                }
+
+                // Resolve/create architectural patterns
+                var resolvedPatternIds = new List<Guid>();
+                foreach (var patternName in item.PatternNames)
+                {
+                    var key = patternName.ToLower();
+                    if (!patternByName.TryGetValue(key, out var pattern))
+                    {
+                        pattern = new ArchitecturalPattern
+                        {
+                            Name        = patternName,
+                            Description = string.Empty,
+                            Ecosystem   = Domain.Enums.TechEcosystem.Agnostic
+                        };
+                        _db.ArchitecturalPatterns.Add(pattern);
+                        await _db.SaveChangesAsync();
+                        patternByName[key] = pattern;
+                    }
+                    resolvedPatternIds.Add(pattern.Id);
+                }
+
+                // Override wizard IDs with resolved ones
+                wizardData.TechnologyIds           = resolvedTechIds;
+                wizardData.ArchitecturalPatternIds = resolvedPatternIds;
+
+                var dto = await SaveFromWizardAsync(
+                    null,
+                    item.Name,
+                    item.Description,
+                    wizardData,
+                    item.GeneratedPrompt);
+
+                existingNames.Add(item.Name.ToLower());
+                result.Imported++;
+                result.ImportedNames.Add(dto.Name);
+            }
+            catch (Exception ex)
+            {
+                result.Errors.Add($"'{item.Name}': {ex.Message}");
+            }
+        }
+
+        return result;
     }
 }

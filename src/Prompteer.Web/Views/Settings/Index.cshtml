@@ -2,122 +2,276 @@
 @model AISettingsDto
 @{
     ViewData["Title"] = "Configurações";
+    var cfg          = ViewContext.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+    var tenantId     = cfg["AzureAd:TenantId"] ?? "";
+    var clientId     = cfg["AzureAd:ClientId"] ?? "";
+    var domain       = cfg["AzureAd:Domain"]   ?? "";
+    var entraEnabled = !string.IsNullOrWhiteSpace(tenantId) && !string.IsNullOrWhiteSpace(clientId);
+
+    // Read from ViewData (set by controller via query-string, no TempData)
+    var activeTab   = ViewData["ActiveTab"]  as string ?? "ai";
+    var savedScope  = ViewData["SavedScope"] as string ?? "";
+    var errorMsg    = Uri.UnescapeDataString(ViewData["ErrorMsg"] as string ?? "");
 }
 
-<div class="max-w-xl">
+<div class="max-w-2xl" x-data="{ tab: '@activeTab' }">
+
+    @* Page header *@
     <div class="mb-6">
-        <h1 class="text-xl font-semibold text-slate-900">Configurações de IA</h1>
-        <p class="text-sm text-slate-500 mt-0.5">Configure o provedor de IA para geração automática de conteúdo nos formulários</p>
+        <h1 class="text-xl font-semibold text-slate-900">Configurações</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Provedor de IA e autenticação Microsoft Entra ID</p>
     </div>
 
-    <form asp-action="Index" method="post" id="settingsForm">
-        @Html.AntiForgeryToken()
-        <div class="card space-y-6">
+    @* Tab bar *@
+    <div class="flex gap-1 p-1 bg-slate-100 rounded-xl mb-6 w-fit">
+        <button type="button" @@click="tab = 'ai'"
+                :class="tab === 'ai'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700'"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all">
+            <i data-lucide="cpu" class="w-4 h-4"></i>
+            Integração de IA
+            @if (Model.IsConfigured)
+            {
+                <span class="w-2 h-2 rounded-full bg-green-500 ml-0.5"></span>
+            }
+        </button>
+        <button type="button" @@click="tab = 'entra'"
+                :class="tab === 'entra'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700'"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+            Microsoft Entra ID
+            @if (entraEnabled)
+            {
+                <span class="w-2 h-2 rounded-full bg-green-500 ml-0.5"></span>
+            }
+        </button>
+    </div>
 
-            <!-- Status -->
-            <div class="flex items-center gap-2 text-sm">
-                <span class="text-slate-500">Status:</span>
-                @if (Model.IsConfigured)
-                {
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>Configurado
-                    </span>
-                }
-                else
-                {
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Não configurado
-                    </span>
-                }
+    @* ── Tab: AI ─────────────────────────────────────────────────────────────── *@
+    <div x-show="tab === 'ai'" x-cloak>
+
+        @if (savedScope == "ai")
+        {
+            <div class="flex items-center gap-2 p-3 mb-5 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">
+                <i data-lucide="check-circle" class="w-4 h-4 flex-shrink-0"></i>
+                <span>Configurações de IA salvas com sucesso.</span>
             </div>
+        }
 
-            <hr class="border-slate-100" />
+        <form asp-action="Index" method="post" id="settingsForm">
+            @Html.AntiForgeryToken()
+            <div class="card space-y-6">
 
-            <!-- Provider -->
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-3">Provedor de IA</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="provider-card cursor-pointer" x-data>
-                        <input type="radio" asp-for="Provider" value="OpenAI" class="sr-only peer"
-                               onchange="onProviderChange()" />
-                        <div class="flex items-center gap-3 p-4 rounded-xl border-2 border-slate-200 peer-checked:border-brand-500 peer-checked:bg-brand-50 transition-all hover:border-slate-300">
-                            <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0">
-                                <span class="text-white text-xs font-bold">AI</span>
+                @* Status *@
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-slate-500">Status:</span>
+                    @if (Model.IsConfigured)
+                    {
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>Configurado
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Não configurado
+                        </span>
+                    }
+                </div>
+
+                <hr class="border-slate-100" />
+
+                @* Provider *@
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-3">Provedor de IA</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="provider-card cursor-pointer">
+                            <input type="radio" asp-for="Provider" value="OpenAI" class="sr-only peer"
+                                   onchange="onProviderChange()" />
+                            <div class="flex items-center gap-3 p-4 rounded-xl border-2 border-slate-200 peer-checked:border-brand-500 peer-checked:bg-brand-50 transition-all hover:border-slate-300">
+                                <div class="w-9 h-9 rounded-lg bg-slate-900 flex items-center justify-center flex-shrink-0">
+                                    <span class="text-white text-xs font-bold">AI</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-800">OpenAI</p>
+                                    <p class="text-xs text-slate-500">GPT-4o, GPT-4.1…</p>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm font-semibold text-slate-800">OpenAI</p>
-                                <p class="text-xs text-slate-500">GPT-4o, GPT-4.1…</p>
+                        </label>
+                        <label class="provider-card cursor-pointer">
+                            <input type="radio" asp-for="Provider" value="Anthropic" class="sr-only peer"
+                                   onchange="onProviderChange()" />
+                            <div class="flex items-center gap-3 p-4 rounded-xl border-2 border-slate-200 peer-checked:border-brand-500 peer-checked:bg-brand-50 transition-all hover:border-slate-300">
+                                <div class="w-9 h-9 rounded-lg bg-amber-700 flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="cpu" class="w-4 h-4 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-800">Anthropic</p>
+                                    <p class="text-xs text-slate-500">Claude 3.5, Claude 3…</p>
+                                </div>
                             </div>
-                        </div>
+                        </label>
+                    </div>
+                </div>
+
+                @* API Key *@
+                <div>
+                    <label asp-for="ApiKey" class="block text-sm font-medium text-slate-700 mb-1">
+                        API Key <span class="text-red-500">*</span>
                     </label>
-                    <label class="provider-card cursor-pointer">
-                        <input type="radio" asp-for="Provider" value="Anthropic" class="sr-only peer"
-                               onchange="onProviderChange()" />
-                        <div class="flex items-center gap-3 p-4 rounded-xl border-2 border-slate-200 peer-checked:border-brand-500 peer-checked:bg-brand-50 transition-all hover:border-slate-300">
-                            <div class="w-9 h-9 rounded-lg bg-amber-700 flex items-center justify-center flex-shrink-0">
-                                <i data-lucide="cpu" class="w-4 h-4 text-white"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold text-slate-800">Anthropic</p>
-                                <p class="text-xs text-slate-500">Claude 3.5, Claude 3…</p>
-                            </div>
-                        </div>
-                    </label>
+                    <input asp-for="ApiKey" id="ApiKey" type="password" autocomplete="off"
+                           class="form-input w-full font-mono text-sm" placeholder="sk-..." />
+                    <p class="text-xs text-slate-400 mt-1">A chave é armazenada no banco de dados da aplicação.</p>
+                </div>
+
+                @* Fetch models *@
+                <div>
+                    <button type="button" id="fetchModelsBtn" onclick="fetchModels()"
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition-colors">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        Buscar modelos disponíveis
+                    </button>
+                    <p id="fetchError" class="text-xs text-red-600 mt-1 hidden"></p>
+                </div>
+
+                @* Model select *@
+                <div id="modelSection" class="@(string.IsNullOrEmpty(Model.Model) ? "hidden" : "")">
+                    <label asp-for="Model" class="block text-sm font-medium text-slate-700 mb-1">Modelo</label>
+                    <select asp-for="Model" id="Model" class="form-select w-full">
+                        @if (!string.IsNullOrEmpty(Model.Model))
+                        {
+                            <option value="@Model.Model" selected>@Model.Model</option>
+                        }
+                    </select>
+                    <p class="text-xs text-slate-400 mt-1">Clique em "Buscar modelos" para atualizar a lista.</p>
+                </div>
+
+                <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
+                    <button type="submit" class="btn btn-primary">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        Salvar
+                    </button>
                 </div>
             </div>
+        </form>
+    </div>
 
-            <!-- API Key -->
-            <div>
-                <label asp-for="ApiKey" class="block text-sm font-medium text-slate-700 mb-1">
-                    API Key <span class="text-red-500">*</span>
-                </label>
-                <input asp-for="ApiKey" id="ApiKey" type="password" autocomplete="off"
-                       class="form-input w-full font-mono text-sm"
-                       placeholder="sk-..." />
-                <p class="text-xs text-slate-400 mt-1">A chave é armazenada no banco de dados da aplicação.</p>
+    @* ── Tab: Entra ───────────────────────────────────────────────────────────── *@
+    <div x-show="tab === 'entra'" x-cloak>
+
+        @if (savedScope == "entra")
+        {
+            <div class="flex items-center gap-2 p-3 mb-5 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">
+                <i data-lucide="check-circle" class="w-4 h-4 flex-shrink-0"></i>
+                <span>Configurações do Microsoft Entra salvas. Reinicie a aplicação para aplicar.</span>
             </div>
+        }
 
-            <!-- Buscar modelos -->
-            <div>
-                <button type="button" id="fetchModelsBtn" onclick="fetchModels()"
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition-colors">
-                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                    Buscar modelos disponíveis
-                </button>
-                <p id="fetchError" class="text-xs text-red-600 mt-1 hidden"></p>
+        @if (!string.IsNullOrEmpty(errorMsg) && activeTab == "entra")
+        {
+            <div class="flex items-start gap-3 p-4 mb-5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
+                <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                <span>@errorMsg</span>
             </div>
+        }
 
-            <!-- Model select -->
-            <div id="modelSection" class="@(string.IsNullOrEmpty(Model.Model) ? "hidden" : "")">
-                <label asp-for="Model" class="block text-sm font-medium text-slate-700 mb-1">Modelo</label>
-                <select asp-for="Model" id="Model" class="form-select w-full">
-                    @if (!string.IsNullOrEmpty(Model.Model))
+        <form asp-action="SaveEntra" method="post">
+            @Html.AntiForgeryToken()
+            <div class="card space-y-5">
+
+                @* Status *@
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-slate-500">Status:</span>
+                    @if (entraEnabled)
                     {
-                        <option value="@Model.Model" selected>@Model.Model</option>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>Configurado
+                        </span>
                     }
-                </select>
-                <p class="text-xs text-slate-400 mt-1">Clique em "Buscar modelos" para atualizar a lista.</p>
-            </div>
+                    else
+                    {
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Não configurado
+                        </span>
+                    }
+                </div>
 
-            <!-- Actions -->
-            <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
-                <button type="submit" class="btn btn-primary">
-                    <i data-lucide="save" class="w-4 h-4"></i>
-                    Salvar
-                </button>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Tenant ID</label>
+                    <input name="tenantId" value="@tenantId"
+                           placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                           class="form-input w-full font-mono text-sm" />
+                    <p class="text-xs text-slate-400 mt-1">GUID do diretório — Azure Portal → Microsoft Entra ID → Visão geral.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Client ID (Application ID)</label>
+                    <input name="clientId" value="@clientId"
+                           placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                           class="form-input w-full font-mono text-sm" />
+                    <p class="text-xs text-slate-400 mt-1">ID do aplicativo registrado em Registros de aplicativo.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                        Client Secret
+                        @if (entraEnabled)
+                        {
+                            <span class="text-xs text-slate-400 font-normal ml-1">(deixe em branco para manter o atual)</span>
+                        }
+                    </label>
+                    <input name="clientSecret" type="password"
+                           placeholder="@(entraEnabled ? "••••••••••••" : "Cole o segredo do cliente aqui")"
+                           class="form-input w-full font-mono text-sm" autocomplete="new-password" />
+                    <p class="text-xs text-slate-400 mt-1">Azure Portal → Registros de aplicativo → Certificados e segredos.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Domínio <span class="text-slate-400 font-normal text-xs">(opcional)</span></label>
+                    <input name="domain" value="@domain"
+                           placeholder="contoso.onmicrosoft.com"
+                           class="form-input w-full text-sm" />
+                </div>
+
+                <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
+                    <button type="submit" class="btn btn-primary">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        Salvar configuração Entra
+                    </button>
+                    @if (entraEnabled)
+                    {
+                        <span class="text-xs text-slate-400">Reinicie a aplicação para ativar as alterações.</span>
+                    }
+                </div>
+
+                @* Azure setup guide *@
+                <div class="flex items-start gap-2.5 p-3.5 rounded-xl bg-blue-50 border border-blue-200">
+                    <i data-lucide="info" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                    <div class="text-xs text-blue-700 space-y-1">
+                        <p class="font-semibold">Como configurar o registro do aplicativo no Azure:</p>
+                        <ol class="list-decimal list-inside space-y-0.5">
+                            <li>Azure Portal → Microsoft Entra ID → Registros de aplicativo → Novo registro</li>
+                            <li>URI de redirecionamento: <code class="bg-blue-100 px-1 rounded">https://seudominio/signin-oidc</code></li>
+                            <li>Permissões de API: <code class="bg-blue-100 px-1 rounded">User.Read</code>, <code class="bg-blue-100 px-1 rounded">User.ReadBasic.All</code></li>
+                            <li>Funções do aplicativo: crie <code class="bg-blue-100 px-1 rounded">Admin</code>, <code class="bg-blue-100 px-1 rounded">Editor</code>, <code class="bg-blue-100 px-1 rounded">Viewer</code></li>
+                            <li>Atribua usuários em Aplicativos empresariais → Usuários e grupos</li>
+                        </ol>
+                    </div>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+
 </div>
 
 @section Scripts {
 <script>
 function onProviderChange() {
-    // Clear model selection when provider changes
-    const modelSection = document.getElementById('modelSection');
-    const modelSelect  = document.getElementById('Model');
-    modelSelect.innerHTML = '';
-    modelSection.classList.add('hidden');
+    document.getElementById('Model').innerHTML = '';
+    document.getElementById('modelSection').classList.add('hidden');
     document.getElementById('fetchError').classList.add('hidden');
 }
 
@@ -136,7 +290,6 @@ async function fetchModels() {
     try {
         const params = new URLSearchParams({ provider });
         if (apiKey) params.append('apiKey', apiKey);
-
         const resp = await fetch('/Settings/GetModels?' + params.toString());
         const data = await resp.json();
 
@@ -144,15 +297,13 @@ async function fetchModels() {
             const select       = document.getElementById('Model');
             const currentModel = select.value;
             select.innerHTML   = '';
-
             data.models.forEach(m => {
-                const opt     = document.createElement('option');
-                opt.value     = m.id;
+                const opt       = document.createElement('option');
+                opt.value       = m.id;
                 opt.textContent = m.displayName || m.id;
                 if (m.id === currentModel) opt.selected = true;
                 select.appendChild(opt);
             });
-
             document.getElementById('modelSection').classList.remove('hidden');
         } else {
             errEl.textContent = data.error ?? 'Erro ao buscar modelos.';

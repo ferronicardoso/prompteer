@@ -1,22 +1,82 @@
 @using Prompteer.Application.DTOs
+@using System.Text.Json
 @model PagedResult<PromptTemplateSummaryDto>
 @{
     ViewData["Title"] = "Templates de Prompt";
     var search = ViewData["Search"]?.ToString() ?? "";
+    ImportResultDto? importResult = null;
+    if (TempData["ImportResult"] is string ir)
+        importResult = JsonSerializer.Deserialize<ImportResultDto>(ir, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 }
 
 <div class="space-y-4">
-    <!-- Header -->
-    <div class="flex items-center justify-between">
+    @* Header *@
+    <div class="flex items-center justify-between flex-wrap gap-3">
         <div>
             <h1 class="text-xl font-semibold text-slate-900">Templates de Prompt</h1>
             <p class="text-sm text-slate-500 mt-0.5">Gerencie seus templates de prompt gerados pelo wizard</p>
         </div>
-        <a asp-controller="PromptGenerator" asp-action="Index" class="btn btn-primary">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            Novo Template
-        </a>
+        <div class="flex items-center gap-2 flex-wrap">
+            <a asp-action="Import"
+               class="btn btn-secondary">
+                <i data-lucide="upload" class="w-4 h-4"></i>
+                Importar
+            </a>
+            <a asp-action="ExportAll"
+               class="btn btn-secondary"
+               title="Exportar todos os templates como JSON">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                Exportar todos
+            </a>
+            <a asp-controller="PromptGenerator" asp-action="Index" class="btn btn-primary">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                Novo Template
+            </a>
+        </div>
     </div>
+
+    @* Import result banner *@
+    @if (importResult is not null)
+    {
+        @if (importResult.Imported > 0)
+        {
+            <div class="flex items-start gap-3 p-4 rounded-xl bg-green-50 border border-green-200 text-green-800 text-sm">
+                <i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0 mt-0.5 text-green-600"></i>
+                <div>
+                    <p class="font-semibold">
+                        @importResult.Imported template(s) importado(s) com sucesso
+                        @if (importResult.Skipped > 0) { <text>· @importResult.Skipped ignorado(s) (duplicado)</text> }
+                    </p>
+                    @if (importResult.ImportedNames.Any())
+                    {
+                        <p class="mt-1 text-green-700">@string.Join(", ", importResult.ImportedNames)</p>
+                    }
+                </div>
+            </div>
+        }
+        @if (importResult.Errors.Any())
+        {
+            <div class="flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
+                <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+                <div>
+                    <p class="font-semibold">Erro(s) durante a importação</p>
+                    <ul class="list-disc list-inside mt-1 space-y-0.5">
+                        @foreach (var e in importResult.Errors)
+                        {
+                            <li>@e</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+        @if (importResult.Imported == 0 && importResult.Skipped > 0 && !importResult.Errors.Any())
+        {
+            <div class="flex items-center gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 text-sm">
+                <i data-lucide="alert-triangle" class="w-5 h-5 flex-shrink-0"></i>
+                <p>@importResult.Skipped template(s) ignorado(s) pois já existem com o mesmo nome.</p>
+            </div>
+        }
+    }
 
     <!-- Search -->
     <form method="get" asp-action="Index" class="flex gap-2">

@@ -1,0 +1,165 @@
+@model Prompteer.Web.Models.SetupViewModel
+@{
+    ViewData["Title"] = "Configuração Inicial";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div class="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12">
+    <div class="w-full max-w-lg">
+
+        @* Logo *@
+        <div class="flex items-center justify-center gap-3 mb-10">
+            <div class="w-11 h-11 rounded-xl bg-indigo-600 flex items-center justify-center shadow-md">
+                <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+            </div>
+            <span class="text-2xl font-bold text-slate-900 tracking-tight">Prompteer</span>
+        </div>
+
+        @* Card *@
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+
+            @* Card header *@
+            <div class="bg-gradient-to-r from-indigo-600 to-violet-600 px-8 py-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-lg bg-white/15 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-white">Configuração Inicial</h1>
+                        <p class="text-indigo-200 text-sm mt-0.5">Crie a conta de administrador para começar</p>
+                    </div>
+                </div>
+
+                @* Steps indicator *@
+                <div class="flex items-center gap-2 mt-5">
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-6 h-6 rounded-full bg-white text-indigo-600 text-xs font-bold flex items-center justify-center">1</div>
+                        <span class="text-white text-xs font-medium">Admin</span>
+                    </div>
+                    <div class="flex-1 h-px bg-white/30 mx-1"></div>
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-6 h-6 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">2</div>
+                        <span class="text-indigo-200 text-xs">Microsoft Entra</span>
+                    </div>
+                    <div class="flex-1 h-px bg-white/30 mx-1"></div>
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-6 h-6 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">3</div>
+                        <span class="text-indigo-200 text-xs">Pronto</span>
+                    </div>
+                </div>
+            </div>
+
+            @* Form *@
+            <div class="px-8 py-7">
+                <p class="text-sm text-slate-500 mb-6">
+                    Esta conta é usada para o <strong>primeiro acesso</strong> e para configurar a autenticação via Microsoft Entra ID.
+                    Após a configuração, todos os usuários entrarão com suas contas Microsoft.
+                </p>
+
+                <form asp-action="Index" method="post" class="space-y-4" novalidate>
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm"></div>
+
+                    @* Display Name *@
+                    <div>
+                        <label asp-for="DisplayName" class="block text-sm font-medium text-slate-700 mb-1.5">
+                            Nome completo
+                        </label>
+                        <input asp-for="DisplayName"
+                               placeholder="Ex: João Silva"
+                               autocomplete="name"
+                               class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+                        <span asp-validation-for="DisplayName" class="text-xs text-red-600 mt-1 block"></span>
+                    </div>
+
+                    @* Email *@
+                    <div>
+                        <label asp-for="Email" class="block text-sm font-medium text-slate-700 mb-1.5">
+                            E-mail
+                        </label>
+                        <input asp-for="Email"
+                               type="email"
+                               placeholder="admin@empresa.com"
+                               autocomplete="email"
+                               class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+                        <span asp-validation-for="Email" class="text-xs text-red-600 mt-1 block"></span>
+                    </div>
+
+                    @* Password *@
+                    <div>
+                        <label asp-for="Password" class="block text-sm font-medium text-slate-700 mb-1.5">
+                            Senha
+                        </label>
+                        <div class="relative" x-data="{ show: false }">
+                            <input asp-for="Password"
+                                   :type="show ? 'text' : 'password'"
+                                   placeholder="Mínimo 8 caracteres"
+                                   autocomplete="new-password"
+                                   class="w-full px-3.5 py-2.5 pr-10 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+                            <button type="button" @@click="show = !show"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                                <i :data-lucide="show ? 'eye-off' : 'eye'" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Password" class="text-xs text-red-600 mt-1 block"></span>
+                    </div>
+
+                    @* Confirm Password *@
+                    <div>
+                        <label asp-for="ConfirmPassword" class="block text-sm font-medium text-slate-700 mb-1.5">
+                            Confirmar senha
+                        </label>
+                        <div class="relative" x-data="{ show: false }">
+                            <input asp-for="ConfirmPassword"
+                                   :type="show ? 'text' : 'password'"
+                                   placeholder="Repita a senha"
+                                   autocomplete="new-password"
+                                   class="w-full px-3.5 py-2.5 pr-10 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
+                            <button type="button" @@click="show = !show"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                                <i :data-lucide="show ? 'eye-off' : 'eye'" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-xs text-red-600 mt-1 block"></span>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-sm mt-2">
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        Criar conta e continuar
+                    </button>
+                </form>
+            </div>
+
+            @* Footer hint *@
+            <div class="px-8 pb-6">
+                <div class="flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-50 border border-amber-200">
+                    <i data-lucide="info" class="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5"></i>
+                    <p class="text-xs text-amber-700">
+                        Após criar a conta, você configurará a integração com o
+                        <strong>Microsoft Entra ID</strong> para que os demais usuários
+                        autentiquem com suas contas Microsoft.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-center text-xs text-slate-400 mt-6">
+            Prompteer · Configuração executada apenas uma vez
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Re-init Lucide after Alpine toggles icon names
+        document.addEventListener('alpine:initialized', () => {
+            document.querySelectorAll('[\\:data-lucide]').forEach(el => {
+                el.addEventListener('click', () => setTimeout(() => lucide.createIcons(), 50));
+            });
+        });
+    </script>
+}

@@ -16,7 +16,8 @@ public static class DatabaseSeeder
         await SeedTemplatesAsync(db);
     }
 
-    // ─── Perfis de Agente ────────────────────────────────────────────────────
+    // Stub — full seed implemented separately
+    private static Task SeedTemplatesAsync(AppDbContext db) => Task.CompletedTask;
     private static async Task SeedAgentProfilesAsync(AppDbContext db)
     {
         if (await db.AgentProfiles.IgnoreQueryFilters().AnyAsync()) return;

@@ -1,16 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
+using Prompteer.Application.DTOs;
 using Prompteer.Application.Services;
+using Prompteer.Domain.Interfaces;
 using Prompteer.Web.Models;
+using System.Text.Json;
 
 namespace Prompteer.Web.Controllers;
 
 public class TemplatesController : Controller
 {
     private readonly IPromptTemplateService _templateService;
+    private readonly ICurrentUserService _currentUser;
 
-    public TemplatesController(IPromptTemplateService templateService)
+    public TemplatesController(IPromptTemplateService templateService, ICurrentUserService currentUser)
     {
         _templateService = templateService;
+        _currentUser     = currentUser;
     }
 
     // GET /Templates
@@ -103,4 +108,85 @@ public class TemplatesController : Controller
         ViewData["Title"] = $"Comparar versões — {template.Name}";
         return View(new CompareViewModel { Template = template, Version1 = version1, Version2 = version2 });
     }
+
+    // ── Export ────────────────────────────────────────────────────────────────
+
+    // GET /Templates/Export/{id}  — exporta um template
+    public async Task<IActionResult> Export(Guid id)
+    {
+        var template = await _templateService.GetByIdAsync(id);
+        if (template == null) return NotFound();
+
+        var package = await _templateService.ExportAsync(new[] { id }, _currentUser.DisplayName ?? "admin");
+        var json    = JsonSerializer.Serialize(package, new JsonSerializerOptions { WriteIndented = true });
+        var bytes   = System.Text.Encoding.UTF8.GetBytes(json);
+        var fileName = $"prompteer-{Slugify(template.Name)}.json";
+        return File(bytes, "application/json", fileName);
+    }
+
+    // GET /Templates/ExportAll  — exporta todos os templates
+    public async Task<IActionResult> ExportAll()
+    {
+        var package  = await _templateService.ExportAsync(null, _currentUser.DisplayName ?? "admin");
+        var json     = JsonSerializer.Serialize(package, new JsonSerializerOptions { WriteIndented = true });
+        var bytes    = System.Text.Encoding.UTF8.GetBytes(json);
+        var fileName = $"prompteer-templates-{DateTime.UtcNow:yyyyMMdd-HHmm}.json";
+        return File(bytes, "application/json", fileName);
+    }
+
+    // GET /Templates/Import
+    public IActionResult Import()
+    {
+        ViewData["Title"] = "Importar Templates";
+        return View();
+    }
+
+    // POST /Templates/Import
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> Import(IFormFile? file, bool skipDuplicates = true)
+    {
+        ViewData["Title"] = "Importar Templates";
+
+        if (file is null || file.Length == 0)
+        {
+            ModelState.AddModelError("", "Selecione um arquivo JSON.");
+            return View();
+        }
+
+        if (!file.FileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+        {
+            ModelState.AddModelError("", "Apenas arquivos .json são suportados.");
+            return View();
+        }
+
+        TemplateExportDto? package;
+        try
+        {
+            using var stream = file.OpenReadStream();
+            package = await JsonSerializer.DeserializeAsync<TemplateExportDto>(
+                stream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+        catch
+        {
+            ModelState.AddModelError("", "Arquivo JSON inválido ou corrompido.");
+            return View();
+        }
+
+        if (package?.Templates == null || package.Templates.Count == 0)
+        {
+            ModelState.AddModelError("", "Nenhum template encontrado no arquivo.");
+            return View();
+        }
+
+        var result = await _templateService.ImportAsync(package, skipDuplicates);
+        TempData["ImportResult"] = JsonSerializer.Serialize(result);
+        return RedirectToAction(nameof(Index));
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
+    private static string Slugify(string name) =>
+        System.Text.RegularExpressions.Regex
+            .Replace(name.ToLowerInvariant(), @"[^a-z0-9]+", "-")
+            .Trim('-');
 }
