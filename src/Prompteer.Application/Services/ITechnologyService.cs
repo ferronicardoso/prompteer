@@ -11,4 +11,5 @@ public interface ITechnologyService
     Task<TechnologyDto> UpdateAsync(TechnologyFormDto dto);
     Task DeleteAsync(Guid id);
     Task<IEnumerable<TechnologySelectDto>> GetAllForSelectAsync();
+    Task<TechnologyDto> CloneAsync(Guid id);
 }

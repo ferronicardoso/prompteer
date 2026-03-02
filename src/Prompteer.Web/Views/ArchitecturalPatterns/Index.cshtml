@@ -89,16 +89,36 @@
                             <td class="px-4 py-3 text-slate-500">@item.CreatedAt.ToString("dd/MM/yyyy")</td>
                             <td class="px-4 py-3">
                                 <div class="flex items-center justify-end gap-1">
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-ghost btn-sm">
-                                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
-                                        Editar
-                                    </a>
-                                    @if (!item.IsSystemDefault)
+                                    @if (item.IsSystemDefault)
                                     {
-                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-ghost btn-sm text-red-600 hover:text-red-700">
-                                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                            Excluir
+                                        <form asp-action="Clone" asp-route-id="@item.Id" method="post" class="inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-ghost btn-sm">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                                Clonar
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="Clone" asp-route-id="@item.Id" method="post" class="inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-ghost btn-sm">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                                Clonar
+                                            </button>
+                                        </form>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-ghost btn-sm">
+                                            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                                            Editar
                                         </a>
+                                        @if (!item.IsSystemDefault)
+                                        {
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-ghost btn-sm text-red-600 hover:text-red-700">
+                                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                                Excluir
+                                            </a>
+                                        }
                                     }
                                 </div>
                             </td>

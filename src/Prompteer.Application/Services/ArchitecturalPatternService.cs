@@ -58,10 +58,39 @@ public class ArchitecturalPatternService : IArchitecturalPatternService
     {
         var entity = await _uow.Repository<ArchitecturalPattern>().GetByIdAsync(dto.Id!.Value)
             ?? throw new KeyNotFoundException("Padrão não encontrado.");
+
+        if (entity.IsSystemDefault)
+            throw new InvalidOperationException("Padrões padrão do sistema não podem ser editados.");
+
         _mapper.Map(dto, entity);
         _uow.Repository<ArchitecturalPattern>().Update(entity);
         await _uow.SaveChangesAsync();
         return _mapper.Map<ArchitecturalPatternDto>(entity);
+    }
+
+    public async Task<ArchitecturalPatternDto> CloneAsync(Guid id)
+    {
+        var source = await _uow.Repository<ArchitecturalPattern>().GetByIdAsync(id)
+            ?? throw new KeyNotFoundException("Padrão não encontrado.");
+
+        var baseName = $"{source.Name} (Cópia)";
+        var cloneName = baseName;
+        var suffix = 2;
+        while (await _uow.Repository<ArchitecturalPattern>().Query()
+                   .AnyAsync(x => x.Name.ToLower() == cloneName.ToLower()))
+            cloneName = $"{baseName} {suffix++}";
+
+        var clone = new ArchitecturalPattern
+        {
+            Name            = cloneName,
+            Description     = source.Description,
+            Ecosystem       = source.Ecosystem,
+            IsSystemDefault = false
+        };
+
+        await _uow.Repository<ArchitecturalPattern>().AddAsync(clone);
+        await _uow.SaveChangesAsync();
+        return _mapper.Map<ArchitecturalPatternDto>(clone);
     }
 
     public async Task DeleteAsync(Guid id)

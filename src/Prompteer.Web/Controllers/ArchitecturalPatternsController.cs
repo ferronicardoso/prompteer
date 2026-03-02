@@ -60,6 +60,11 @@ public class ArchitecturalPatternsController : Controller
     {
         var pattern = await _service.GetByIdAsync(id);
         if (pattern == null) return NotFound();
+        if (pattern.IsSystemDefault)
+        {
+            TempData["Error"] = "Padrões arquiteturais do sistema não podem ser editados.";
+            return RedirectToAction(nameof(Index));
+        }
         ViewData["Title"] = "Editar Padrão Arquitetural";
         PopulateEcosystemList(pattern.Ecosystem);
         var form = new ArchitecturalPatternFormDto
@@ -81,9 +86,26 @@ public class ArchitecturalPatternsController : Controller
             PopulateEcosystemList(dto.Ecosystem);
             return View(dto);
         }
-        await _service.UpdateAsync(dto);
+        try
+        {
+            await _service.UpdateAsync(dto);
+        }
+        catch (InvalidOperationException ex)
+        {
+            TempData["Error"] = ex.Message;
+            return RedirectToAction(nameof(Index));
+        }
         TempData["Success"] = "Padrão arquitetural atualizado com sucesso.";
         return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Clone(Guid id)
+    {
+        var clone = await _service.CloneAsync(id);
+        TempData["Success"] = $"Padrão clonado como \"{clone.Name}\".";
+        return RedirectToAction(nameof(Edit), new { id = clone.Id });
     }
 
     public async Task<IActionResult> Delete(Guid id)

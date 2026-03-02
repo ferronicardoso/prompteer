@@ -27,7 +27,7 @@ public class AgentProfileService : IAgentProfileService
 
         var total = await query.CountAsync();
         var items = await query
-            .OrderBy(x => x.IsSystemDefault ? 0 : 1).ThenBy(x => x.Name)
+            .OrderBy(x => x.Name)
             .Skip((page - 1) * pageSize).Take(pageSize)
             .ToListAsync();
 
@@ -47,7 +47,7 @@ public class AgentProfileService : IAgentProfileService
     public async Task<IEnumerable<AgentProfileDto>> GetAllAsync()
     {
         var items = await _uow.Repository<AgentProfile>().Query()
-            .OrderBy(x => x.IsSystemDefault ? 0 : 1).ThenBy(x => x.Name)
+            .OrderBy(x => x.Name)
             .ToListAsync();
         return _mapper.Map<IEnumerable<AgentProfileDto>>(items);
     }

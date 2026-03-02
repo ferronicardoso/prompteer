@@ -10,4 +10,5 @@ public interface IArchitecturalPatternService
     Task<ArchitecturalPatternDto> UpdateAsync(ArchitecturalPatternFormDto dto);
     Task DeleteAsync(Guid id);
     Task<IEnumerable<ArchitecturalPatternDto>> GetAllAsync();
+    Task<ArchitecturalPatternDto> CloneAsync(Guid id);
 }

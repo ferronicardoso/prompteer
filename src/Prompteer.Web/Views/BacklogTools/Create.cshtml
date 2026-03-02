@@ -29,7 +29,10 @@
 
             <!-- Default Instructions -->
             <div>
-                <label asp-for="DefaultInstructions" class="block text-sm font-medium text-slate-700 mb-1">Instruções Padrão <span class="text-red-500">*</span></label>
+                <div class="flex items-center justify-between mb-1">
+                    <label asp-for="DefaultInstructions" class="text-sm font-medium text-slate-700">Instruções Padrão <span class="text-red-500">*</span></label>
+                    <button type="button" onclick="aiGenerate('DefaultInstructions','BacklogInstructions',{name:document.getElementById('Name').value},this)" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Gerar com IA</button>
+                </div>
                 <textarea asp-for="DefaultInstructions" rows="6" class="form-textarea w-full" placeholder="Descreva as instruções padrão para uso desta ferramenta nos prompts..."></textarea>
                 <span asp-validation-for="DefaultInstructions" class="text-xs text-red-600 mt-1 block"></span>
             </div>

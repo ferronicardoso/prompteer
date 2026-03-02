@@ -29,14 +29,20 @@
 
             <!-- Role -->
             <div>
-                <label asp-for="Role" class="block text-sm font-medium text-slate-700 mb-1">Papel <span class="text-red-500">*</span></label>
+                <div class="flex items-center justify-between mb-1">
+                    <label asp-for="Role" class="text-sm font-medium text-slate-700">Papel <span class="text-red-500">*</span></label>
+                    <button type="button" onclick="aiGenerate('Role','AgentRole',{name:document.getElementById('Name').value,tone:document.querySelector('[name=Tone] option:checked')?.text??''},this)" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Gerar com IA</button>
+                </div>
                 <textarea asp-for="Role" rows="3" class="form-textarea w-full" placeholder="Descreva o papel e responsabilidades deste agente..."></textarea>
                 <span asp-validation-for="Role" class="text-xs text-red-600 mt-1 block"></span>
             </div>
 
             <!-- Knowledge Domain -->
             <div>
-                <label asp-for="KnowledgeDomain" class="block text-sm font-medium text-slate-700 mb-1">Domínio de Conhecimento <span class="text-red-500">*</span></label>
+                <div class="flex items-center justify-between mb-1">
+                    <label asp-for="KnowledgeDomain" class="text-sm font-medium text-slate-700">Domínio de Conhecimento <span class="text-red-500">*</span></label>
+                    <button type="button" onclick="aiGenerate('KnowledgeDomain','AgentKnowledgeDomain',{name:document.getElementById('Name').value,tone:document.querySelector('[name=Tone] option:checked')?.text??''},this)" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Gerar com IA</button>
+                </div>
                 <input asp-for="KnowledgeDomain" class="form-input w-full" placeholder="Ex: Arquitetura de software, padrões de projeto, .NET" />
                 <span asp-validation-for="KnowledgeDomain" class="text-xs text-red-600 mt-1 block"></span>
             </div>
@@ -50,7 +56,10 @@
 
             <!-- Default Constraints -->
             <div>
-                <label asp-for="DefaultConstraints" class="block text-sm font-medium text-slate-700 mb-1">Restrições Padrão <span class="text-red-500">*</span></label>
+                <div class="flex items-center justify-between mb-1">
+                    <label asp-for="DefaultConstraints" class="text-sm font-medium text-slate-700">Restrições Padrão <span class="text-red-500">*</span></label>
+                    <button type="button" onclick="aiGenerate('DefaultConstraints','AgentConstraints',{name:document.getElementById('Name').value,tone:document.querySelector('[name=Tone] option:checked')?.text??'',role:document.getElementById('Role').value},this)" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Gerar com IA</button>
+                </div>
                 <textarea asp-for="DefaultConstraints" rows="4" class="form-textarea w-full" placeholder="Descreva as restrições e diretrizes padrão para este agente..."></textarea>
                 <span asp-validation-for="DefaultConstraints" class="text-xs text-red-600 mt-1 block"></span>
             </div>

@@ -68,10 +68,41 @@ public class TechnologyService : ITechnologyService
     {
         var entity = await _uow.Repository<Technology>().GetByIdAsync(dto.Id!.Value)
             ?? throw new KeyNotFoundException("Tecnologia não encontrada.");
+
+        if (entity.IsSystemDefault)
+            throw new InvalidOperationException("Tecnologias padrão do sistema não podem ser editadas.");
+
         _mapper.Map(dto, entity);
         _uow.Repository<Technology>().Update(entity);
         await _uow.SaveChangesAsync();
         return _mapper.Map<TechnologyDto>(entity);
+    }
+
+    public async Task<TechnologyDto> CloneAsync(Guid id)
+    {
+        var source = await _uow.Repository<Technology>().GetByIdAsync(id)
+            ?? throw new KeyNotFoundException("Tecnologia não encontrada.");
+
+        var baseName = $"{source.Name} (Cópia)";
+        var cloneName = baseName;
+        var suffix = 2;
+        while (await _uow.Repository<Technology>().Query()
+                   .AnyAsync(x => x.Name.ToLower() == cloneName.ToLower()))
+            cloneName = $"{baseName} {suffix++}";
+
+        var clone = new Technology
+        {
+            Name             = cloneName,
+            Category         = source.Category,
+            Ecosystem        = source.Ecosystem,
+            Version          = source.Version,
+            ShortDescription = source.ShortDescription,
+            IsSystemDefault  = false
+        };
+
+        await _uow.Repository<Technology>().AddAsync(clone);
+        await _uow.SaveChangesAsync();
+        return _mapper.Map<TechnologyDto>(clone);
     }
 
     public async Task DeleteAsync(Guid id)

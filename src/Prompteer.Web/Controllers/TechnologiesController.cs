@@ -85,6 +85,11 @@ public class TechnologiesController : Controller
     {
         var tech = await _service.GetByIdAsync(id);
         if (tech == null) return NotFound();
+        if (tech.IsSystemDefault)
+        {
+            TempData["Error"] = "Tecnologias padrão do sistema não podem ser editadas.";
+            return RedirectToAction(nameof(Index));
+        }
         ViewData["Title"] = "Editar Tecnologia";
         PopulateCategoryList(tech.Category);
         PopulateEcosystemList(tech.Ecosystem);
@@ -110,9 +115,26 @@ public class TechnologiesController : Controller
             PopulateEcosystemList(dto.Ecosystem);
             return View(dto);
         }
-        await _service.UpdateAsync(dto);
+        try
+        {
+            await _service.UpdateAsync(dto);
+        }
+        catch (InvalidOperationException ex)
+        {
+            TempData["Error"] = ex.Message;
+            return RedirectToAction(nameof(Index));
+        }
         TempData["Success"] = "Tecnologia atualizada com sucesso.";
         return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Clone(Guid id)
+    {
+        var clone = await _service.CloneAsync(id);
+        TempData["Success"] = $"Tecnologia clonada como \"{clone.Name}\".";
+        return RedirectToAction(nameof(Edit), new { id = clone.Id });
     }
 
     public async Task<IActionResult> Delete(Guid id)

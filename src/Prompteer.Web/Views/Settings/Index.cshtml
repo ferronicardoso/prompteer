@@ -1,0 +1,78 @@
+@using Prompteer.Application.DTOs
+@model AISettingsDto
+@{
+    ViewData["Title"] = "Configurações";
+}
+
+<div class="max-w-xl">
+    <div class="mb-6">
+        <h1 class="text-xl font-semibold text-slate-900">Configurações</h1>
+        <p class="text-sm text-slate-500 mt-0.5">Configure a integração com IA para geração automática de conteúdo</p>
+    </div>
+
+    <form asp-action="Index" method="post">
+        @Html.AntiForgeryToken()
+        <div class="card space-y-5">
+
+            <div class="flex items-start gap-3 p-4 rounded-lg bg-brand-50 border border-brand-200">
+                <i data-lucide="sparkles" class="w-5 h-5 text-brand-600 mt-0.5 flex-shrink-0"></i>
+                <div class="text-sm text-brand-800">
+                    <p class="font-medium mb-1">Integração com OpenAI</p>
+                    <p>Insira sua API Key da OpenAI para habilitar a geração automática de textos nos formulários de cadastro. 
+                       Obtenha sua chave em <a href="https://platform.openai.com/api-keys" target="_blank" class="underline hover:no-underline">platform.openai.com/api-keys</a>.</p>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="flex items-center gap-2 text-sm">
+                <span class="text-slate-600">Status:</span>
+                @if (Model.IsConfigured)
+                {
+                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        Configurado
+                    </span>
+                }
+                else
+                {
+                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                        Não configurado
+                    </span>
+                }
+            </div>
+
+            <hr class="border-slate-100" />
+
+            <!-- API Key -->
+            <div>
+                <label asp-for="ApiKey" class="block text-sm font-medium text-slate-700 mb-1">
+                    API Key <span class="text-red-500">*</span>
+                </label>
+                <input asp-for="ApiKey" type="password" autocomplete="off"
+                       class="form-input w-full font-mono text-sm"
+                       placeholder="sk-..." />
+                <p class="text-xs text-slate-400 mt-1">A chave é armazenada no banco de dados da aplicação.</p>
+            </div>
+
+            <!-- Model -->
+            <div>
+                <label asp-for="Model" class="block text-sm font-medium text-slate-700 mb-1">Modelo</label>
+                <select asp-for="Model" class="form-select w-full">
+                    <option value="gpt-4o-mini">gpt-4o-mini (rápido e econômico — recomendado)</option>
+                    <option value="gpt-4o">gpt-4o (mais capaz)</option>
+                    <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+                    <option value="gpt-4.1">gpt-4.1</option>
+                </select>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
+                <button type="submit" class="btn btn-primary">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
