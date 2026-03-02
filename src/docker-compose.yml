@@ -21,7 +21,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Prompteer.Web/Dockerfile
     container_name: prompteer-web
     restart: unless-stopped
     depends_on:

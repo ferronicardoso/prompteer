@@ -3,12 +3,12 @@ FROM node:22-alpine AS css-build
 
 WORKDIR /app/web
 
-COPY src/Prompteer.Web/package.json src/Prompteer.Web/package-lock.json* ./
+COPY Prompteer.Web/package.json Prompteer.Web/package-lock.json* ./
 RUN npm ci
 
-COPY src/Prompteer.Web/tailwind.config.js ./
-COPY src/Prompteer.Web/wwwroot/css/input.css ./wwwroot/css/input.css
-COPY src/Prompteer.Web/Views/ ./Views/
+COPY Prompteer.Web/tailwind.config.js ./
+COPY Prompteer.Web/wwwroot/css/input.css ./wwwroot/css/input.css
+COPY Prompteer.Web/Views/ ./Views/
 
 RUN npm run build:css
 
@@ -19,25 +19,24 @@ WORKDIR /src
 
 # Copy solution + csproj files first (layer cache for restore)
 COPY Prompteer.slnx ./
-COPY src/Prompteer.Domain/Prompteer.Domain.csproj             src/Prompteer.Domain/
-COPY src/Prompteer.Application/Prompteer.Application.csproj   src/Prompteer.Application/
-COPY src/Prompteer.Infrastructure/Prompteer.Infrastructure.csproj src/Prompteer.Infrastructure/
-COPY src/Prompteer.Web/Prompteer.Web.csproj                   src/Prompteer.Web/
-COPY tests/Prompteer.Application.Tests/Prompteer.Application.Tests.csproj tests/Prompteer.Application.Tests/
-COPY tests/Prompteer.Domain.Tests/Prompteer.Domain.Tests.csproj tests/Prompteer.Domain.Tests/
+COPY Prompteer.Domain/Prompteer.Domain.csproj             Prompteer.Domain/
+COPY Prompteer.Application/Prompteer.Application.csproj   Prompteer.Application/
+COPY Prompteer.Infrastructure/Prompteer.Infrastructure.csproj Prompteer.Infrastructure/
+COPY Prompteer.Web/Prompteer.Web.csproj                   Prompteer.Web/
+COPY Prompteer.Application.Tests/Prompteer.Application.Tests.csproj Prompteer.Application.Tests/
+COPY Prompteer.Domain.Tests/Prompteer.Domain.Tests.csproj            Prompteer.Domain.Tests/
 
 RUN dotnet restore
 
 # Copy source
-COPY src/ src/
+COPY . .
 
 # Copy compiled CSS from stage 1
-COPY --from=css-build /app/web/wwwroot/css/app.css src/Prompteer.Web/wwwroot/css/app.css
+COPY --from=css-build /app/web/wwwroot/css/app.css Prompteer.Web/wwwroot/css/app.css
 
-RUN dotnet publish src/Prompteer.Web/Prompteer.Web.csproj \
+RUN dotnet publish Prompteer.Web/Prompteer.Web.csproj \
     -c Release \
-    -o /app/publish \
-    --no-restore
+    -o /app/publish
 
 # ─── Stage 3: Runtime ─────────────────────────────────────────────────────────
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime

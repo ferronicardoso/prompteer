@@ -4,7 +4,7 @@ using Prompteer.Application.Services;
 
 namespace Prompteer.Web.Controllers;
 
-public class SettingsController(IAppSettingService settings) : Controller
+public class SettingsController(IAppSettingService settings, IAIService aiService) : Controller
 {
     public async Task<IActionResult> Index()
     {
@@ -12,8 +12,9 @@ public class SettingsController(IAppSettingService settings) : Controller
         var all = await settings.GetAllAsync();
         var dto = new AISettingsDto
         {
-            ApiKey = all.GetValueOrDefault("AI:ApiKey", ""),
-            Model  = all.GetValueOrDefault("AI:Model", "gpt-4o-mini")
+            Provider = all.GetValueOrDefault("AI:Provider", "OpenAI"),
+            ApiKey   = all.GetValueOrDefault("AI:ApiKey", ""),
+            Model    = all.GetValueOrDefault("AI:Model", "")
         };
         return View(dto);
     }
@@ -25,10 +26,32 @@ public class SettingsController(IAppSettingService settings) : Controller
         ViewData["Title"] = "Configurações";
         await settings.SaveManyAsync(new Dictionary<string, string>
         {
-            ["AI:ApiKey"] = dto.ApiKey?.Trim() ?? "",
-            ["AI:Model"]  = string.IsNullOrWhiteSpace(dto.Model) ? "gpt-4o-mini" : dto.Model.Trim()
+            ["AI:Provider"] = string.IsNullOrWhiteSpace(dto.Provider) ? "OpenAI" : dto.Provider.Trim(),
+            ["AI:ApiKey"]   = dto.ApiKey?.Trim() ?? "",
+            ["AI:Model"]    = dto.Model?.Trim() ?? ""
         });
         TempData["Success"] = "Configurações salvas com sucesso.";
         return RedirectToAction(nameof(Index));
+    }
+
+    // AJAX: GET /Settings/GetModels?provider=OpenAI&apiKey=sk-...
+    [HttpGet]
+    public async Task<IActionResult> GetModels(string provider, string? apiKey)
+    {
+        if (string.IsNullOrWhiteSpace(apiKey))
+            apiKey = await settings.GetAsync("AI:ApiKey");
+
+        if (string.IsNullOrWhiteSpace(apiKey))
+            return Json(new { success = false, error = "Informe a API Key antes de buscar os modelos." });
+
+        try
+        {
+            var models = await aiService.GetModelsAsync(provider ?? "OpenAI", apiKey);
+            return Json(new { success = true, models });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, error = ex.Message });
+        }
     }
 }

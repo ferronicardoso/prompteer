@@ -98,6 +98,13 @@ public class PromptBuilderService : IPromptBuilderService
     // ─── Step 4: Arquitetura ─────────────────────────────────────────────────
     private async Task AppendArchitectureSectionAsync(StringBuilder sb, WizardSessionData data)
     {
+        var hasTechs        = data.TechnologyIds.Any();
+        var hasPatterns     = data.ArchitecturalPatternIds.Any();
+        var hasPackages     = data.RequiredPackages.Any();
+        var hasConventions  = !string.IsNullOrWhiteSpace(data.CodeConventions);
+
+        if (!hasTechs && !hasPatterns && !hasPackages && !hasConventions) return;
+
         sb.AppendLine("---");
         sb.AppendLine();
         sb.AppendLine("## Stack Tecnológica e Arquitetura");
@@ -155,6 +162,12 @@ public class PromptBuilderService : IPromptBuilderService
     // ─── Step 5: Ambiente ────────────────────────────────────────────────────
     private void AppendEnvironmentSection(StringBuilder sb, WizardSessionData data)
     {
+        var hasDeployment = data.DeploymentTargets.Any();
+        var hasGit        = !string.IsNullOrWhiteSpace(data.GitStrategy);
+        var hasCICD       = data.IncludeCICD && !string.IsNullOrWhiteSpace(data.CICDTool);
+
+        if (!hasDeployment && !hasGit && !hasCICD) return;
+
         sb.AppendLine("---");
         sb.AppendLine();
         sb.AppendLine("## Ambiente e Infraestrutura");
@@ -182,6 +195,13 @@ public class PromptBuilderService : IPromptBuilderService
     // ─── Step 6: Testes ──────────────────────────────────────────────────────
     private void AppendTestsSection(StringBuilder sb, WizardSessionData data)
     {
+        var hasTypes        = data.TestTypes.Any();
+        var hasFramework    = !string.IsNullOrWhiteSpace(data.TestFramework);
+        var hasCoverage     = data.MinCoverage.HasValue;
+        var hasObservations = !string.IsNullOrWhiteSpace(data.TestObservations);
+
+        if (!hasTypes && !hasFramework && !hasCoverage && !hasObservations) return;
+
         sb.AppendLine("---");
         sb.AppendLine();
         sb.AppendLine("## Estratégia de Testes");

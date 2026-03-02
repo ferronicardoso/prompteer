@@ -13,6 +13,7 @@ public static class DatabaseSeeder
         await SeedTechnologiesAsync(db);
         await SeedArchitecturalPatternsAsync(db);
         await SeedBacklogToolsAsync(db);
+        await SeedTemplatesAsync(db);
     }
 
     // ─── Perfis de Agente ────────────────────────────────────────────────────
