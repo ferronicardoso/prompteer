@@ -119,6 +119,11 @@ public class TechnologiesController : Controller
     {
         var tech = await _service.GetByIdAsync(id);
         if (tech == null) return NotFound();
+        if (tech.IsSystemDefault)
+        {
+            TempData["Error"] = "Tecnologias padrão do sistema não podem ser excluídas.";
+            return RedirectToAction(nameof(Index));
+        }
         ViewData["Title"] = "Excluir Tecnologia";
         return View(tech);
     }
@@ -127,6 +132,12 @@ public class TechnologiesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
+        var tech = await _service.GetByIdAsync(id);
+        if (tech?.IsSystemDefault == true)
+        {
+            TempData["Error"] = "Tecnologias padrão do sistema não podem ser excluídas.";
+            return RedirectToAction(nameof(Index));
+        }
         await _service.DeleteAsync(id);
         TempData["Success"] = "Tecnologia excluída com sucesso.";
         return RedirectToAction(nameof(Index));

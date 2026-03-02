@@ -34,7 +34,7 @@ public class AgentProfilesController : Controller
         return View(result);
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
         ViewData["Title"] = "Novo Perfil de Agente";
         PopulateToneList();
@@ -50,9 +50,35 @@ public class AgentProfilesController : Controller
             PopulateToneList(dto.Tone);
             return View(dto);
         }
-        await _service.CreateAsync(dto);
+        try
+        {
+            await _service.CreateAsync(dto);
+        }
+        catch (InvalidOperationException ex)
+        {
+            ModelState.AddModelError(nameof(dto.Name), ex.Message);
+            PopulateToneList(dto.Tone);
+            return View(dto);
+        }
         TempData["Success"] = "Perfil de agente criado com sucesso.";
         return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Details(Guid id)
+    {
+        var profile = await _service.GetByIdAsync(id);
+        if (profile == null) return NotFound();
+        ViewData["Title"] = profile.Name;
+        return View(profile);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Clone(Guid id)
+    {
+        var clone = await _service.CloneAsync(id);
+        TempData["Success"] = $"Perfil clonado como \"{clone.Name}\".";
+        return RedirectToAction(nameof(Edit), new { id = clone.Id });
     }
 
     public async Task<IActionResult> Edit(Guid id)
@@ -96,7 +122,16 @@ public class AgentProfilesController : Controller
             PopulateToneList(dto.Tone);
             return View(dto);
         }
-        await _service.UpdateAsync(dto);
+        try
+        {
+            await _service.UpdateAsync(dto);
+        }
+        catch (InvalidOperationException ex)
+        {
+            ModelState.AddModelError(nameof(dto.Name), ex.Message);
+            PopulateToneList(dto.Tone);
+            return View(dto);
+        }
         TempData["Success"] = "Perfil de agente atualizado com sucesso.";
         return RedirectToAction(nameof(Index));
     }

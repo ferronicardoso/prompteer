@@ -90,6 +90,11 @@ public class ArchitecturalPatternsController : Controller
     {
         var pattern = await _service.GetByIdAsync(id);
         if (pattern == null) return NotFound();
+        if (pattern.IsSystemDefault)
+        {
+            TempData["Error"] = "Padrões arquiteturais padrão do sistema não podem ser excluídos.";
+            return RedirectToAction(nameof(Index));
+        }
         ViewData["Title"] = "Excluir Padrão Arquitetural";
         return View(pattern);
     }
@@ -98,6 +103,12 @@ public class ArchitecturalPatternsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(Guid id)
     {
+        var pattern = await _service.GetByIdAsync(id);
+        if (pattern?.IsSystemDefault == true)
+        {
+            TempData["Error"] = "Padrões arquiteturais padrão do sistema não podem ser excluídos.";
+            return RedirectToAction(nameof(Index));
+        }
         await _service.DeleteAsync(id);
         TempData["Success"] = "Padrão arquitetural excluído com sucesso.";
         return RedirectToAction(nameof(Index));

@@ -52,8 +52,46 @@ public class AgentProfileService : IAgentProfileService
         return _mapper.Map<IEnumerable<AgentProfileDto>>(items);
     }
 
+    public async Task<bool> ExistsWithNameAsync(string name, Guid? excludeId = null)
+    {
+        var query = _uow.Repository<AgentProfile>().Query()
+            .Where(x => x.Name.ToLower() == name.ToLower());
+        if (excludeId.HasValue)
+            query = query.Where(x => x.Id != excludeId.Value);
+        return await query.AnyAsync();
+    }
+
+    public async Task<AgentProfileDto> CloneAsync(Guid id)
+    {
+        var source = await _uow.Repository<AgentProfile>().GetByIdAsync(id)
+            ?? throw new KeyNotFoundException("Perfil não encontrado.");
+
+        var baseName = $"{source.Name} (Cópia)";
+        var cloneName = baseName;
+        var suffix = 2;
+        while (await ExistsWithNameAsync(cloneName))
+            cloneName = $"{baseName} {suffix++}";
+
+        var clone = new AgentProfile
+        {
+            Name             = cloneName,
+            Role             = source.Role,
+            KnowledgeDomain  = source.KnowledgeDomain,
+            Tone             = source.Tone,
+            DefaultConstraints = source.DefaultConstraints,
+            IsSystemDefault  = false
+        };
+
+        await _uow.Repository<AgentProfile>().AddAsync(clone);
+        await _uow.SaveChangesAsync();
+        return _mapper.Map<AgentProfileDto>(clone);
+    }
+
     public async Task<AgentProfileDto> CreateAsync(AgentProfileFormDto dto)
     {
+        if (await ExistsWithNameAsync(dto.Name))
+            throw new InvalidOperationException($"Já existe um perfil com o nome \"{dto.Name}\".");
+
         var entity = _mapper.Map<AgentProfile>(dto);
         await _uow.Repository<AgentProfile>().AddAsync(entity);
         await _uow.SaveChangesAsync();
@@ -67,6 +105,9 @@ public class AgentProfileService : IAgentProfileService
 
         if (entity.IsSystemDefault)
             throw new InvalidOperationException("Perfis padrão do sistema não podem ser editados.");
+
+        if (await ExistsWithNameAsync(dto.Name, dto.Id))
+            throw new InvalidOperationException($"Já existe um perfil com o nome \"{dto.Name}\".");
 
         _mapper.Map(dto, entity);
         _uow.Repository<AgentProfile>().Update(entity);

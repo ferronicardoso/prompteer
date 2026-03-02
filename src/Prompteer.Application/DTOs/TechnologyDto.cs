@@ -12,6 +12,7 @@ public class TechnologyDto
     public string EcosystemDisplay { get; set; } = string.Empty;
     public string? Version { get; set; }
     public string? ShortDescription { get; set; }
+    public bool IsSystemDefault { get; set; }
     public DateTime CreatedAt { get; set; }
 }
 

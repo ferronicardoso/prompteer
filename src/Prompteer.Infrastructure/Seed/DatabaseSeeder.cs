@@ -126,46 +126,46 @@ public static class DatabaseSeeder
         var techs = new List<Technology>
         {
             // .NET Framework
-            new() { Name = ".NET 10", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Plataforma .NET de alta performance da Microsoft" },
-            new() { Name = "ASP.NET Core MVC", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Framework web MVC para .NET" },
-            new() { Name = "ASP.NET Core Web API", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Framework para APIs RESTful em .NET" },
-            new() { Name = "Blazor", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Framework web interativo com C# para .NET" },
+            new() { Name = ".NET 10", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Plataforma .NET de alta performance da Microsoft", IsSystemDefault = true },
+            new() { Name = "ASP.NET Core MVC", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Framework web MVC para .NET", IsSystemDefault = true },
+            new() { Name = "ASP.NET Core Web API", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Framework para APIs RESTful em .NET", IsSystemDefault = true },
+            new() { Name = "Blazor", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Framework web interativo com C# para .NET", IsSystemDefault = true },
             // ORM
-            new() { Name = "Entity Framework Core", Category = TechCategory.ORM, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "ORM Code First para .NET" },
-            new() { Name = "Dapper", Category = TechCategory.ORM, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Micro ORM leve para .NET" },
+            new() { Name = "Entity Framework Core", Category = TechCategory.ORM, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "ORM Code First para .NET", IsSystemDefault = true },
+            new() { Name = "Dapper", Category = TechCategory.ORM, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Micro ORM leve para .NET", IsSystemDefault = true },
             // Banco de dados
-            new() { Name = "PostgreSQL", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Banco relacional open-source robusto" },
-            new() { Name = "SQL Server", Category = TechCategory.Database, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Banco relacional da Microsoft" },
-            new() { Name = "MySQL", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Banco relacional open-source amplamente usado" },
-            new() { Name = "MongoDB", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Banco NoSQL orientado a documentos" },
-            new() { Name = "Redis", Category = TechCategory.Cache, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Cache in-memory e store de dados chave-valor" },
+            new() { Name = "PostgreSQL", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Banco relacional open-source robusto", IsSystemDefault = true },
+            new() { Name = "SQL Server", Category = TechCategory.Database, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Banco relacional da Microsoft", IsSystemDefault = true },
+            new() { Name = "MySQL", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Banco relacional open-source amplamente usado", IsSystemDefault = true },
+            new() { Name = "MongoDB", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Banco NoSQL orientado a documentos", IsSystemDefault = true },
+            new() { Name = "Redis", Category = TechCategory.Cache, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Cache in-memory e store de dados chave-valor", IsSystemDefault = true },
             // Frontend
-            new() { Name = "Tailwind CSS", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Agnostic, Version = "3", ShortDescription = "Framework CSS utility-first" },
-            new() { Name = "React", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, ShortDescription = "Biblioteca JavaScript para UIs componentizadas" },
-            new() { Name = "Vue.js", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, Version = "3", ShortDescription = "Framework JavaScript progressivo" },
-            new() { Name = "Angular", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, ShortDescription = "Framework SPA completo da Google" },
-            new() { Name = "Alpine.js", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Agnostic, Version = "3", ShortDescription = "Framework JS leve para interatividade inline" },
+            new() { Name = "Tailwind CSS", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Agnostic, Version = "3", ShortDescription = "Framework CSS utility-first", IsSystemDefault = true },
+            new() { Name = "React", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, ShortDescription = "Biblioteca JavaScript para UIs componentizadas", IsSystemDefault = true },
+            new() { Name = "Vue.js", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, Version = "3", ShortDescription = "Framework JavaScript progressivo", IsSystemDefault = true },
+            new() { Name = "Angular", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, ShortDescription = "Framework SPA completo da Google", IsSystemDefault = true },
+            new() { Name = "Alpine.js", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Agnostic, Version = "3", ShortDescription = "Framework JS leve para interatividade inline", IsSystemDefault = true },
             // Node
-            new() { Name = "Node.js", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Node, ShortDescription = "Runtime JavaScript server-side" },
-            new() { Name = "NestJS", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Node, ShortDescription = "Framework Node.js progressivo com TypeScript" },
+            new() { Name = "Node.js", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Node, ShortDescription = "Runtime JavaScript server-side", IsSystemDefault = true },
+            new() { Name = "NestJS", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Node, ShortDescription = "Framework Node.js progressivo com TypeScript", IsSystemDefault = true },
             // Python
-            new() { Name = "Python", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Python, ShortDescription = "Linguagem de programação versátil" },
-            new() { Name = "FastAPI", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Python, ShortDescription = "Framework web moderno e rápido para Python" },
+            new() { Name = "Python", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Python, ShortDescription = "Linguagem de programação versátil", IsSystemDefault = true },
+            new() { Name = "FastAPI", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Python, ShortDescription = "Framework web moderno e rápido para Python", IsSystemDefault = true },
             // Mensageria
-            new() { Name = "RabbitMQ", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Message broker AMQP" },
-            new() { Name = "Azure Service Bus", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Serviço de mensageria gerenciado da Azure" },
-            new() { Name = "Kafka", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Plataforma de streaming de eventos distribuída" },
+            new() { Name = "RabbitMQ", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Message broker AMQP", IsSystemDefault = true },
+            new() { Name = "Azure Service Bus", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Serviço de mensageria gerenciado da Azure", IsSystemDefault = true },
+            new() { Name = "Kafka", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Plataforma de streaming de eventos distribuída", IsSystemDefault = true },
             // DevOps
-            new() { Name = "Docker", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Plataforma de containerização" },
-            new() { Name = "Kubernetes", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Orquestrador de containers" },
-            new() { Name = "GitHub Actions", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "CI/CD nativo do GitHub" },
-            new() { Name = "Azure DevOps", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Plataforma DevOps completa da Microsoft" },
-            new() { Name = "Terraform", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Infraestrutura como código (IaC)" },
+            new() { Name = "Docker", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Plataforma de containerização", IsSystemDefault = true },
+            new() { Name = "Kubernetes", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Orquestrador de containers", IsSystemDefault = true },
+            new() { Name = "GitHub Actions", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "CI/CD nativo do GitHub", IsSystemDefault = true },
+            new() { Name = "Azure DevOps", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Plataforma DevOps completa da Microsoft", IsSystemDefault = true },
+            new() { Name = "Terraform", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Infraestrutura como código (IaC)", IsSystemDefault = true },
             // Testes
-            new() { Name = "xUnit", Category = TechCategory.Testing, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Framework de testes unitários para .NET" },
-            new() { Name = "NUnit", Category = TechCategory.Testing, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Framework de testes para .NET" },
-            new() { Name = "Playwright", Category = TechCategory.Testing, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Automação de testes E2E para web" },
-            new() { Name = "Elasticsearch", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Motor de busca e analytics distribuído" },
+            new() { Name = "xUnit", Category = TechCategory.Testing, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Framework de testes unitários para .NET", IsSystemDefault = true },
+            new() { Name = "NUnit", Category = TechCategory.Testing, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Framework de testes para .NET", IsSystemDefault = true },
+            new() { Name = "Playwright", Category = TechCategory.Testing, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Automação de testes E2E para web", IsSystemDefault = true },
+            new() { Name = "Elasticsearch", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Motor de busca e analytics distribuído", IsSystemDefault = true },
         };
 
         await db.Technologies.AddRangeAsync(techs);
@@ -179,16 +179,16 @@ public static class DatabaseSeeder
 
         var patterns = new List<ArchitecturalPattern>
         {
-            new() { Name = "Clean Architecture", Description = "Separação em camadas (Domain, Application, Infrastructure, Presentation) com dependências apontando para o centro.", Ecosystem = TechEcosystem.Agnostic },
-            new() { Name = "DDD (Domain-Driven Design)", Description = "Modelagem do software em torno do domínio de negócio com Aggregates, Entities, Value Objects e Domain Events.", Ecosystem = TechEcosystem.Agnostic },
-            new() { Name = "CQRS", Description = "Separação entre comandos (escrita) e consultas (leitura), com handlers dedicados para cada operação.", Ecosystem = TechEcosystem.Agnostic },
-            new() { Name = "Repository Pattern", Description = "Abstração da camada de acesso a dados atrás de interfaces, desacoplando a lógica de negócio da persistência.", Ecosystem = TechEcosystem.Agnostic },
-            new() { Name = "Unit of Work", Description = "Agrupa múltiplas operações de banco em uma única transação, garantindo consistência.", Ecosystem = TechEcosystem.Agnostic },
-            new() { Name = "Microservices", Description = "Arquitetura baseada em serviços independentes, com deploy autônomo, comunicando via APIs ou mensagens.", Ecosystem = TechEcosystem.Agnostic },
-            new() { Name = "Event Sourcing", Description = "Persiste o estado da aplicação como uma sequência de eventos imutáveis, permitindo reconstrução do estado.", Ecosystem = TechEcosystem.Agnostic },
-            new() { Name = "SAGA Pattern", Description = "Gerencia transações distribuídas através de uma sequência de transações locais com compensações em caso de falha.", Ecosystem = TechEcosystem.Agnostic },
-            new() { Name = "BFF (Backend for Frontend)", Description = "Camada backend dedicada a cada tipo de cliente (web, mobile), otimizando as respostas para cada interface.", Ecosystem = TechEcosystem.Agnostic },
-            new() { Name = "Hexagonal Architecture", Description = "Isola o núcleo da aplicação de infraestrutura externa via portas (interfaces) e adaptadores (implementações).", Ecosystem = TechEcosystem.Agnostic },
+            new() { Name = "Clean Architecture", Description = "Separação em camadas (Domain, Application, Infrastructure, Presentation) com dependências apontando para o centro.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "DDD (Domain-Driven Design)", Description = "Modelagem do software em torno do domínio de negócio com Aggregates, Entities, Value Objects e Domain Events.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "CQRS", Description = "Separação entre comandos (escrita) e consultas (leitura), com handlers dedicados para cada operação.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Repository Pattern", Description = "Abstração da camada de acesso a dados atrás de interfaces, desacoplando a lógica de negócio da persistência.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Unit of Work", Description = "Agrupa múltiplas operações de banco em uma única transação, garantindo consistência.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Microservices", Description = "Arquitetura baseada em serviços independentes, com deploy autônomo, comunicando via APIs ou mensagens.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Event Sourcing", Description = "Persiste o estado da aplicação como uma sequência de eventos imutáveis, permitindo reconstrução do estado.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "SAGA Pattern", Description = "Gerencia transações distribuídas através de uma sequência de transações locais com compensações em caso de falha.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "BFF (Backend for Frontend)", Description = "Camada backend dedicada a cada tipo de cliente (web, mobile), otimizando as respostas para cada interface.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Hexagonal Architecture", Description = "Isola o núcleo da aplicação de infraestrutura externa via portas (interfaces) e adaptadores (implementações).", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
         };
 
         await db.ArchitecturalPatterns.AddRangeAsync(patterns);

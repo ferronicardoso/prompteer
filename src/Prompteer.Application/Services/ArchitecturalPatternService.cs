@@ -68,6 +68,8 @@ public class ArchitecturalPatternService : IArchitecturalPatternService
     {
         var entity = await _uow.Repository<ArchitecturalPattern>().GetByIdAsync(id)
             ?? throw new KeyNotFoundException("Padrão não encontrado.");
+        if (entity.IsSystemDefault)
+            throw new InvalidOperationException("Padrões arquiteturais padrão do sistema não podem ser excluídos.");
         _uow.Repository<ArchitecturalPattern>().SoftDelete(entity);
         await _uow.SaveChangesAsync();
     }

@@ -18,6 +18,7 @@ public class AppDbContext : DbContext
     public DbSet<PromptModule> PromptModules => Set<PromptModule>();
     public DbSet<PromptModuleItem> PromptModuleItems => Set<PromptModuleItem>();
     public DbSet<PromptDraft> PromptDrafts => Set<PromptDraft>();
+    public DbSet<AppSetting> AppSettings => Set<AppSetting>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,6 +33,13 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<PromptTemplate>().HasQueryFilter(e => !e.IsDeleted);
         modelBuilder.Entity<PromptModule>().HasQueryFilter(e => !e.IsDeleted);
         modelBuilder.Entity<PromptModuleItem>().HasQueryFilter(e => !e.IsDeleted);
+
+        modelBuilder.Entity<AppSetting>(e =>
+        {
+            e.HasKey(s => s.Key);
+            e.Property(s => s.Key).HasMaxLength(100);
+            e.Property(s => s.Value).HasColumnType("text");
+        });
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

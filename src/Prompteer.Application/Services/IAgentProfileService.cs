@@ -10,4 +10,6 @@ public interface IAgentProfileService
     Task<AgentProfileDto> UpdateAsync(AgentProfileFormDto dto);
     Task DeleteAsync(Guid id);
     Task<IEnumerable<AgentProfileDto>> GetAllAsync();
+    Task<bool> ExistsWithNameAsync(string name, Guid? excludeId = null);
+    Task<AgentProfileDto> CloneAsync(Guid id);
 }

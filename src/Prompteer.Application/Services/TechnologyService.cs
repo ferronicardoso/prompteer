@@ -78,6 +78,8 @@ public class TechnologyService : ITechnologyService
     {
         var entity = await _uow.Repository<Technology>().GetByIdAsync(id)
             ?? throw new KeyNotFoundException("Tecnologia não encontrada.");
+        if (entity.IsSystemDefault)
+            throw new InvalidOperationException("Tecnologias padrão do sistema não podem ser excluídas.");
         _uow.Repository<Technology>().SoftDelete(entity);
         await _uow.SaveChangesAsync();
     }

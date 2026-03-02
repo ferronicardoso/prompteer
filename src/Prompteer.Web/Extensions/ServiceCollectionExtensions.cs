@@ -48,6 +48,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPromptTemplateService, PromptTemplateService>();
         services.AddScoped<IPromptDraftService, PromptDraftService>();
         services.AddScoped<IPromptBuilderService, PromptBuilderService>();
+        services.AddScoped<IAppSettingService, AppSettingService>();
+        services.AddScoped<IAIService, OpenAIService>();
 
         return services;
     }

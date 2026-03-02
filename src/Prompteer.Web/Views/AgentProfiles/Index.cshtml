@@ -62,7 +62,7 @@
                         <tr class="hover:bg-slate-50 transition-colors">
                             <td class="px-4 py-3">
                                 <div class="flex items-center gap-2">
-                                    <span class="font-medium text-slate-900">@item.Name</span>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="font-medium text-slate-900 hover:text-brand-600 hover:underline">@item.Name</a>
                                     @if (item.IsSystemDefault)
                                     {
                                         <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">
@@ -87,15 +87,30 @@
                             </td>
                             <td class="px-4 py-3 text-slate-500">@item.CreatedAt.ToString("dd/MM/yyyy")</td>
                             <td class="px-4 py-3">
-                                @if (item.IsSystemDefault)
-                                {
-                                    <span class="inline-flex items-center text-slate-400" title="Item protegido">
-                                        <i data-lucide="lock" class="w-4 h-4"></i>
-                                    </span>
-                                }
-                                else
-                                {
-                                    <div class="flex items-center justify-end gap-1">
+                                <div class="flex items-center justify-end gap-1">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-ghost btn-sm">
+                                        <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                                        Ver
+                                    </a>
+                                    @if (item.IsSystemDefault)
+                                    {
+                                        <form asp-action="Clone" asp-route-id="@item.Id" method="post" class="inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-ghost btn-sm">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                                Clonar
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="Clone" asp-route-id="@item.Id" method="post" class="inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-ghost btn-sm">
+                                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                                Clonar
+                                            </button>
+                                        </form>
                                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-ghost btn-sm">
                                             <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                                             Editar
@@ -104,8 +119,8 @@
                                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                             Excluir
                                         </a>
-                                    </div>
-                                }
+                                    }
+                                </div>
                             </td>
                         </tr>
                     }

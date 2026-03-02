@@ -10,6 +10,7 @@ public class Technology : BaseEntity
     public TechEcosystem Ecosystem { get; set; }
     public string? Version { get; set; }
     public string? ShortDescription { get; set; }
+    public bool IsSystemDefault { get; set; }
 
     // Navigation
     public ICollection<PromptVersionTechnology> PromptVersionTechnologies { get; set; } = new List<PromptVersionTechnology>();

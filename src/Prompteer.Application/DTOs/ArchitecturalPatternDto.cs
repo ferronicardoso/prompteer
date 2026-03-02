@@ -9,6 +9,7 @@ public class ArchitecturalPatternDto
     public string Description { get; set; } = string.Empty;
     public TechEcosystem Ecosystem { get; set; }
     public string EcosystemDisplay { get; set; } = string.Empty;
+    public bool IsSystemDefault { get; set; }
     public DateTime CreatedAt { get; set; }
 }
 
