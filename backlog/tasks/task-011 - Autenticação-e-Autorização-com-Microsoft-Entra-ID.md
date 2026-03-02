@@ -1,7 +1,7 @@
 ---
 id: task-011
 title: Autenticação e Autorização com Microsoft Entra ID
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-06-01'
 updated_date: '2026-03-02 16:41'

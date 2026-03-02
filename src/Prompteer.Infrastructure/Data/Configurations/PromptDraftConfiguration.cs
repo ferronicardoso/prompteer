@@ -13,5 +13,6 @@ public class PromptDraftConfiguration : IEntityTypeConfiguration<PromptDraft>
         builder.Property(e => e.Name).HasMaxLength(200);
         builder.Property(e => e.WizardDataJson).HasColumnType("text").IsRequired();
         builder.Property(e => e.CurrentStep).HasDefaultValue(1);
+        builder.Property(e => e.CreatedByUserId).IsRequired(false);
     }
 }

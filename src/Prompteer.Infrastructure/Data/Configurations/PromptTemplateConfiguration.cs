@@ -13,6 +13,7 @@ public class PromptTemplateConfiguration : IEntityTypeConfiguration<PromptTempla
         builder.Property(e => e.Name).HasMaxLength(200).IsRequired();
         builder.Property(e => e.Description).HasColumnType("text");
         builder.Property(e => e.CurrentVersionNumber).HasDefaultValue(0);
+        builder.Property(e => e.IsPublic).HasDefaultValue(true);
         builder.HasIndex(e => new { e.IsDeleted, e.UpdatedAt });
 
         builder.HasMany(e => e.Versions)

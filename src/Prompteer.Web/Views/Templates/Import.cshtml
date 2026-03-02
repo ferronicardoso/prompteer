@@ -19,6 +19,7 @@
     <form asp-action="Import" method="post" enctype="multipart/form-data"
           x-data="{ fileName: '', dragging: false, skipDuplicates: true }">
         @Html.AntiForgeryToken()
+        <input type="hidden" name="skipDuplicates" :value="skipDuplicates ? 'true' : 'false'" />
 
         @* Drop zone *@
         <div class="card space-y-5">
@@ -44,9 +45,9 @@
 
             @* Options *@
             <label class="flex items-start gap-3 cursor-pointer group">
-                <input type="checkbox" name="skipDuplicates" value="true"
+                <input type="checkbox"
                        x-model="skipDuplicates"
-                       class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" checked />
+                       class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
                 <div>
                     <p class="text-sm font-medium text-slate-700">Pular templates duplicados</p>
                     <p class="text-xs text-slate-400 mt-0.5">

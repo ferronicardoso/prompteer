@@ -23,7 +23,11 @@ public class TemplatesController : Controller
     {
         ViewData["Title"] = "Templates de Prompt";
         ViewData["Search"] = search;
-        var result = await _templateService.GetPagedAsync(page, 10, search);
+
+        var currentUser = await _currentUser.GetCurrentUserAsync();
+        var userRole = _currentUser.GetRoleFromClaims();
+
+        var result = await _templateService.GetPagedAsync(page, 10, search, currentUser?.Id, userRole);
         return View(result);
     }
 

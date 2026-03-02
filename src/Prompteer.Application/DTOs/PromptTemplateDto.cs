@@ -6,6 +6,7 @@ public class PromptTemplateDto
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
     public int CurrentVersionNumber { get; set; }
+    public bool IsPublic { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }
@@ -16,6 +17,8 @@ public class PromptTemplateSummaryDto
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
     public int CurrentVersionNumber { get; set; }
+    public bool IsPublic { get; set; }
+    public Guid? CreatedByUserId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public List<string> TechnologyNames { get; set; } = new();

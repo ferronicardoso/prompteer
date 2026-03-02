@@ -3,6 +3,7 @@ using Prompteer.Application.Services;
 using Prompteer.Application.Wizard;
 using Microsoft.EntityFrameworkCore;
 using Prompteer.Domain.Entities;
+using Prompteer.Domain.Enums;
 using Prompteer.Infrastructure.Data;
 using System.Text.Json;
 
@@ -17,9 +18,16 @@ public class PromptTemplateService : IPromptTemplateService
         _db = db;
     }
 
-    public async Task<PagedResult<PromptTemplateSummaryDto>> GetPagedAsync(int page, int pageSize, string? search = null)
+    public async Task<PagedResult<PromptTemplateSummaryDto>> GetPagedAsync(int page, int pageSize, string? search = null, Guid? currentUserId = null, UserRole? currentUserRole = null)
     {
         var query = _db.PromptTemplates.AsQueryable();
+
+        // Data isolation by role
+        if (currentUserRole == UserRole.Viewer)
+            query = query.Where(x => x.IsPublic);
+        else if (currentUserRole == UserRole.Editor && currentUserId.HasValue)
+            query = query.Where(x => x.IsPublic || x.CreatedByUserId == currentUserId);
+        // Admin (or null) sees all
 
         if (!string.IsNullOrWhiteSpace(search))
             query = query.Where(x => x.Name.Contains(search) || (x.Description != null && x.Description.Contains(search)));
@@ -37,6 +45,7 @@ public class PromptTemplateService : IPromptTemplateService
             {
                 Id = t.Id, Name = t.Name, Description = t.Description,
                 CurrentVersionNumber = t.CurrentVersionNumber,
+                IsPublic = t.IsPublic, CreatedByUserId = t.CreatedByUserId,
                 CreatedAt = t.CreatedAt, UpdatedAt = t.UpdatedAt
             };
 
@@ -66,6 +75,7 @@ public class PromptTemplateService : IPromptTemplateService
         {
             Id = t.Id, Name = t.Name, Description = t.Description,
             CurrentVersionNumber = t.CurrentVersionNumber,
+            IsPublic = t.IsPublic,
             CreatedAt = t.CreatedAt, UpdatedAt = t.UpdatedAt
         };
     }
@@ -97,7 +107,7 @@ public class PromptTemplateService : IPromptTemplateService
 
     public async Task<PromptTemplateDto> SaveFromWizardAsync(
         Guid? templateId, string name, string? description,
-        WizardSessionData data, string generatedPrompt)
+        WizardSessionData data, string generatedPrompt, bool isPublic = true, Guid? createdByUserId = null)
     {
         PromptTemplate template;
         if (templateId.HasValue)
@@ -106,11 +116,17 @@ public class PromptTemplateService : IPromptTemplateService
                 ?? throw new KeyNotFoundException("Template não encontrado.");
             template.Name = name;
             template.Description = description;
+            template.IsPublic = isPublic;
             template.CurrentVersionNumber++;
         }
         else
         {
-            template = new PromptTemplate { Name = name, Description = description, CurrentVersionNumber = 1 };
+            template = new PromptTemplate
+            {
+                Name = name, Description = description,
+                IsPublic = isPublic, CurrentVersionNumber = 1,
+                CreatedByUserId = createdByUserId
+            };
             _db.PromptTemplates.Add(template);
             await _db.SaveChangesAsync();
         }
@@ -160,6 +176,7 @@ public class PromptTemplateService : IPromptTemplateService
             Id = template.Id, Name = template.Name,
             Description = template.Description,
             CurrentVersionNumber = template.CurrentVersionNumber,
+            IsPublic = template.IsPublic,
             CreatedAt = template.CreatedAt, UpdatedAt = template.UpdatedAt
         };
     }
@@ -304,10 +321,16 @@ public class PromptTemplateService : IPromptTemplateService
 
         var templates = await query.OrderBy(t => t.Name).ToListAsync();
 
+        // Pre-load agent profiles and backlog tools for name resolution
+        var agentProfileById = (await _db.AgentProfiles.ToListAsync())
+            .ToDictionary(a => a.Id, a => a.Name);
+        var backlogToolById = (await _db.BacklogTools.ToListAsync())
+            .ToDictionary(b => b.Id, b => b.Name);
+
         var package = new TemplateExportDto
         {
-            ExportedAt  = DateTime.UtcNow,
-            ExportedBy  = exportedBy,
+            ExportedAt    = DateTime.UtcNow,
+            ExportedBy    = exportedBy,
             SchemaVersion = "1.0"
         };
 
@@ -315,6 +338,20 @@ public class PromptTemplateService : IPromptTemplateService
         {
             var latest = t.Versions.OrderByDescending(v => v.VersionNumber).FirstOrDefault();
             if (latest is null) continue;
+
+            // Resolve agent profile and backlog tool names from WizardDataJson
+            string? agentProfileName = null;
+            string? backlogToolName  = null;
+            if (!string.IsNullOrEmpty(latest.WizardDataJson))
+            {
+                var wd = JsonSerializer.Deserialize<Application.Wizard.WizardSessionData>(
+                    latest.WizardDataJson,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (wd?.AgentProfileId.HasValue == true)
+                    agentProfileById.TryGetValue(wd.AgentProfileId.Value, out agentProfileName);
+                if (wd?.BacklogToolId.HasValue == true)
+                    backlogToolById.TryGetValue(wd.BacklogToolId.Value, out backlogToolName);
+            }
 
             package.Templates.Add(new TemplateExportItemDto
             {
@@ -325,7 +362,9 @@ public class PromptTemplateService : IPromptTemplateService
                 GeneratedPrompt   = latest.GeneratedPrompt,
                 WizardDataJson    = latest.WizardDataJson,
                 TechnologyNames   = latest.Technologies.Select(vt => vt.Technology?.Name ?? "").Where(n => n != "").ToList(),
-                PatternNames      = latest.Patterns.Select(vp => vp.Pattern?.Name ?? "").Where(n => n != "").ToList()
+                PatternNames      = latest.Patterns.Select(vp => vp.Pattern?.Name ?? "").Where(n => n != "").ToList(),
+                AgentProfileName  = agentProfileName,
+                BacklogToolName   = backlogToolName
             });
         }
 
@@ -346,8 +385,14 @@ public class PromptTemplateService : IPromptTemplateService
         var allTechs = await _db.Technologies.ToListAsync();
         var allPatterns = await _db.ArchitecturalPatterns.ToListAsync();
 
-        var techByName = allTechs.ToDictionary(t => t.Name.ToLower(), t => t);
+        var techByName    = allTechs.ToDictionary(t => t.Name.ToLower(), t => t);
         var patternByName = allPatterns.ToDictionary(p => p.Name.ToLower(), p => p);
+
+        // Pre-load agent profiles and backlog tools indexed by name (case-insensitive)
+        var agentProfileByName = (await _db.AgentProfiles.ToListAsync())
+            .ToDictionary(a => a.Name.ToLower(), a => a);
+        var backlogToolByName = (await _db.BacklogTools.ToListAsync())
+            .ToDictionary(b => b.Name.ToLower(), b => b);
 
         foreach (var item in package.Templates)
         {
@@ -414,6 +459,24 @@ public class PromptTemplateService : IPromptTemplateService
                 // Override wizard IDs with resolved ones
                 wizardData.TechnologyIds           = resolvedTechIds;
                 wizardData.ArchitecturalPatternIds = resolvedPatternIds;
+
+                // Resolve agent profile by name (when exported with AgentProfileName)
+                if (!string.IsNullOrEmpty(item.AgentProfileName))
+                {
+                    wizardData.AgentProfileId = agentProfileByName.TryGetValue(
+                        item.AgentProfileName.ToLower(), out var agentProfile)
+                        ? agentProfile.Id
+                        : null;
+                }
+
+                // Resolve backlog tool by name (when exported with BacklogToolName)
+                if (!string.IsNullOrEmpty(item.BacklogToolName))
+                {
+                    wizardData.BacklogToolId = backlogToolByName.TryGetValue(
+                        item.BacklogToolName.ToLower(), out var backlogTool)
+                        ? backlogTool.Id
+                        : null;
+                }
 
                 var dto = await SaveFromWizardAsync(
                     null,

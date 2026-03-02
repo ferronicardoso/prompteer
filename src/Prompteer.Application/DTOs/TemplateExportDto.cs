@@ -32,6 +32,12 @@ public class TemplateExportItemDto
 
     /// <summary>Nomes dos padrões arquiteturais (para resolução na importação).</summary>
     public List<string> PatternNames { get; set; } = new();
+
+    /// <summary>Nome do perfil de agente (para resolução na importação).</summary>
+    public string? AgentProfileName { get; set; }
+
+    /// <summary>Nome da ferramenta de backlog (para resolução na importação).</summary>
+    public string? BacklogToolName { get; set; }
 }
 
 public class ImportResultDto

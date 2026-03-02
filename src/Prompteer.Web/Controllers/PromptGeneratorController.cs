@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Prompteer.Application.DTOs;
 using Prompteer.Application.Services;
 using Prompteer.Application.Wizard;
+using Prompteer.Domain.Interfaces;
 using Prompteer.Web.Models;
 using System.Text.Json;
 
@@ -16,6 +17,7 @@ public class PromptGeneratorController : Controller
     private readonly IArchitecturalPatternService _architecturalPatternService;
     private readonly IBacklogToolService _backlogToolService;
     private readonly IPromptTemplateService _templateService;
+    private readonly ICurrentUserService _currentUser;
 
     public PromptGeneratorController(
         IPromptDraftService draftService,
@@ -24,7 +26,8 @@ public class PromptGeneratorController : Controller
         ITechnologyService technologyService,
         IArchitecturalPatternService architecturalPatternService,
         IBacklogToolService backlogToolService,
-        IPromptTemplateService templateService)
+        IPromptTemplateService templateService,
+        ICurrentUserService currentUser)
     {
         _draftService = draftService;
         _builderService = builderService;
@@ -33,6 +36,7 @@ public class PromptGeneratorController : Controller
         _architecturalPatternService = architecturalPatternService;
         _backlogToolService = backlogToolService;
         _templateService = templateService;
+        _currentUser = currentUser;
     }
 
     // GET /PromptGenerator
@@ -143,10 +147,11 @@ public class PromptGeneratorController : Controller
     // POST /PromptGenerator/SaveTemplate
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SaveTemplate(Guid draftId, string templateName, string? templateDesc, string generatedPrompt)
+    public async Task<IActionResult> SaveTemplate(Guid draftId, string templateName, string? templateDesc, string generatedPrompt, bool isPublic = true)
     {
         var data = await _draftService.GetDataAsync(draftId);
-        await _templateService.SaveFromWizardAsync(data.EditingTemplateId, templateName, templateDesc, data, generatedPrompt);
+        var currentUser = await _currentUser.GetCurrentUserAsync();
+        await _templateService.SaveFromWizardAsync(data.EditingTemplateId, templateName, templateDesc, data, generatedPrompt, isPublic, currentUser?.Id);
         TempData["Success"] = data.EditingTemplateId.HasValue
             ? "Template atualizado com sucesso!"
             : "Template salvo com sucesso!";

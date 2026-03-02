@@ -33,6 +33,14 @@
                     <textarea name="templateDesc" rows="2" class="form-textarea w-full"
                               placeholder="Descrição opcional do template...">@Model.Data.ProjectDescription</textarea>
                 </div>
+                <div class="flex items-center gap-3">
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="isPublic" value="true" checked class="sr-only peer" id="toggleIsPublic" />
+                        <div class="w-10 h-5 bg-slate-300 peer-focus:ring-2 peer-focus:ring-brand-500 rounded-full peer peer-checked:bg-brand-600 transition-colors"></div>
+                        <span class="ml-2 text-sm text-slate-700">Público</span>
+                    </label>
+                    <p class="text-xs text-slate-400">Desative para tornar este template privado (visível somente por você e admins).</p>
+                </div>
                 <button type="submit" class="btn btn-primary">
                     <i data-lucide="save" class="w-4 h-4"></i>
                     Salvar Template

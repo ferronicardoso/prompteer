@@ -10,6 +10,7 @@ public class PromptDraft
     public string? Name { get; set; }
     public string WizardDataJson { get; set; } = "{}";
     public int CurrentStep { get; set; } = 1;
+    public Guid? CreatedByUserId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }
