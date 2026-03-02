@@ -33,20 +33,24 @@
         <div class="flex items-center justify-between mb-3">
             <h2 class="text-sm font-semibold text-slate-700">Prompt gerado</h2>
             <button type="button"
-                    @@click="navigator.clipboard.writeText($el.closest('.card').querySelector('code').innerText); copied = true; setTimeout(() => copied = false, 2000)"
+                    @@click="navigator.clipboard.writeText(window.__rawPromptVersion); copied = true; setTimeout(() => copied = false, 2000)"
                     class="btn btn-ghost btn-sm">
                 <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                 <span x-text="copied ? 'Copiado!' : 'Copiar'">Copiar</span>
             </button>
         </div>
-        <pre class="rounded-lg overflow-x-auto text-sm bg-slate-50 border border-slate-200"><code class="language-markdown">@Model.Version.GeneratedPrompt</code></pre>
+        <div class="overflow-auto max-h-[40rem] rounded-lg border border-slate-200 bg-white p-5">
+            <div id="promptRenderedVersion" class="markdown-body"></div>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
+            const raw = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Version.GeneratedPrompt ?? ""));
+            window.__rawPromptVersion = raw;
+            document.getElementById('promptRenderedVersion').innerHTML = marked.parse(raw);
         });
     </script>
 }

@@ -65,7 +65,7 @@
 
   /* Cards */
   .card {
-    @apply bg-white rounded-xl border border-slate-200 shadow-sm;
+    @apply bg-white rounded-xl border border-slate-200 shadow-sm p-5;
   }
   .card-header {
     @apply px-6 py-4 border-b border-slate-200;
@@ -150,6 +150,30 @@
   .toast-error   { @apply toast bg-red-600 text-white; }
   .toast-info    { @apply toast bg-brand-600 text-white; }
   .toast-warning { @apply toast bg-amber-500 text-white; }
+
+  /* Markdown rendered output */
+  .markdown-body {
+    @apply text-sm text-slate-800 leading-relaxed;
+  }
+  .markdown-body h1 { @apply text-xl font-bold text-slate-900 mt-5 mb-2 pb-1 border-b border-slate-200; }
+  .markdown-body h2 { @apply text-base font-semibold text-slate-900 mt-4 mb-2 pb-0.5 border-b border-slate-100; }
+  .markdown-body h3 { @apply text-sm font-semibold text-slate-800 mt-3 mb-1.5; }
+  .markdown-body h4, .markdown-body h5, .markdown-body h6 { @apply text-sm font-semibold text-slate-700 mt-2 mb-1; }
+  .markdown-body p  { @apply text-sm text-slate-700 mb-2; }
+  .markdown-body ul { @apply list-disc pl-5 mb-2 space-y-0.5 text-slate-700; }
+  .markdown-body ol { @apply list-decimal pl-5 mb-2 space-y-0.5 text-slate-700; }
+  .markdown-body li { @apply text-sm; }
+  .markdown-body strong { @apply font-semibold text-slate-900; }
+  .markdown-body em    { @apply italic; }
+  .markdown-body hr    { @apply border-slate-200 my-4; }
+  .markdown-body blockquote { @apply border-l-4 border-brand-300 pl-3 italic text-slate-600 my-2; }
+  .markdown-body code        { @apply bg-slate-100 text-brand-700 text-xs font-mono px-1 py-0.5 rounded; }
+  .markdown-body pre         { @apply bg-slate-900 text-slate-100 text-xs font-mono rounded-lg p-3 overflow-x-auto my-2; }
+  .markdown-body pre code    { @apply bg-transparent text-inherit p-0 rounded-none; }
+  .markdown-body a           { @apply text-brand-600 underline hover:text-brand-700; }
+  .markdown-body table       { @apply w-full text-sm border-collapse my-2; }
+  .markdown-body th          { @apply text-left px-3 py-1.5 bg-slate-100 font-semibold border border-slate-200; }
+  .markdown-body td          { @apply px-3 py-1.5 border border-slate-200; }
 }
 
 @layer utilities {

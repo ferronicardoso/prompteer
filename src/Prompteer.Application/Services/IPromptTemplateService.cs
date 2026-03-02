@@ -16,4 +16,5 @@ public interface IPromptTemplateService
     Task<IEnumerable<(string TechName, int Count)>> GetTopTechnologiesAsync(int count = 5);
     Task<int> GetTotalCountAsync();
     Task<DashboardStatsDto> GetDashboardStatsAsync();
+    Task<WizardSessionData?> GetLatestWizardDataAsync(Guid templateId);
 }

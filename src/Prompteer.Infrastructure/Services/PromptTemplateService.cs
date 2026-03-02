@@ -243,4 +243,18 @@ public class PromptTemplateService : IPromptTemplateService
             })
         };
     }
+
+    public async Task<WizardSessionData?> GetLatestWizardDataAsync(Guid templateId)
+    {
+        var latest = await _db.PromptTemplateVersions
+            .Where(v => v.PromptTemplateId == templateId)
+            .OrderByDescending(v => v.VersionNumber)
+            .Select(v => v.WizardDataJson)
+            .FirstOrDefaultAsync();
+
+        if (string.IsNullOrEmpty(latest)) return null;
+
+        return JsonSerializer.Deserialize<WizardSessionData>(latest,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+    }
 }

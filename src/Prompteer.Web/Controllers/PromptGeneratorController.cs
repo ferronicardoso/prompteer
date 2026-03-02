@@ -40,11 +40,17 @@ public class PromptGeneratorController : Controller
     {
         if (templateId.HasValue && !draftId.HasValue)
         {
-            // Load template's latest version data into a new draft
-            var versions = await _templateService.GetVersionsAsync(templateId.Value);
-            var latest = versions.OrderByDescending(v => v.VersionNumber).FirstOrDefault();
-            // Create a new blank draft (wizard data from template version is not yet stored as WizardSessionData)
+            // Carrega os dados do wizard da versão mais recente do template
+            var wizardData = await _templateService.GetLatestWizardDataAsync(templateId.Value);
+
             var (newId, _) = await _draftService.GetOrCreateAsync(null);
+
+            if (wizardData != null)
+            {
+                wizardData.EditingTemplateId = templateId.Value;
+                await _draftService.UpdateAsync(newId, wizardData, 1);
+            }
+
             return RedirectToAction(nameof(Step), new { step = 1, draftId = newId });
         }
         var (id, _) = await _draftService.GetOrCreateAsync(draftId);
@@ -140,8 +146,10 @@ public class PromptGeneratorController : Controller
     public async Task<IActionResult> SaveTemplate(Guid draftId, string templateName, string? templateDesc, string generatedPrompt)
     {
         var data = await _draftService.GetDataAsync(draftId);
-        await _templateService.SaveFromWizardAsync(null, templateName, templateDesc, data, generatedPrompt);
-        TempData["Success"] = "Template salvo com sucesso!";
+        await _templateService.SaveFromWizardAsync(data.EditingTemplateId, templateName, templateDesc, data, generatedPrompt);
+        TempData["Success"] = data.EditingTemplateId.HasValue
+            ? "Template atualizado com sucesso!"
+            : "Template salvo com sucesso!";
         return RedirectToAction("Index", "Templates");
     }
 

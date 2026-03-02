@@ -5,6 +5,9 @@ namespace Prompteer.Application.Wizard;
 /// </summary>
 public class WizardSessionData
 {
+    // Template sendo editado (null = novo prompt)
+    public Guid? EditingTemplateId { get; set; }
+
     // Step 1 — Agente
     public Guid? AgentProfileId { get; set; }
 

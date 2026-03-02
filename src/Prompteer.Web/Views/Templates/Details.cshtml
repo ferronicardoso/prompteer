@@ -33,7 +33,7 @@
             </a>
             <a asp-action="Edit" asp-route-id="@Model.Template.Id" class="btn btn-primary btn-sm">
                 <i data-lucide="pencil" class="w-4 h-4"></i>
-                Editar no Wizard
+                Editar
             </a>
         </div>
     </div>
@@ -46,13 +46,15 @@
                 <h2 class="text-sm font-semibold text-slate-700">Prompt atual (v@(Model.Template.CurrentVersionNumber))</h2>
                 <button type="button"
                         x-data="{ copied: false }"
-                        @@click="navigator.clipboard.writeText($el.closest('.card').querySelector('code').innerText); copied = true; setTimeout(() => copied = false, 2000)"
+                        @@click="navigator.clipboard.writeText(window.__rawPromptDetails); copied = true; setTimeout(() => copied = false, 2000)"
                         class="btn btn-ghost btn-sm">
                     <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                     <span x-text="copied ? 'Copiado!' : 'Copiar'">Copiar</span>
                 </button>
             </div>
-            <pre class="rounded-lg overflow-x-auto text-sm bg-slate-50 border border-slate-200"><code class="language-markdown">@Model.LatestPrompt</code></pre>
+            <div class="overflow-auto max-h-[40rem] rounded-lg border border-slate-200 bg-white p-5">
+                <div id="promptRenderedDetails" class="markdown-body"></div>
+            </div>
         </div>
     }
 
@@ -127,7 +129,9 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
+            const raw = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.LatestPrompt ?? ""));
+            window.__rawPromptDetails = raw;
+            document.getElementById('promptRenderedDetails').innerHTML = marked.parse(raw);
         });
     </script>
 }
