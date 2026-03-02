@@ -43,8 +43,12 @@ public class PagedResult<T>
 public class DashboardStatsDto
 {
     public int TotalTemplates { get; set; }
+    public int TotalVersions { get; set; }
+    public int TotalAgentProfiles { get; set; }
+    public int TotalTechnologies { get; set; }
     public IEnumerable<PromptTemplateSummaryDto> RecentTemplates { get; set; } = [];
     public IEnumerable<TopTechnologyDto> TopTechnologies { get; set; } = [];
+    public IEnumerable<TopTechnologyDto> TopPatterns { get; set; } = [];
 }
 
 public class TopTechnologyDto

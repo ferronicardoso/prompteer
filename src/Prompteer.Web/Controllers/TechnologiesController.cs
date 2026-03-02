@@ -19,17 +19,18 @@ public class TechnologiesController : Controller
     {
         ViewBag.CategoryItems = new SelectList(new[]
         {
-            new { V = (int)TechCategory.Framework,     T = "Framework" },
-            new { V = (int)TechCategory.Database,      T = "Banco de Dados" },
-            new { V = (int)TechCategory.ORM,           T = "ORM" },
-            new { V = (int)TechCategory.Frontend,      T = "Frontend" },
-            new { V = (int)TechCategory.Auth,          T = "Autenticação" },
-            new { V = (int)TechCategory.Messaging,     T = "Mensageria" },
-            new { V = (int)TechCategory.Cache,         T = "Cache" },
-            new { V = (int)TechCategory.Observability, T = "Observabilidade" },
-            new { V = (int)TechCategory.DevOps,        T = "DevOps" },
-            new { V = (int)TechCategory.Testing,       T = "Testes" },
-            new { V = (int)TechCategory.Other,         T = "Outro" },
+            new { V = (int)TechCategory.Framework,             T = "Framework" },
+            new { V = (int)TechCategory.Database,               T = "Banco de Dados" },
+            new { V = (int)TechCategory.ORM,                    T = "ORM" },
+            new { V = (int)TechCategory.Frontend,               T = "Frontend" },
+            new { V = (int)TechCategory.Auth,                   T = "Autenticação" },
+            new { V = (int)TechCategory.Messaging,              T = "Mensageria" },
+            new { V = (int)TechCategory.Cache,                  T = "Cache" },
+            new { V = (int)TechCategory.Observability,          T = "Observabilidade" },
+            new { V = (int)TechCategory.DevOps,                 T = "DevOps" },
+            new { V = (int)TechCategory.Testing,                T = "Testes" },
+            new { V = (int)TechCategory.ArtificialIntelligence, T = "Inteligência Artificial" },
+            new { V = (int)TechCategory.Other,                  T = "Outro" },
         }, "V", "T", selected.HasValue ? (int?)selected.Value : null);
     }
 

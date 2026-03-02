@@ -232,15 +232,45 @@ public class PromptTemplateService : IPromptTemplateService
         var recent = await GetRecentAsync(5);
         var topTechs = await GetTopTechnologiesAsync(5);
 
+        var totalVersions = await _db.PromptTemplateVersions.CountAsync();
+        var totalAgentProfiles = await _db.AgentProfiles.CountAsync();
+        var totalTechnologies = await _db.Technologies.CountAsync();
+
+        // Top architectural patterns
+        var patternCounts = await _db.PromptVersionPatterns
+            .GroupBy(p => p.ArchitecturalPatternId)
+            .Select(g => new { PatternId = g.Key, Count = g.Count() })
+            .OrderByDescending(x => x.Count)
+            .Take(5)
+            .ToListAsync();
+
+        var patternIds = patternCounts.Select(x => x.PatternId).ToList();
+        var patternNames = await _db.ArchitecturalPatterns
+            .Where(p => patternIds.Contains(p.Id))
+            .Select(p => new { p.Id, p.Name })
+            .ToListAsync();
+
+        var topPatterns = patternCounts
+            .Select(x => new TopTechnologyDto
+            {
+                TechName = patternNames.FirstOrDefault(p => p.Id == x.PatternId)?.Name ?? "Desconhecido",
+                Count = x.Count
+            })
+            .ToList();
+
         return new DashboardStatsDto
         {
             TotalTemplates = total,
+            TotalVersions = totalVersions,
+            TotalAgentProfiles = totalAgentProfiles,
+            TotalTechnologies = totalTechnologies,
             RecentTemplates = recent,
             TopTechnologies = topTechs.Select(t => new TopTechnologyDto
             {
                 TechName = t.TechName,
                 Count = t.Count
-            })
+            }),
+            TopPatterns = topPatterns
         };
     }
 

@@ -35,10 +35,27 @@
 
             <!-- Instructions -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Instruções de Backlog</label>
-                <textarea id="backlogInstructions" name="BacklogInstructions" rows="5"
-                          class="form-textarea w-full"
-                          placeholder="Descreva como o backlog deve ser gerenciado...">@Model.Data.BacklogInstructions</textarea>
+                <div class="flex items-center justify-between mb-1">
+                    <label class="block text-sm font-medium text-slate-700">Instruções de Backlog</label>
+                    <div class="flex items-center gap-1 text-xs">
+                        <button type="button" id="btnTabEdit"
+                                class="px-2.5 py-1 rounded font-medium text-slate-500 hover:text-slate-700 transition-colors">
+                            Editar
+                        </button>
+                        <button type="button" id="btnTabPreview"
+                                class="px-2.5 py-1 rounded font-medium bg-brand-600 text-white transition-colors">
+                            Visualizar
+                        </button>
+                    </div>
+                </div>
+                <div id="editPane" class="hidden">
+                    <textarea id="backlogInstructions" name="BacklogInstructions" rows="8"
+                              class="form-textarea w-full"
+                              placeholder="Descreva como o backlog deve ser gerenciado...">@Model.Data.BacklogInstructions</textarea>
+                </div>
+                <div id="previewPane" class="overflow-auto max-h-64 rounded-lg border border-slate-200 bg-white p-4">
+                    <div id="instructionsRendered" class="markdown-body"></div>
+                </div>
                 <p class="text-xs text-slate-400 mt-1">Ao selecionar uma ferramenta, as instruções padrão serão preenchidas automaticamente.</p>
             </div>
 
@@ -86,13 +103,49 @@
 @section Scripts {
 <script>
 (function () {
+    // ── Preview tabs ──────────────────────────────────────────────
+    const textarea    = document.getElementById('backlogInstructions');
+    const editPane    = document.getElementById('editPane');
+    const previewPane = document.getElementById('previewPane');
+    const rendered    = document.getElementById('instructionsRendered');
+    const btnEdit     = document.getElementById('btnTabEdit');
+    const btnPreview  = document.getElementById('btnTabPreview');
+
+    function renderPreview() {
+        rendered.innerHTML = marked.parse(textarea.value || '');
+    }
+
+    // Inicia no modo Visualizar
+    renderPreview();
+
+    btnEdit.addEventListener('click', function () {
+        editPane.classList.remove('hidden');
+        previewPane.classList.add('hidden');
+        btnEdit.classList.add('bg-brand-600', 'text-white');
+        btnEdit.classList.remove('text-slate-500');
+        btnPreview.classList.remove('bg-brand-600', 'text-white');
+        btnPreview.classList.add('text-slate-500');
+    });
+
+    btnPreview.addEventListener('click', function () {
+        renderPreview();
+        previewPane.classList.remove('hidden');
+        editPane.classList.add('hidden');
+        btnPreview.classList.add('bg-brand-600', 'text-white');
+        btnPreview.classList.remove('text-slate-500');
+        btnEdit.classList.remove('bg-brand-600', 'text-white');
+        btnEdit.classList.add('text-slate-500');
+    });
+
+    // ── Backlog tool select ───────────────────────────────────────
     const ts = new TomSelect('#backlogToolSelect', {
         allowEmptyOption: true,
         onChange: function (val) {
             if (!val) return;
             const opt = document.querySelector(`#backlogToolSelect option[value="${val}"]`);
             if (opt && opt.dataset.instructions) {
-                document.getElementById('backlogInstructions').value = opt.dataset.instructions;
+                textarea.value = opt.dataset.instructions;
+                renderPreview();
             }
         }
     });
@@ -120,9 +173,9 @@
             const data = await resp.json();
             ts.addOption({ value: data.id, text: data.name, 'data-instructions': data.defaultInstructions });
             ts.setValue(data.id);
-            document.getElementById('backlogInstructions').value = data.defaultInstructions;
+            textarea.value = data.defaultInstructions;
+            renderPreview();
             document.getElementById('newToolName').value = '';
-            document.getElementById('newToolInstructions').value = '';
         } catch {
             errEl.textContent = 'Erro ao criar ferramenta. Tente novamente.';
             errEl.classList.remove('hidden');

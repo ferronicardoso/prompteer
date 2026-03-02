@@ -49,17 +49,18 @@ public class MappingProfile : Profile
 
     private static string GetCategoryDisplay(TechCategory category) => category switch
     {
-        TechCategory.Framework     => "Framework",
-        TechCategory.Database      => "Banco de Dados",
-        TechCategory.ORM           => "ORM",
-        TechCategory.Frontend      => "Frontend",
-        TechCategory.Auth          => "Autenticação",
-        TechCategory.Messaging     => "Mensageria",
-        TechCategory.Cache         => "Cache",
-        TechCategory.Observability => "Observabilidade",
-        TechCategory.DevOps        => "DevOps",
-        TechCategory.Testing       => "Testes",
-        TechCategory.Other         => "Outro",
+        TechCategory.Framework             => "Framework",
+        TechCategory.Database              => "Banco de Dados",
+        TechCategory.ORM                   => "ORM",
+        TechCategory.Frontend              => "Frontend",
+        TechCategory.Auth                  => "Autenticação",
+        TechCategory.Messaging             => "Mensageria",
+        TechCategory.Cache                 => "Cache",
+        TechCategory.Observability         => "Observabilidade",
+        TechCategory.DevOps                => "DevOps",
+        TechCategory.Testing               => "Testes",
+        TechCategory.ArtificialIntelligence => "Inteligência Artificial",
+        TechCategory.Other                 => "Outro",
         _                          => category.ToString()
     };
 
