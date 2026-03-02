@@ -1,0 +1,124 @@
+@model Prompteer.Application.DTOs.DashboardStatsDto
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="space-y-6">
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+        <div class="card flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="file-text" class="w-6 h-6 text-brand-600"></i>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-slate-900">@Model.TotalTemplates</p>
+                <p class="text-sm text-slate-500">Templates salvos</p>
+            </div>
+        </div>
+
+        <div class="card flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="layers" class="w-6 h-6 text-emerald-600"></i>
+            </div>
+            <div>
+                <p class="text-2xl font-bold text-slate-900">@Model.TopTechnologies.Count()</p>
+                <p class="text-sm text-slate-500">Tecnologias utilizadas</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <a asp-controller="PromptGenerator" asp-action="Index"
+               class="flex items-center gap-4 group">
+                <div class="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-600 transition-colors">
+                    <i data-lucide="wand-2" class="w-6 h-6 text-indigo-600 group-hover:text-white transition-colors"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-slate-900 group-hover:text-brand-700 transition-colors">Novo Prompt</p>
+                    <p class="text-xs text-slate-500">Iniciar gerador</p>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Recent Templates -->
+        <div class="lg:col-span-2 card">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-base font-semibold text-slate-900">Templates Recentes</h2>
+                <a asp-controller="Templates" asp-action="Index"
+                   class="text-xs text-brand-600 hover:text-brand-700 font-medium">Ver todos →</a>
+            </div>
+
+            @if (!Model.RecentTemplates.Any())
+            {
+                <div class="text-center py-10">
+                    <i data-lucide="inbox" class="w-10 h-10 text-slate-300 mx-auto mb-3"></i>
+                    <p class="text-sm text-slate-500">Nenhum template salvo ainda.</p>
+                    <a asp-controller="PromptGenerator" asp-action="Index"
+                       class="btn btn-primary btn-sm mt-3">
+                        Criar primeiro prompt
+                    </a>
+                </div>
+            }
+            else
+            {
+                <ul class="divide-y divide-slate-100">
+                    @foreach (var t in Model.RecentTemplates)
+                    {
+                        <li class="py-3 flex items-center justify-between group">
+                            <div class="min-w-0">
+                                <p class="text-sm font-medium text-slate-900 truncate">@t.Name</p>
+                                <p class="text-xs text-slate-500 mt-0.5">
+                                    v@(t.CurrentVersionNumber) · @t.UpdatedAt.ToString("dd/MM/yyyy HH:mm")
+                                </p>
+                            </div>
+                            <a asp-controller="Templates" asp-action="Edit" asp-route-id="@t.Id"
+                               class="btn btn-ghost btn-sm opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                                <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                                Editar
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+
+        <!-- Top Technologies -->
+        <div class="card">
+            <h2 class="text-base font-semibold text-slate-900 mb-4">Tecnologias mais usadas</h2>
+
+            @if (!Model.TopTechnologies.Any())
+            {
+                <div class="text-center py-8">
+                    <i data-lucide="cpu" class="w-8 h-8 text-slate-300 mx-auto mb-2"></i>
+                    <p class="text-xs text-slate-500">Sem dados ainda</p>
+                </div>
+            }
+            else
+            {
+                var maxCount = Model.TopTechnologies.Max(t => t.Count);
+                <ul class="space-y-3">
+                    @foreach (var tech in Model.TopTechnologies)
+                    {
+                        var pct = maxCount > 0 ? (tech.Count * 100 / maxCount) : 0;
+                        <li>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-xs font-medium text-slate-700">@tech.TechName</span>
+                                <span class="text-xs text-slate-500">@tech.Count</span>
+                            </div>
+                            <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-brand-500 rounded-full" style="width: @pct%"></div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+
+    </div>
+</div>

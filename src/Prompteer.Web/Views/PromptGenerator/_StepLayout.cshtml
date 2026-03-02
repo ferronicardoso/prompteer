@@ -1,0 +1,48 @@
+@using Prompteer.Web.Models
+@model WizardViewModel
+@{
+    var steps = new[]
+    {
+        "Agente", "Backlog", "Projeto", "Arquitetura",
+        "Ambiente", "Testes", "Módulos", "Regras", "Preview"
+    };
+}
+
+<div class="flex items-center gap-0 mb-8 overflow-x-auto pb-2">
+    @for (int i = 0; i < steps.Length; i++)
+    {
+        var stepNum = i + 1;
+        bool isActive = stepNum == Model.CurrentStep;
+        bool isDone = stepNum < Model.CurrentStep;
+        string circleClass = isDone
+            ? "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 bg-brand-600 text-white"
+            : isActive
+                ? "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 border-2 border-brand-600 text-brand-600 bg-white"
+                : "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 border-2 border-slate-300 text-slate-400 bg-white";
+        string labelClass = isDone
+            ? "text-xs text-brand-600 font-medium mt-1 whitespace-nowrap"
+            : isActive
+                ? "text-xs text-brand-600 font-semibold mt-1 whitespace-nowrap"
+                : "text-xs text-slate-400 mt-1 whitespace-nowrap";
+
+        <div class="flex flex-col items-center min-w-[60px]">
+            <div class="@circleClass">
+                @if (isDone)
+                {
+                    <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                }
+                else
+                {
+                    @stepNum
+                }
+            </div>
+            <span class="@labelClass">@steps[i]</span>
+        </div>
+
+        @if (i < steps.Length - 1)
+        {
+            string lineClass = isDone ? "flex-1 h-0.5 bg-brand-600 mx-1 mt-[-12px]" : "flex-1 h-0.5 bg-slate-200 mx-1 mt-[-12px]";
+            <div class="@lineClass self-start mt-4"></div>
+        }
+    }
+</div>

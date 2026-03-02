@@ -1,0 +1,88 @@
+@using Prompteer.Web.Models
+@model WizardViewModel
+@{
+    ViewData["Title"] = "Gerador de Prompts — Preview";
+}
+
+<div class="max-w-4xl">
+    <partial name="_StepLayout" model="Model" />
+
+    <div class="mb-6">
+        <h1 class="text-xl font-semibold text-slate-900">Passo 9 — Preview e Export</h1>
+        <p class="text-sm text-slate-500 mt-1">Revise o prompt gerado, copie ou salve como template.</p>
+    </div>
+
+    <!-- Prompt Preview -->
+    <div class="card mb-6" x-data="{ copied: false }">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                <i data-lucide="file-code" class="w-4 h-4 text-brand-600"></i>
+                Prompt Gerado
+            </h2>
+            <button type="button"
+                    @@click="navigator.clipboard.writeText(document.getElementById('promptCode').innerText); copied = true; setTimeout(() => copied = false, 2000)"
+                    class="flex items-center gap-2 text-sm px-3 py-1.5 rounded-md border border-slate-300 text-slate-600 hover:border-brand-400 hover:text-brand-700 hover:bg-brand-50 transition-colors">
+                <i data-lucide="copy" class="w-3.5 h-3.5" x-show="!copied"></i>
+                <i data-lucide="check" class="w-3.5 h-3.5 text-green-600" x-show="copied" style="display:none"></i>
+                <span x-text="copied ? 'Copiado!' : 'Copiar'">Copiar</span>
+            </button>
+        </div>
+        <div class="overflow-auto max-h-96 rounded-lg border border-slate-200 bg-slate-50">
+            <pre class="!m-0"><code id="promptCode" class="language-markdown text-xs">@Model.GeneratedPrompt</code></pre>
+        </div>
+    </div>
+
+    <!-- Save Template -->
+    <div class="card mb-6">
+        <h2 class="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
+            <i data-lucide="bookmark" class="w-4 h-4 text-brand-600"></i>
+            Salvar como Template
+        </h2>
+        <form method="post" asp-action="SaveTemplate" asp-route-draftId="@Model.DraftId">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="generatedPrompt" value="@Model.GeneratedPrompt" />
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Nome do Template <span class="text-red-500">*</span></label>
+                    <input type="text" name="templateName" required class="form-input w-full"
+                           placeholder="Ex: API REST .NET com Clean Architecture"
+                           value="@Model.Data.ProjectName" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Descrição</label>
+                    <textarea name="templateDesc" rows="2" class="form-textarea w-full"
+                              placeholder="Descrição opcional do template...">@Model.Data.ProjectDescription</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    Salvar Template
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-between">
+        <a asp-action="Step" asp-route-step="8" asp-route-draftId="@Model.DraftId" class="btn btn-secondary">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Editar Regras
+        </a>
+        <a asp-action="Index" class="btn btn-ghost text-slate-500 hover:text-slate-700">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            Novo Prompt
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    hljs.highlightElement(document.getElementById('promptCode'));
+});
+
+function copyPrompt(el) {
+    const text = document.getElementById('promptCode').innerText;
+    navigator.clipboard.writeText(text);
+}
+</script>
+}

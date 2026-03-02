@@ -1,0 +1,73 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+}
+
+<aside class="w-64 flex-shrink-0 bg-slate-900 flex flex-col h-full">
+
+    <!-- Logo -->
+    <div class="flex items-center gap-3 px-5 py-5 border-b border-slate-700/50">
+        <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="zap" class="w-4 h-4 text-white"></i>
+        </div>
+        <span class="text-white font-semibold text-lg tracking-tight">Prompteer</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">Principal</p>
+
+        <a asp-controller="Dashboard" asp-action="Index"
+           class="sidebar-link @(controller == "Dashboard" ? "sidebar-link-active" : "")">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+            Dashboard
+        </a>
+
+        <a asp-controller="PromptGenerator" asp-action="Index"
+           class="sidebar-link @(controller == "PromptGenerator" ? "sidebar-link-active" : "")">
+            <i data-lucide="wand-2" class="w-4 h-4"></i>
+            Gerador de Prompts
+        </a>
+
+        <a asp-controller="Templates" asp-action="Index"
+           class="sidebar-link @(controller == "Templates" ? "sidebar-link-active" : "")">
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            Templates
+        </a>
+
+        <div class="pt-4">
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">Cadastros</p>
+
+            <a asp-controller="AgentProfiles" asp-action="Index"
+               class="sidebar-link @(controller == "AgentProfiles" ? "sidebar-link-active" : "")">
+                <i data-lucide="bot" class="w-4 h-4"></i>
+                Perfis de Agente
+            </a>
+
+            <a asp-controller="Technologies" asp-action="Index"
+               class="sidebar-link @(controller == "Technologies" ? "sidebar-link-active" : "")">
+                <i data-lucide="cpu" class="w-4 h-4"></i>
+                Tecnologias
+            </a>
+
+            <a asp-controller="ArchitecturalPatterns" asp-action="Index"
+               class="sidebar-link @(controller == "ArchitecturalPatterns" ? "sidebar-link-active" : "")">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                Padrões Arquiteturais
+            </a>
+
+            <a asp-controller="BacklogTools" asp-action="Index"
+               class="sidebar-link @(controller == "BacklogTools" ? "sidebar-link-active" : "")">
+                <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                Ferramentas de Backlog
+            </a>
+        </div>
+
+    </nav>
+
+    <!-- Footer -->
+    <div class="px-5 py-4 border-t border-slate-700/50">
+        <p class="text-xs text-slate-500">.NET 10 · EF Core · PostgreSQL</p>
+    </div>
+
+</aside>

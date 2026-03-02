@@ -1,0 +1,72 @@
+@using Prompteer.Application.DTOs
+@model AgentProfileFormDto
+@{
+    ViewData["Title"] = "Novo Perfil de Agente";
+}
+
+<div class="max-w-2xl">
+    <!-- Header -->
+    <div class="mb-6">
+        <nav class="flex items-center gap-2 text-sm text-slate-500 mb-2">
+            <a asp-action="Index" class="hover:text-slate-700">Perfis de Agente</a>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            <span class="text-slate-900">Novo Perfil</span>
+        </nav>
+        <h1 class="text-xl font-semibold text-slate-900">Novo Perfil de Agente</h1>
+    </div>
+
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+        <div class="card space-y-5">
+            <div asp-validation-summary="ModelOnly" class="rounded-lg bg-red-50 border border-red-200 p-4 text-sm text-red-700"></div>
+
+            <!-- Name -->
+            <div>
+                <label asp-for="Name" class="block text-sm font-medium text-slate-700 mb-1">Nome <span class="text-red-500">*</span></label>
+                <input asp-for="Name" class="form-input w-full" placeholder="Ex: Arquiteto .NET Sênior" />
+                <span asp-validation-for="Name" class="text-xs text-red-600 mt-1 block"></span>
+            </div>
+
+            <!-- Role -->
+            <div>
+                <label asp-for="Role" class="block text-sm font-medium text-slate-700 mb-1">Papel <span class="text-red-500">*</span></label>
+                <textarea asp-for="Role" rows="3" class="form-textarea w-full" placeholder="Descreva o papel e responsabilidades deste agente..."></textarea>
+                <span asp-validation-for="Role" class="text-xs text-red-600 mt-1 block"></span>
+            </div>
+
+            <!-- Knowledge Domain -->
+            <div>
+                <label asp-for="KnowledgeDomain" class="block text-sm font-medium text-slate-700 mb-1">Domínio de Conhecimento <span class="text-red-500">*</span></label>
+                <input asp-for="KnowledgeDomain" class="form-input w-full" placeholder="Ex: Arquitetura de software, padrões de projeto, .NET" />
+                <span asp-validation-for="KnowledgeDomain" class="text-xs text-red-600 mt-1 block"></span>
+            </div>
+
+            <!-- Tone -->
+            <div>
+                <label asp-for="Tone" class="block text-sm font-medium text-slate-700 mb-1">Tom <span class="text-red-500">*</span></label>
+                <select asp-for="Tone" asp-items="ViewBag.ToneItems" class="form-select w-full"></select>
+                <span asp-validation-for="Tone" class="text-xs text-red-600 mt-1 block"></span>
+            </div>
+
+            <!-- Default Constraints -->
+            <div>
+                <label asp-for="DefaultConstraints" class="block text-sm font-medium text-slate-700 mb-1">Restrições Padrão <span class="text-red-500">*</span></label>
+                <textarea asp-for="DefaultConstraints" rows="4" class="form-textarea w-full" placeholder="Descreva as restrições e diretrizes padrão para este agente..."></textarea>
+                <span asp-validation-for="DefaultConstraints" class="text-xs text-red-600 mt-1 block"></span>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
+                <button type="submit" class="btn btn-primary">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    Salvar
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

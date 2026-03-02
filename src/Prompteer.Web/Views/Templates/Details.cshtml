@@ -1,0 +1,133 @@
+@using Prompteer.Web.Models
+@model TemplateDetailsViewModel
+@{
+    ViewData["Title"] = Model.Template.Name;
+}
+
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex items-start justify-between">
+        <div>
+            <div class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+                <a asp-action="Index" class="hover:text-brand-600 transition-colors">Templates</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                <span>@Model.Template.Name</span>
+            </div>
+            <h1 class="text-xl font-semibold text-slate-900">@Model.Template.Name</h1>
+            @if (!string.IsNullOrEmpty(Model.Template.Description))
+            {
+                <p class="text-sm text-slate-500 mt-1">@Model.Template.Description</p>
+            }
+            <div class="flex items-center gap-4 mt-2 text-xs text-slate-400">
+                <span><i data-lucide="calendar" class="w-3.5 h-3.5 inline-block mr-1"></i>Criado em @Model.Template.CreatedAt.ToString("dd/MM/yyyy")</span>
+                <span><i data-lucide="clock" class="w-3.5 h-3.5 inline-block mr-1"></i>Atualizado em @Model.Template.UpdatedAt.ToString("dd/MM/yyyy")</span>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">
+                    v@(Model.Template.CurrentVersionNumber)
+                </span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <a asp-action="Versions" asp-route-id="@Model.Template.Id" class="btn btn-secondary btn-sm">
+                <i data-lucide="history" class="w-4 h-4"></i>
+                Versões
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.Template.Id" class="btn btn-primary btn-sm">
+                <i data-lucide="pencil" class="w-4 h-4"></i>
+                Editar no Wizard
+            </a>
+        </div>
+    </div>
+
+    <!-- Latest Prompt -->
+    @if (!string.IsNullOrEmpty(Model.LatestPrompt))
+    {
+        <div class="card">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-sm font-semibold text-slate-700">Prompt atual (v@(Model.Template.CurrentVersionNumber))</h2>
+                <button type="button"
+                        x-data="{ copied: false }"
+                        @@click="navigator.clipboard.writeText($el.closest('.card').querySelector('code').innerText); copied = true; setTimeout(() => copied = false, 2000)"
+                        class="btn btn-ghost btn-sm">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                    <span x-text="copied ? 'Copiado!' : 'Copiar'">Copiar</span>
+                </button>
+            </div>
+            <pre class="rounded-lg overflow-x-auto text-sm bg-slate-50 border border-slate-200"><code class="language-markdown">@Model.LatestPrompt</code></pre>
+        </div>
+    }
+
+    <!-- Version History -->
+    <div class="card p-0 overflow-hidden">
+        <div class="px-4 py-3 border-b border-slate-200 bg-slate-50">
+            <h2 class="text-sm font-semibold text-slate-700">Histórico de versões</h2>
+        </div>
+        @if (!Model.Versions.Any())
+        {
+            <div class="text-center py-8">
+                <p class="text-sm text-slate-500">Nenhuma versão encontrada.</p>
+            </div>
+        }
+        else
+        {
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-slate-200">
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">Versão</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">Criada em</th>
+                        <th class="px-4 py-3"></th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @foreach (var v in Model.Versions.OrderByDescending(x => x.VersionNumber))
+                    {
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">
+                                    v@(v.VersionNumber)
+                                </span>
+                                @if (v.VersionNumber == Model.Template.CurrentVersionNumber)
+                                {
+                                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">atual</span>
+                                }
+                            </td>
+                            <td class="px-4 py-3 text-slate-500">@v.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center justify-end gap-2">
+                                    <a asp-action="Version"
+                                       asp-route-templateId="@Model.Template.Id"
+                                       asp-route-versionNumber="@v.VersionNumber"
+                                       class="btn btn-ghost btn-sm">
+                                        <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                                        Ver
+                                    </a>
+                                    @{
+                                        var others = Model.Versions.Where(x => x.VersionNumber != v.VersionNumber).OrderByDescending(x => x.VersionNumber).FirstOrDefault();
+                                    }
+                                    @if (others != null)
+                                    {
+                                        <a asp-action="Compare"
+                                           asp-route-templateId="@Model.Template.Id"
+                                           asp-route-v1="@Math.Min(v.VersionNumber, others.VersionNumber)"
+                                           asp-route-v2="@Math.Max(v.VersionNumber, others.VersionNumber)"
+                                           class="btn btn-ghost btn-sm">
+                                            <i data-lucide="git-compare" class="w-3.5 h-3.5"></i>
+                                            Comparar
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('pre code').forEach(el => hljs.highlightElement(el));
+        });
+    </script>
+}

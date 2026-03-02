@@ -1,0 +1,75 @@
+@using Prompteer.Web.Models
+@model VersionsViewModel
+@{
+    ViewData["Title"] = $"Versões — {Model.Template.Name}";
+}
+
+<div class="space-y-4">
+    <!-- Header -->
+    <div class="flex items-center gap-2 text-sm text-slate-500 mb-1">
+        <a asp-action="Index" class="hover:text-brand-600 transition-colors">Templates</a>
+        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+        <a asp-action="Details" asp-route-id="@Model.Template.Id" class="hover:text-brand-600 transition-colors">@Model.Template.Name</a>
+        <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+        <span>Versões</span>
+    </div>
+
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-xl font-semibold text-slate-900">Versões de "@Model.Template.Name"</h1>
+            <p class="text-sm text-slate-500 mt-0.5">@Model.Versions.Count() versão(ões) disponíveis</p>
+        </div>
+        <a asp-action="Details" asp-route-id="@Model.Template.Id" class="btn btn-secondary btn-sm">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Voltar
+        </a>
+    </div>
+
+    <div class="card p-0 overflow-hidden">
+        @if (!Model.Versions.Any())
+        {
+            <div class="text-center py-12">
+                <i data-lucide="history" class="w-10 h-10 text-slate-300 mx-auto mb-3"></i>
+                <p class="text-sm text-slate-500">Nenhuma versão encontrada.</p>
+            </div>
+        }
+        else
+        {
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50">
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">Versão</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">Criada em</th>
+                        <th class="px-4 py-3"></th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @foreach (var v in Model.Versions.OrderByDescending(x => x.VersionNumber))
+                    {
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">
+                                    v@(v.VersionNumber)
+                                </span>
+                                @if (v.VersionNumber == Model.Template.CurrentVersionNumber)
+                                {
+                                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">atual</span>
+                                }
+                            </td>
+                            <td class="px-4 py-3 text-slate-500">@v.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="px-4 py-3">
+                                <a asp-action="Version"
+                                   asp-route-templateId="@Model.Template.Id"
+                                   asp-route-versionNumber="@v.VersionNumber"
+                                   class="btn btn-ghost btn-sm">
+                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                                    Ver esta versão
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

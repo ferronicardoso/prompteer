@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" x-data="{ sidebarOpen: true }">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] != null ? ViewData["Title"] + " — Prompteer" : "Prompteer")</title>
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+    <!-- Tom Select -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.min.css" />
+    <!-- Highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/github.min.css" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+<!-- ── Layout Shell ───────────────────────────────────────────────────── -->
+<div class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    @await Html.PartialAsync("_Sidebar")
+
+    <!-- Main Column -->
+    <div class="flex flex-col flex-1 overflow-hidden">
+
+        <!-- Top Navbar -->
+        @await Html.PartialAsync("_Navbar")
+
+        <!-- Page Content -->
+        <main class="flex-1 overflow-y-auto p-6">
+
+            <!-- Toasts (TempData) -->
+            @await Html.PartialAsync("_Toast")
+
+            @RenderBody()
+
+        </main>
+    </div>
+</div>
+
+<!-- Alpine.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@0.441.0/dist/umd/lucide.min.js"></script>
+<!-- Tom Select -->
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<!-- SortableJS -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.3/Sortable.min.js"></script>
+<!-- Highlight.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+
+<script>
+    // Inicializa Lucide icons
+    document.addEventListener('DOMContentLoaded', function () {
+        lucide.createIcons();
+    });
+</script>
+
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

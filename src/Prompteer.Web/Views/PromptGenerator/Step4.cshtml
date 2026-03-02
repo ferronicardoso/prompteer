@@ -1,0 +1,187 @@
+@using Prompteer.Web.Models
+@model WizardViewModel
+@{
+    ViewData["Title"] = "Gerador de Prompts — Passo 4: Arquitetura";
+    var selectedPatternIds = Model.Data.ArchitecturalPatternIds.Select(id => id.ToString()).ToHashSet();
+    var packagesJson = System.Text.Json.JsonSerializer.Serialize(Model.Data.RequiredPackages);
+}
+
+<div class="max-w-3xl">
+    <partial name="_StepLayout" model="Model" />
+
+    <div class="mb-6">
+        <h1 class="text-xl font-semibold text-slate-900">Passo 4 — Arquitetura</h1>
+        <p class="text-sm text-slate-500 mt-1">Defina os padrões arquiteturais, pacotes obrigatórios e convenções de código.</p>
+    </div>
+
+    <form method="post" asp-action="Step" asp-route-step="4" asp-route-draftId="@Model.DraftId">
+        @Html.AntiForgeryToken()
+
+        <div class="card space-y-6">
+            <!-- Architectural Patterns -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Padrões Arquiteturais</label>
+                <select id="patternSelect" name="ArchitecturalPatternIds" multiple class="form-select w-full">
+                    @foreach (var pattern in Model.ArchitecturalPatterns)
+                    {
+                        <option value="@pattern.Id"
+                                data-description="@pattern.Description"
+                                selected="@(selectedPatternIds.Contains(pattern.Id.ToString()) ? "selected" : null)">
+                            @pattern.Name (@pattern.EcosystemDisplay)
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <!-- Inline Create Pattern -->
+            <div x-data="{ open: false }" class="border border-slate-200 rounded-lg">
+                <button type="button" @@click="open = !open"
+                        class="w-full flex items-center gap-2 px-4 py-3 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">
+                    <i data-lucide="plus-circle" class="w-4 h-4 text-brand-600"></i>
+                    <span>Adicionar novo padrão arquitetural</span>
+                    <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-auto transition-transform" :class="open && 'rotate-180'"></i>
+                </button>
+                <div x-show="open" x-collapse class="border-t border-slate-200 p-4 space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Nome <span class="text-red-500">*</span></label>
+                            <input id="newPatternName" type="text" class="form-input w-full" placeholder="Ex: Clean Architecture, DDD, CQRS" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Ecossistema <span class="text-red-500">*</span></label>
+                            <select id="newPatternEcosystem" class="form-select w-full">
+                                <option value="0">.NET</option>
+                                <option value="1">Node.js</option>
+                                <option value="2">Python</option>
+                                <option value="3">Java</option>
+                                <option value="4">Agnóstico</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Descrição <span class="text-red-500">*</span></label>
+                        <textarea id="newPatternDesc" rows="2" class="form-textarea w-full" placeholder="Descreva o padrão arquitetural..."></textarea>
+                    </div>
+                    <div id="newPatternError" class="hidden text-xs text-red-600"></div>
+                    <button type="button" id="btnCreatePattern" class="btn btn-primary text-sm">
+                        <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                        Adicionar Padrão
+                    </button>
+                </div>
+            </div>
+
+            <!-- Required Packages -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Pacotes Obrigatórios</label>
+                <select id="packagesSelect" name="RequiredPackages" multiple class="form-select w-full">
+                    @foreach (var pkg in Model.Data.RequiredPackages)
+                    {
+                        <option value="@pkg" selected>@pkg</option>
+                    }
+                </select>
+                <p class="text-xs text-slate-400 mt-1">Digite o nome do pacote e pressione Enter para adicionar.</p>
+            </div>
+
+            <!-- Code Conventions -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Convenções de Código</label>
+                <textarea id="codeConventions" name="CodeConventions" rows="5" class="form-textarea w-full"
+                          placeholder="Descreva as convenções de código a serem seguidas...">@Model.Data.CodeConventions</textarea>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    @{
+                        var suggestions = new[]
+                        {
+                            "Usar async/await em toda a aplicação",
+                            "Seguir convenções de nomenclatura C# (PascalCase para tipos, camelCase para variáveis)",
+                            "Documentar métodos públicos com XML comments",
+                            "Evitar magic numbers e strings literais"
+                        };
+                    }
+                    @foreach (var s in suggestions)
+                    {
+                        <button type="button" class="suggestion-chip text-xs px-3 py-1 rounded-full border border-slate-300 text-slate-600 hover:border-brand-400 hover:text-brand-700 hover:bg-brand-50 transition-colors"
+                                data-text="@s">@s</button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex items-center justify-between mt-6">
+            <button type="submit" formaction="@Url.Action("Previous", new { step = 4, draftId = Model.DraftId })" class="btn btn-secondary">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Voltar
+            </button>
+            <button type="submit" class="btn btn-primary">
+                Próximo
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    // Architectural patterns Tom Select
+    new TomSelect('#patternSelect', {
+        plugins: ['remove_button'],
+        placeholder: 'Selecione padrões arquiteturais...',
+        closeAfterSelect: false
+    });
+
+    // Required packages — tags mode
+    new TomSelect('#packagesSelect', {
+        plugins: ['remove_button'],
+        create: true,
+        placeholder: 'Digite e pressione Enter para adicionar...',
+        createOnBlur: true
+    });
+
+    // Code conventions suggestion chips
+    document.querySelectorAll('.suggestion-chip').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            const ta = document.getElementById('codeConventions');
+            const text = chip.dataset.text;
+            if (ta.value && !ta.value.endsWith('\n')) ta.value += '\n';
+            ta.value += '- ' + text + '\n';
+        });
+    });
+
+    // Create architectural pattern AJAX
+    document.getElementById('btnCreatePattern').addEventListener('click', async function () {
+        const name = document.getElementById('newPatternName').value.trim();
+        const desc = document.getElementById('newPatternDesc').value.trim();
+        const ecosystem = parseInt(document.getElementById('newPatternEcosystem').value);
+        const errEl = document.getElementById('newPatternError');
+
+        if (!name || !desc) {
+            errEl.textContent = 'Preencha nome e descrição.';
+            errEl.classList.remove('hidden');
+            return;
+        }
+        errEl.classList.add('hidden');
+
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+        const fd = new FormData();
+        fd.append('__RequestVerificationToken', token);
+        fd.append('Name', name);
+        fd.append('Description', desc);
+        fd.append('Ecosystem', ecosystem);
+
+        try {
+            const resp = await fetch('@Url.Action("CreateArchitecturalPattern")', { method: 'POST', body: fd });
+            const data = await resp.json();
+            const ts = document.getElementById('patternSelect').tomselect;
+            ts.addOption({ value: data.id, text: `${data.name} (${data.ecosystemDisplay})` });
+            ts.addItem(data.id);
+            document.getElementById('newPatternName').value = '';
+            document.getElementById('newPatternDesc').value = '';
+        } catch {
+            errEl.textContent = 'Erro ao adicionar padrão. Tente novamente.';
+            errEl.classList.remove('hidden');
+        }
+    });
+})();
+</script>
+}

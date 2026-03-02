@@ -1,0 +1,38 @@
+services:
+
+  db:
+    image: postgres:17-alpine
+    container_name: prompteer-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: prompteer
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d prompteer"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prompteer-web
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: >-
+        Host=db;Port=5432;Database=prompteer;Username=postgres;Password=${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:

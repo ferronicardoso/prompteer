@@ -1,0 +1,107 @@
+@using Prompteer.Application.DTOs
+@model PagedResult<BacklogToolDto>
+@{
+    ViewData["Title"] = "Ferramentas de Backlog";
+    var search = ViewData["Search"]?.ToString() ?? "";
+}
+
+<div class="space-y-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-xl font-semibold text-slate-900">Ferramentas de Backlog</h1>
+            <p class="text-sm text-slate-500 mt-0.5">Gerencie as ferramentas de gerenciamento de backlog</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            Nova Ferramenta
+        </a>
+    </div>
+
+    <!-- Search -->
+    <form method="get" asp-action="Index" class="flex gap-2">
+        <div class="relative flex-1 max-w-sm">
+            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+            <input type="text" name="search" value="@search"
+                   placeholder="Buscar por nome..."
+                   class="form-input pl-9 w-full" />
+        </div>
+        <button type="submit" class="btn btn-secondary">Filtrar</button>
+        @if (!string.IsNullOrEmpty(search))
+        {
+            <a asp-action="Index" class="btn btn-ghost">Limpar</a>
+        }
+    </form>
+
+    <!-- Table -->
+    <div class="card p-0 overflow-hidden">
+        @if (!Model.Items.Any())
+        {
+            <div class="text-center py-16">
+                <i data-lucide="clipboard-list" class="w-10 h-10 text-slate-300 mx-auto mb-3"></i>
+                <p class="text-sm text-slate-500">Nenhuma ferramenta de backlog encontrada.</p>
+                <a asp-action="Create" class="btn btn-primary btn-sm mt-3">Criar primeira ferramenta</a>
+            </div>
+        }
+        else
+        {
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-slate-200 bg-slate-50">
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">Nome</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">Instruções Padrão</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">Criado em</th>
+                        <th class="px-4 py-3"></th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-medium text-slate-900">@item.Name</span>
+                                    @if (item.IsSystemDefault)
+                                    {
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">
+                                            <i data-lucide="lock" class="w-3 h-3"></i> Padrão
+                                        </span>
+                                    }
+                                </div>
+                            </td>
+                            <td class="px-4 py-3 text-slate-600 max-w-md truncate">@item.DefaultInstructions</td>
+                            <td class="px-4 py-3 text-slate-500">@item.CreatedAt.ToString("dd/MM/yyyy")</td>
+                            <td class="px-4 py-3">
+                                @if (item.IsSystemDefault)
+                                {
+                                    <span class="inline-flex items-center text-slate-400" title="Item protegido">
+                                        <i data-lucide="lock" class="w-4 h-4"></i>
+                                    </span>
+                                }
+                                else
+                                {
+                                    <div class="flex items-center justify-end gap-1">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-ghost btn-sm">
+                                            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                                            Editar
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-ghost btn-sm text-red-600 hover:text-red-700">
+                                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                            Excluir
+                                        </a>
+                                    </div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @await Html.PartialAsync("_Pagination", new PagedResult<dynamic>
+            {
+                TotalCount = Model.TotalCount,
+                Page = Model.Page,
+                PageSize = Model.PageSize
+            })
+        }
+    </div>
+</div>

@@ -1,0 +1,161 @@
+@using Prompteer.Web.Models
+@using System.Text.Json
+@model WizardViewModel
+@{
+    ViewData["Title"] = "Gerador de Prompts — Passo 7: Módulos";
+    var modulesJson = JsonSerializer.Serialize(Model.Data.Modules);
+}
+
+<div class="max-w-3xl">
+    <partial name="_StepLayout" model="Model" />
+
+    <div class="mb-6">
+        <h1 class="text-xl font-semibold text-slate-900">Passo 7 — Módulos</h1>
+        <p class="text-sm text-slate-500 mt-1">Defina os módulos do sistema e seus itens. Arraste para reordenar.</p>
+    </div>
+
+    <form method="post" asp-action="Step" asp-route-step="7" asp-route-draftId="@Model.DraftId"
+          x-data="wizardModules()"
+          x-init="init()">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="ModulesJson" :value="JSON.stringify(modules)" />
+
+        <div class="card space-y-4">
+            <!-- Module List -->
+            <div id="moduleList" class="space-y-4">
+                <template x-for="(mod, modIdx) in modules" :key="modIdx">
+                    <div class="border border-slate-200 rounded-lg bg-slate-50">
+                        <div class="flex items-center gap-3 p-3">
+                            <!-- Drag handle -->
+                            <div class="cursor-grab text-slate-400 hover:text-slate-600">
+                                <i data-lucide="grip-vertical" class="w-4 h-4"></i>
+                            </div>
+                            <!-- Module name -->
+                            <input type="text" x-model="mod.name"
+                                   class="form-input flex-1 text-sm"
+                                   placeholder="Nome do módulo (ex: Autenticação, Pedidos...)" />
+                            <!-- Remove module -->
+                            <button type="button" @@click="removeModule(modIdx)"
+                                    class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Sub-items -->
+                        <div class="px-3 pb-3 space-y-2 ml-9">
+                            <template x-for="(sub, subIdx) in mod.subItems" :key="subIdx">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-slate-400 text-xs">—</span>
+                                    <input type="text" x-model="mod.subItems[subIdx]"
+                                           class="form-input flex-1 text-xs"
+                                           placeholder="Sub-item (ex: Login, Logout, Registro...)" />
+                                    <button type="button" @@click="removeSubItem(modIdx, subIdx)"
+                                            class="p-1 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors">
+                                        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                            </template>
+                            <button type="button" @@click="addSubItem(modIdx)"
+                                    class="flex items-center gap-1.5 text-xs text-brand-600 hover:text-brand-700 mt-1">
+                                <i data-lucide="plus" class="w-3 h-3"></i>
+                                Adicionar sub-item
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Empty state -->
+            <div x-show="modules.length === 0" class="text-center py-8 text-slate-400">
+                <i data-lucide="layers" class="w-10 h-10 mx-auto mb-2 opacity-40"></i>
+                <p class="text-sm">Nenhum módulo adicionado ainda.</p>
+                <p class="text-xs">Clique em "Adicionar módulo" para começar.</p>
+            </div>
+
+            <!-- Add Module Button -->
+            <button type="button" @@click="addModule()"
+                    class="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm text-slate-500 hover:border-brand-400 hover:text-brand-600 hover:bg-brand-50 transition-colors">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                Adicionar módulo
+            </button>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex items-center justify-between mt-6">
+            <button type="submit" formaction="@Url.Action("Previous", new { step = 7, draftId = Model.DraftId })" class="btn btn-secondary">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Voltar
+            </button>
+            <button type="submit" class="btn btn-primary">
+                Próximo
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+<script>
+function wizardModules() {
+    return {
+        modules: [],
+        sortable: null,
+
+        init() {
+            const raw = @Html.Raw(modulesJson);
+            this.modules = (raw || []).map((m, i) => ({
+                name: m.name || m.Name || '',
+                order: m.order ?? m.Order ?? i,
+                subItems: m.subItems || m.SubItems || []
+            }));
+
+            this.$nextTick(() => {
+                lucide.createIcons();
+                this.initSortable();
+            });
+        },
+
+        addModule() {
+            this.modules.push({ name: '', order: this.modules.length, subItems: [] });
+            this.$nextTick(() => {
+                lucide.createIcons();
+                this.initSortable();
+            });
+        },
+
+        removeModule(idx) {
+            this.modules.splice(idx, 1);
+            this.reorder();
+        },
+
+        addSubItem(modIdx) {
+            this.modules[modIdx].subItems.push('');
+            this.$nextTick(() => lucide.createIcons());
+        },
+
+        removeSubItem(modIdx, subIdx) {
+            this.modules[modIdx].subItems.splice(subIdx, 1);
+        },
+
+        reorder() {
+            this.modules.forEach((m, i) => m.order = i);
+        },
+
+        initSortable() {
+            const el = document.getElementById('moduleList');
+            if (el && typeof Sortable !== 'undefined') {
+                if (this.sortable) this.sortable.destroy();
+                this.sortable = Sortable.create(el, {
+                    handle: '[data-lucide="grip-vertical"]',
+                    animation: 150,
+                    onEnd: () => {
+                        // Re-sync order after drag
+                        this.reorder();
+                    }
+                });
+            }
+        }
+    };
+}
+</script>
+}

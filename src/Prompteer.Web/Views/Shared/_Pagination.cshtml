@@ -1,0 +1,68 @@
+@model Prompteer.Application.DTOs.PagedResult<dynamic>
+@{
+    var action = ViewData["PaginationAction"]?.ToString() ?? "Index";
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var search = ViewData["Search"]?.ToString() ?? "";
+}
+
+@if (Model != null && Model.TotalPages > 1)
+{
+    <div class="flex items-center justify-between px-4 py-3 bg-white border-t border-slate-200">
+        <p class="text-sm text-slate-600">
+            Exibindo <span class="font-medium">@((Model.Page - 1) * Model.PageSize + 1)</span>
+            a <span class="font-medium">@Math.Min(Model.Page * Model.PageSize, Model.TotalCount)</span>
+            de <span class="font-medium">@Model.TotalCount</span> registros
+        </p>
+
+        <nav class="flex items-center gap-1">
+            @if (Model.HasPreviousPage)
+            {
+                <a asp-controller="@controller" asp-action="@action"
+                   asp-route-page="@(Model.Page - 1)" asp-route-search="@search"
+                   class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                </a>
+            }
+            else
+            {
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-300 cursor-not-allowed">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                </span>
+            }
+
+            @{
+                var start = Math.Max(1, Model.Page - 2);
+                var end = Math.Min(Model.TotalPages, start + 4);
+            }
+
+            @for (var p = start; p <= end; p++)
+            {
+                if (p == Model.Page)
+                {
+                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-brand-600 text-white text-sm font-medium">@p</span>
+                }
+                else
+                {
+                    <a asp-controller="@controller" asp-action="@action"
+                       asp-route-page="@p" asp-route-search="@search"
+                       class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors text-sm">@p</a>
+                }
+            }
+
+            @if (Model.HasNextPage)
+            {
+                <a asp-controller="@controller" asp-action="@action"
+                   asp-route-page="@(Model.Page + 1)" asp-route-search="@search"
+                   class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </a>
+            }
+            else
+            {
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-300 cursor-not-allowed">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </span>
+            }
+        </nav>
+    </div>
+}

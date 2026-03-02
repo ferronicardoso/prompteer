@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Prompteer.Application/Prompteer.Application.csproj" />
+    <Project Path="src/Prompteer.Domain/Prompteer.Domain.csproj" />
+    <Project Path="src/Prompteer.Infrastructure/Prompteer.Infrastructure.csproj" />
+    <Project Path="src/Prompteer.Web/Prompteer.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Prompteer.Application.Tests/Prompteer.Application.Tests.csproj" />
+    <Project Path="tests/Prompteer.Domain.Tests/Prompteer.Domain.Tests.csproj" />
+  </Folder>
+</Solution>
