@@ -10,7 +10,7 @@
     <partial name="_StepLayout" model="Model" />
 
     <div class="mb-6">
-        <h1 class="text-xl font-semibold text-slate-900">Step 7 — Modules</h1>
+        <h1 class="text-xl font-semibold text-slate-900">@L["PromptGenerator.Step7.Title"]</h1>
         <p class="text-sm text-slate-500 mt-1">@L["PromptGenerator.Step7.Subtitle"]</p>
     </div>
 
@@ -58,7 +58,7 @@
                             <button type="button" @@click="addSubItem(modIdx)"
                                     class="flex items-center gap-1.5 text-xs text-brand-600 hover:text-brand-700 mt-1">
                                 <i data-lucide="plus" class="w-3 h-3"></i>
-                                Add sub-item
+                                @L["PromptGenerator.Step7.AddSubItem"]
                             </button>
                         </div>
                     </div>
@@ -68,15 +68,15 @@
             <!-- Empty state -->
             <div x-show="modules.length === 0" class="text-center py-8 text-slate-400">
                 <i data-lucide="layers" class="w-10 h-10 mx-auto mb-2 opacity-40"></i>
-                <p class="text-sm">No modules added yet.</p>
-                <p class="text-xs">Click "Add module" to start.</p>
+                <p class="text-sm">@L["PromptGenerator.Step7.EmptyState"]</p>
+                <p class="text-xs">@L["PromptGenerator.Step7.EmptyStateHint"]</p>
             </div>
 
             <!-- Add Module Button -->
             <button type="button" @@click="addModule()"
                     class="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-slate-300 rounded-lg text-sm text-slate-500 hover:border-brand-400 hover:text-brand-600 hover:bg-brand-50 transition-colors">
                 <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                Add module
+                @L["PromptGenerator.Step7.AddModule"]
             </button>
         </div>
 
@@ -84,7 +84,7 @@
         <div class="flex items-center justify-between mt-6">
             <button type="submit" formaction="@Url.Action("Previous", new { step = 7, draftId = Model.DraftId })" class="btn btn-secondary">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                Voltar
+                @L["PromptGenerator.Back"]
             </button>
             <button type="submit" class="btn btn-primary">
                 @L["PromptGenerator.Next"]

@@ -25,7 +25,7 @@
     <partial name="_StepLayout" model="Model" />
 
     <div class="mb-6">
-        <h1 class="text-xl font-semibold text-slate-900">Step 8 — Rules</h1>
+        <h1 class="text-xl font-semibold text-slate-900">@L["PromptGenerator.Step8.Title"]</h1>
         <p class="text-sm text-slate-500 mt-1">@L["PromptGenerator.Step8.Subtitle"]</p>
     </div>
 
@@ -35,7 +35,7 @@
         <div class="card space-y-6">
             <!-- Predefined Rule Flags -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-3">Behavior Rules</label>
+                <label class="block text-sm font-medium text-slate-700 mb-3">@L["PromptGenerator.Step8.BehaviorRules"]</label>
                 <div class="space-y-3">
                     @foreach (var rule in predefinedRules)
                     {
@@ -51,7 +51,7 @@
 
             <!-- Additional Rules -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Additional Rules</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">@L["PromptGenerator.Step8.AdditionalRules"]</label>
                 <textarea id="additionalRules" name="AdditionalRules" rows="6" class="form-textarea w-full"
                           placeholder="Add custom rules here...">@Model.Data.AdditionalRules</textarea>
                 <div class="flex flex-wrap gap-2 mt-2">
@@ -69,11 +69,11 @@
         <div class="flex items-center justify-between mt-6">
             <button type="submit" formaction="@Url.Action("Previous", new { step = 8, draftId = Model.DraftId })" class="btn btn-secondary">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                Voltar
+                @L["PromptGenerator.Back"]
             </button>
             <button type="submit" class="btn btn-primary">
                 <i data-lucide="wand-2" class="w-4 h-4"></i>
-                Generate Prompt
+                @L["PromptGenerator.Step8.GeneratePrompt"]
             </button>
         </div>
     </form>
