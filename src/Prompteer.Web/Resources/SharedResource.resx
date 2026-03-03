@@ -141,6 +141,8 @@
   <data name="Settings.DateFormatNote" xml:space="preserve"><value>Format used to display dates throughout the application.</value></data>
   <data name="Settings.GeneralSaved" xml:space="preserve"><value>General settings saved successfully.</value></data>
   <data name="Settings.GeneralSubtitle" xml:space="preserve"><value>Configure the default language, time zone and date format for the application.</value></data>
+  <data name="AI.FieldTypeRequired" xml:space="preserve"><value>FieldType is required.</value></data>
+  <data name="AI.GenerateError" xml:space="preserve"><value>Error generating content: {0}</value></data>
   <data name="Settings.SaveGeneral" xml:space="preserve"><value>Save General Settings</value></data>
   <data name="Settings.ErrorApiKeyRequired" xml:space="preserve"><value>Enter the API Key before fetching models.</value></data>
   <data name="Settings.ErrorEntraRequired" xml:space="preserve"><value>TenantId and ClientId are required.</value></data>
