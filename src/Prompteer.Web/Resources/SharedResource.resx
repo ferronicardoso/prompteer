@@ -411,4 +411,19 @@
 
   <!-- ── Templates Compare ───────────────────────────────────────────────── -->
   <data name="Templates.Compare.DifferencesBetween" xml:space="preserve"><value>Differences between v{0} and v{1}</value></data>
+  <data name="PromptGenerator.StepName.Agent" xml:space="preserve"><value>Agent</value></data>
+  <data name="PromptGenerator.StepName.Backlog" xml:space="preserve"><value>Backlog</value></data>
+  <data name="PromptGenerator.StepName.Project" xml:space="preserve"><value>Project</value></data>
+  <data name="PromptGenerator.StepName.Architecture" xml:space="preserve"><value>Architecture</value></data>
+  <data name="PromptGenerator.StepName.Environment" xml:space="preserve"><value>Environment</value></data>
+  <data name="PromptGenerator.StepName.Tests" xml:space="preserve"><value>Tests</value></data>
+  <data name="PromptGenerator.StepName.Modules" xml:space="preserve"><value>Modules</value></data>
+  <data name="PromptGenerator.StepName.Rules" xml:space="preserve"><value>Rules</value></data>
+  <data name="PromptGenerator.StepName.Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="ArchitecturalPatterns.DescriptionPlaceholder" xml:space="preserve"><value>Describe the architectural pattern and its use...</value></data>
+  <data name="Technologies.ShortDescriptionPlaceholder" xml:space="preserve"><value>Brief optional description...</value></data>
+  <data name="AgentProfiles.NamePlaceholder" xml:space="preserve"><value>Ex: Senior .NET Architect</value></data>
+  <data name="AgentProfiles.RolePlaceholder" xml:space="preserve"><value>Describe the role and responsibilities of this agent...</value></data>
+  <data name="AgentProfiles.KnowledgeDomainPlaceholder" xml:space="preserve"><value>Ex: Software architecture, design patterns, .NET</value></data>
+  <data name="AgentProfiles.ConstraintsPlaceholder" xml:space="preserve"><value>Describe the default constraints and guidelines for this agent...</value></data>
 </root>

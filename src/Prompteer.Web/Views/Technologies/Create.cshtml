@@ -54,7 +54,7 @@
                     <label asp-for="ShortDescription" class="text-sm font-medium text-slate-700">@L["Technologies.ShortDescription"]</label>
                     <button type="button" onclick="aiGenerate('ShortDescription','TechDescription',{name:document.getElementById('Name').value,category:document.querySelector('[name=Category] option:checked')?.text??'',ecosystem:document.querySelector('[name=Ecosystem] option:checked')?.text??''},this)" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> @L["Common.GenerateWithAI"]</button>
                 </div>
-                <textarea asp-for="ShortDescription" rows="2" class="form-textarea w-full" placeholder="Breve descrição opcional..."></textarea>
+                <textarea asp-for="ShortDescription" rows="2" class="form-textarea w-full" placeholder="@L["Technologies.ShortDescriptionPlaceholder"]"></textarea>
                 <span asp-validation-for="ShortDescription" class="text-xs text-red-600 mt-1 block"></span>
             </div>
 

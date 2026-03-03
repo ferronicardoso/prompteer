@@ -174,7 +174,7 @@
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="@item.Id" />
                                             <label class="block text-sm font-medium text-slate-700 mb-1">@L["Templates.CloneName"]</label>
-                                            <input type="text" name="newName" value="@(item.Name) @L["Templates.CloneSuffix"]"
+                                            <input type="text" name="newName" value="@(item.Name) @L["Templates.CloneSuffix"].Value"
                                                    class="form-input w-full mb-4" required />
                                             <div class="flex justify-end gap-2">
                                                 <button type="button" @@click="cloneOpen = false" class="btn btn-ghost">@L["Common.Cancel"]</button>
