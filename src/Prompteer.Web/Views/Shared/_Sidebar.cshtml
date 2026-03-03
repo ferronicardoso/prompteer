@@ -1,5 +1,7 @@
+@inject Prompteer.Application.Services.IAppSettingService AppSettings
 @{
     var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var logoUrl = await AppSettings.GetAsync("App:LogoUrl");
 }
 
 <!-- Mobile backdrop -->
@@ -19,11 +21,18 @@
        class="fixed inset-y-0 left-0 z-40 w-64 flex-shrink-0 bg-slate-900 flex flex-col h-full transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 lg:z-auto">
 
     <!-- Logo -->
-    <div class="flex items-center gap-3 px-5 py-5 border-b border-slate-700/50">
-        <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center flex-shrink-0">
-            <i data-lucide="zap" class="w-4 h-4 text-white"></i>
-        </div>
-        <span class="text-white font-semibold text-lg tracking-tight">Prompteer</span>
+    <div class="flex items-center justify-center gap-3 px-5 py-5 border-b border-slate-700/50">
+        @if (!string.IsNullOrWhiteSpace(logoUrl))
+        {
+            <img src="@logoUrl" alt="Logo" class="h-8 max-w-[140px] object-contain" />
+        }
+        else
+        {
+            <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="zap" class="w-4 h-4 text-white"></i>
+            </div>
+            <span class="text-white font-semibold text-lg tracking-tight">Prompteer</span>
+        }
     </div>
 
     <!-- Navigation -->

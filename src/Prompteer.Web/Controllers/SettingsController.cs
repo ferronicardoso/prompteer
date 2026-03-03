@@ -36,6 +36,7 @@ public class SettingsController(
         ViewData["DefaultLanguage"] = all.GetValueOrDefault("App:Language",   "en");
         ViewData["DefaultTimeZone"] = all.GetValueOrDefault("App:TimeZone",   "UTC");
         ViewData["DefaultDateFormat"] = all.GetValueOrDefault("App:DateFormat", "MM/dd/yyyy");
+        ViewData["LogoUrl"] = all.GetValueOrDefault("App:LogoUrl", "");
 
         return View(dto);
     }
@@ -103,11 +104,12 @@ public class SettingsController(
     // POST /Settings/SaveGeneral
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SaveGeneral(string? language, string? timeZone, string? dateFormat)
+    public async Task<IActionResult> SaveGeneral(string? language, string? timeZone, string? dateFormat, string? logoUrl)
     {
         language   = language?.Trim()   ?? "en";
         timeZone   = timeZone?.Trim()   ?? "UTC";
         dateFormat = dateFormat?.Trim() ?? "MM/dd/yyyy";
+        logoUrl    = logoUrl?.Trim()    ?? "";
 
         // Validate language
         if (language != "en" && language != "pt-BR")
@@ -122,11 +124,20 @@ public class SettingsController(
         if (!validFormats.Contains(dateFormat))
             dateFormat = "MM/dd/yyyy";
 
+        // Validate logo URL: must be empty or a well-formed absolute http/https URL
+        if (!string.IsNullOrEmpty(logoUrl) &&
+            !(Uri.TryCreate(logoUrl, UriKind.Absolute, out var logoUri) &&
+              (logoUri.Scheme == Uri.UriSchemeHttp || logoUri.Scheme == Uri.UriSchemeHttps)))
+        {
+            logoUrl = "";
+        }
+
         await settings.SaveManyAsync(new Dictionary<string, string>
         {
             ["App:Language"]   = language,
             ["App:TimeZone"]   = timeZone,
-            ["App:DateFormat"] = dateFormat
+            ["App:DateFormat"] = dateFormat,
+            ["App:LogoUrl"]    = logoUrl
         });
 
         cache.Remove(AppSettingsViewDataFilter.CacheKey);
