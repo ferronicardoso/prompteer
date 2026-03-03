@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using Prompteer.Application.DTOs;
 using Prompteer.Application.Services;
 using Prompteer.Domain.Enums;
@@ -9,10 +10,12 @@ namespace Prompteer.Web.Controllers;
 public class TechnologiesController : Controller
 {
     private readonly ITechnologyService _service;
+    private readonly IStringLocalizer<SharedResource> _l;
 
-    public TechnologiesController(ITechnologyService service)
+    public TechnologiesController(ITechnologyService service, IStringLocalizer<SharedResource> l)
     {
         _service = service;
+        _l = l;
     }
 
     private void PopulateCategoryList(TechCategory? selected = null)
@@ -20,17 +23,17 @@ public class TechnologiesController : Controller
         ViewBag.CategoryItems = new SelectList(new[]
         {
             new { V = (int)TechCategory.Framework,             T = "Framework" },
-            new { V = (int)TechCategory.Database,               T = "Banco de Dados" },
+            new { V = (int)TechCategory.Database,               T = _l["TechCategory.Database"].Value },
             new { V = (int)TechCategory.ORM,                    T = "ORM" },
             new { V = (int)TechCategory.Frontend,               T = "Frontend" },
-            new { V = (int)TechCategory.Auth,                   T = "Autenticação" },
-            new { V = (int)TechCategory.Messaging,              T = "Mensageria" },
+            new { V = (int)TechCategory.Auth,                   T = _l["TechCategory.Auth"].Value },
+            new { V = (int)TechCategory.Messaging,              T = _l["TechCategory.Messaging"].Value },
             new { V = (int)TechCategory.Cache,                  T = "Cache" },
-            new { V = (int)TechCategory.Observability,          T = "Observabilidade" },
+            new { V = (int)TechCategory.Observability,          T = _l["TechCategory.Observability"].Value },
             new { V = (int)TechCategory.DevOps,                 T = "DevOps" },
-            new { V = (int)TechCategory.Testing,                T = "Testes" },
-            new { V = (int)TechCategory.ArtificialIntelligence, T = "Inteligência Artificial" },
-            new { V = (int)TechCategory.Other,                  T = "Outro" },
+            new { V = (int)TechCategory.Testing,                T = _l["TechCategory.Testing"].Value },
+            new { V = (int)TechCategory.ArtificialIntelligence, T = _l["TechCategory.ArtificialIntelligence"].Value },
+            new { V = (int)TechCategory.Other,                  T = _l["TechCategory.Other"].Value },
         }, "V", "T", selected.HasValue ? (int?)selected.Value : null);
     }
 
@@ -42,13 +45,13 @@ public class TechnologiesController : Controller
             new { V = (int)TechEcosystem.Node,     T = "Node.js" },
             new { V = (int)TechEcosystem.Python,   T = "Python" },
             new { V = (int)TechEcosystem.Java,     T = "Java" },
-            new { V = (int)TechEcosystem.Agnostic, T = "Agnóstico" },
+            new { V = (int)TechEcosystem.Agnostic, T = _l["TechEcosystem.Agnostic"].Value },
         }, "V", "T", selected.HasValue ? (int?)selected.Value : null);
     }
 
     public async Task<IActionResult> Index(int page = 1, string? search = null, TechCategory? category = null, TechEcosystem? ecosystem = null)
     {
-        ViewData["Title"] = "Tecnologias";
+        ViewData["Title"] = _l["Technologies.Title"].Value;
         ViewData["Search"] = search;
         ViewData["Category"] = category;
         ViewData["Ecosystem"] = ecosystem;
@@ -60,7 +63,7 @@ public class TechnologiesController : Controller
 
     public IActionResult Create()
     {
-        ViewData["Title"] = "Nova Tecnologia";
+        ViewData["Title"] = _l["Technologies.Create.Title"].Value;
         PopulateCategoryList();
         PopulateEcosystemList();
         return View(new TechnologyFormDto());
@@ -77,7 +80,7 @@ public class TechnologiesController : Controller
             return View(dto);
         }
         await _service.CreateAsync(dto);
-        TempData["Success"] = "Tecnologia criada com sucesso.";
+        TempData["Success"] = _l["Technologies.Created"].Value;
         return RedirectToAction(nameof(Index));
     }
 
@@ -87,10 +90,10 @@ public class TechnologiesController : Controller
         if (tech == null) return NotFound();
         if (tech.IsSystemDefault)
         {
-            TempData["Error"] = "Tecnologias padrão do sistema não podem ser editadas.";
+            TempData["Error"] = _l["Technologies.CannotEdit"].Value;
             return RedirectToAction(nameof(Index));
         }
-        ViewData["Title"] = "Editar Tecnologia";
+        ViewData["Title"] = _l["Technologies.Edit.Title"].Value;
         PopulateCategoryList(tech.Category);
         PopulateEcosystemList(tech.Ecosystem);
         var form = new TechnologyFormDto
@@ -124,7 +127,7 @@ public class TechnologiesController : Controller
             TempData["Error"] = ex.Message;
             return RedirectToAction(nameof(Index));
         }
-        TempData["Success"] = "Tecnologia atualizada com sucesso.";
+        TempData["Success"] = _l["Technologies.Updated"].Value;
         return RedirectToAction(nameof(Index));
     }
 
@@ -133,7 +136,7 @@ public class TechnologiesController : Controller
     public async Task<IActionResult> Clone(Guid id)
     {
         var clone = await _service.CloneAsync(id);
-        TempData["Success"] = $"Tecnologia clonada como \"{clone.Name}\".";
+        TempData["Success"] = string.Format(_l["Technologies.ClonedAs"].Value, clone.Name);
         return RedirectToAction(nameof(Edit), new { id = clone.Id });
     }
 
@@ -143,10 +146,10 @@ public class TechnologiesController : Controller
         if (tech == null) return NotFound();
         if (tech.IsSystemDefault)
         {
-            TempData["Error"] = "Tecnologias padrão do sistema não podem ser excluídas.";
+            TempData["Error"] = _l["Technologies.CannotDelete"].Value;
             return RedirectToAction(nameof(Index));
         }
-        ViewData["Title"] = "Excluir Tecnologia";
+        ViewData["Title"] = _l["Technologies.Delete.Title"].Value;
         return View(tech);
     }
 
@@ -157,11 +160,11 @@ public class TechnologiesController : Controller
         var tech = await _service.GetByIdAsync(id);
         if (tech?.IsSystemDefault == true)
         {
-            TempData["Error"] = "Tecnologias padrão do sistema não podem ser excluídas.";
+            TempData["Error"] = _l["Technologies.CannotDelete"].Value;
             return RedirectToAction(nameof(Index));
         }
         await _service.DeleteAsync(id);
-        TempData["Success"] = "Tecnologia excluída com sucesso.";
+        TempData["Success"] = _l["Technologies.Deleted"].Value;
         return RedirectToAction(nameof(Index));
     }
 }

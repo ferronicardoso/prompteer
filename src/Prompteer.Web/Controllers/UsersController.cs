@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Prompteer.Domain.Enums;
 using Prompteer.Infrastructure.Data;
 
@@ -10,8 +11,13 @@ namespace Prompteer.Web.Controllers;
 public class UsersController : Controller
 {
     private readonly AppDbContext _db;
+    private readonly IStringLocalizer<SharedResource> _l;
 
-    public UsersController(AppDbContext db) => _db = db;
+    public UsersController(AppDbContext db, IStringLocalizer<SharedResource> l)
+    {
+        _db = db;
+        _l = l;
+    }
 
     // GET /Users
     public async Task<IActionResult> Index(string? search, int page = 1)
@@ -34,7 +40,7 @@ public class UsersController : Controller
             .Take(pageSize)
             .ToListAsync();
 
-        ViewData["Title"] = "Gerenciamento de Usuários";
+        ViewData["Title"] = _l["Users.Title"].Value;
         ViewBag.Search   = search;
         ViewBag.Page     = page;
         ViewBag.PageSize = pageSize;
@@ -48,7 +54,7 @@ public class UsersController : Controller
         var user = await _db.ApplicationUsers.IgnoreQueryFilters().FirstOrDefaultAsync(u => u.Id == id);
         if (user is null) return NotFound();
 
-        ViewData["Title"] = "Editar Usuário";
+        ViewData["Title"] = _l["Users.Edit.Title"].Value;
         return View(user);
     }
 
@@ -63,7 +69,7 @@ public class UsersController : Controller
         user.UpdatedAt = DateTime.UtcNow;
         await _db.SaveChangesAsync();
 
-        TempData["Success"] = $"Usuário \"{user.DisplayName}\" atualizado.";
+        TempData["Success"] = string.Format(_l["Users.Updated"].Value, user.DisplayName);
         return RedirectToAction(nameof(Index));
     }
 
@@ -79,7 +85,7 @@ public class UsersController : Controller
         user.UpdatedAt = DateTime.UtcNow;
         await _db.SaveChangesAsync();
 
-        TempData["Success"] = $"Usuário \"{user.DisplayName}\" desativado.";
+        TempData["Success"] = string.Format(_l["Users.Deactivated"].Value, user.DisplayName);
         return RedirectToAction(nameof(Index));
     }
 }

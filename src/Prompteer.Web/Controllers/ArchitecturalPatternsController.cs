@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using Prompteer.Application.DTOs;
 using Prompteer.Application.Services;
 using Prompteer.Domain.Enums;
@@ -9,10 +10,12 @@ namespace Prompteer.Web.Controllers;
 public class ArchitecturalPatternsController : Controller
 {
     private readonly IArchitecturalPatternService _service;
+    private readonly IStringLocalizer<SharedResource> _l;
 
-    public ArchitecturalPatternsController(IArchitecturalPatternService service)
+    public ArchitecturalPatternsController(IArchitecturalPatternService service, IStringLocalizer<SharedResource> l)
     {
         _service = service;
+        _l = l;
     }
 
     private void PopulateEcosystemList(TechEcosystem selected = TechEcosystem.Agnostic)
@@ -23,13 +26,13 @@ public class ArchitecturalPatternsController : Controller
             new { V = (int)TechEcosystem.Node,     T = "Node.js" },
             new { V = (int)TechEcosystem.Python,   T = "Python" },
             new { V = (int)TechEcosystem.Java,     T = "Java" },
-            new { V = (int)TechEcosystem.Agnostic, T = "Agnóstico" },
+            new { V = (int)TechEcosystem.Agnostic, T = _l["TechEcosystem.Agnostic"].Value },
         }, "V", "T", (int)selected);
     }
 
     public async Task<IActionResult> Index(int page = 1, string? search = null)
     {
-        ViewData["Title"] = "Padrões Arquiteturais";
+        ViewData["Title"] = _l["ArchitecturalPatterns.Title"].Value;
         ViewData["Search"] = search;
         var result = await _service.GetPagedAsync(page, 10, search);
         return View(result);
@@ -37,7 +40,7 @@ public class ArchitecturalPatternsController : Controller
 
     public IActionResult Create()
     {
-        ViewData["Title"] = "Novo Padrão Arquitetural";
+        ViewData["Title"] = _l["ArchitecturalPatterns.Create.Title"].Value;
         PopulateEcosystemList();
         return View(new ArchitecturalPatternFormDto());
     }
@@ -52,7 +55,7 @@ public class ArchitecturalPatternsController : Controller
             return View(dto);
         }
         await _service.CreateAsync(dto);
-        TempData["Success"] = "Padrão arquitetural criado com sucesso.";
+        TempData["Success"] = _l["ArchitecturalPatterns.Created"].Value;
         return RedirectToAction(nameof(Index));
     }
 
@@ -62,10 +65,10 @@ public class ArchitecturalPatternsController : Controller
         if (pattern == null) return NotFound();
         if (pattern.IsSystemDefault)
         {
-            TempData["Error"] = "Padrões arquiteturais do sistema não podem ser editados.";
+            TempData["Error"] = _l["ArchitecturalPatterns.CannotEdit"].Value;
             return RedirectToAction(nameof(Index));
         }
-        ViewData["Title"] = "Editar Padrão Arquitetural";
+        ViewData["Title"] = _l["ArchitecturalPatterns.Edit.Title"].Value;
         PopulateEcosystemList(pattern.Ecosystem);
         var form = new ArchitecturalPatternFormDto
         {
@@ -95,7 +98,7 @@ public class ArchitecturalPatternsController : Controller
             TempData["Error"] = ex.Message;
             return RedirectToAction(nameof(Index));
         }
-        TempData["Success"] = "Padrão arquitetural atualizado com sucesso.";
+        TempData["Success"] = _l["ArchitecturalPatterns.Updated"].Value;
         return RedirectToAction(nameof(Index));
     }
 
@@ -104,7 +107,7 @@ public class ArchitecturalPatternsController : Controller
     public async Task<IActionResult> Clone(Guid id)
     {
         var clone = await _service.CloneAsync(id);
-        TempData["Success"] = $"Padrão clonado como \"{clone.Name}\".";
+        TempData["Success"] = string.Format(_l["ArchitecturalPatterns.ClonedAs"].Value, clone.Name);
         return RedirectToAction(nameof(Edit), new { id = clone.Id });
     }
 
@@ -114,10 +117,10 @@ public class ArchitecturalPatternsController : Controller
         if (pattern == null) return NotFound();
         if (pattern.IsSystemDefault)
         {
-            TempData["Error"] = "Padrões arquiteturais padrão do sistema não podem ser excluídos.";
+            TempData["Error"] = _l["ArchitecturalPatterns.CannotDelete"].Value;
             return RedirectToAction(nameof(Index));
         }
-        ViewData["Title"] = "Excluir Padrão Arquitetural";
+        ViewData["Title"] = _l["ArchitecturalPatterns.Delete.Title"].Value;
         return View(pattern);
     }
 
@@ -128,11 +131,11 @@ public class ArchitecturalPatternsController : Controller
         var pattern = await _service.GetByIdAsync(id);
         if (pattern?.IsSystemDefault == true)
         {
-            TempData["Error"] = "Padrões arquiteturais padrão do sistema não podem ser excluídos.";
+            TempData["Error"] = _l["ArchitecturalPatterns.CannotDelete"].Value;
             return RedirectToAction(nameof(Index));
         }
         await _service.DeleteAsync(id);
-        TempData["Success"] = "Padrão arquitetural excluído com sucesso.";
+        TempData["Success"] = _l["ArchitecturalPatterns.Deleted"].Value;
         return RedirectToAction(nameof(Index));
     }
 }

@@ -190,6 +190,11 @@
   <data name="BacklogTools.NoResults" xml:space="preserve"><value>No backlog tools found.</value></data>
   <data name="BacklogTools.CreateFirst" xml:space="preserve"><value>Create first tool</value></data>
   <data name="BacklogTools.SearchPlaceholder" xml:space="preserve"><value>Search by name...</value></data>
+  <data name="BacklogTools.Created" xml:space="preserve"><value>Backlog tool created successfully.</value></data>
+  <data name="BacklogTools.Updated" xml:space="preserve"><value>Backlog tool updated successfully.</value></data>
+  <data name="BacklogTools.Deleted" xml:space="preserve"><value>Backlog tool deleted successfully.</value></data>
+  <data name="BacklogTools.CannotEdit" xml:space="preserve"><value>System default tools cannot be edited.</value></data>
+  <data name="BacklogTools.CannotDelete" xml:space="preserve"><value>System default tools cannot be deleted.</value></data>
 
   <!-- ── ArchitecturalPatterns ───────────────────────────────────────────── -->
   <data name="ArchitecturalPatterns.Title" xml:space="preserve"><value>Architectural Patterns</value></data>
@@ -204,6 +209,13 @@
   <data name="ArchitecturalPatterns.NoResults" xml:space="preserve"><value>No architectural patterns found.</value></data>
   <data name="ArchitecturalPatterns.CreateFirst" xml:space="preserve"><value>Create first pattern</value></data>
   <data name="ArchitecturalPatterns.SearchPlaceholder" xml:space="preserve"><value>Search by name or description...</value></data>
+  <data name="ArchitecturalPatterns.Created" xml:space="preserve"><value>Architectural pattern created successfully.</value></data>
+  <data name="ArchitecturalPatterns.Updated" xml:space="preserve"><value>Architectural pattern updated successfully.</value></data>
+  <data name="ArchitecturalPatterns.Deleted" xml:space="preserve"><value>Architectural pattern deleted successfully.</value></data>
+  <data name="ArchitecturalPatterns.ClonedAs" xml:space="preserve"><value>Pattern cloned as &quot;{0}&quot;.</value></data>
+  <data name="ArchitecturalPatterns.CannotEdit" xml:space="preserve"><value>System architectural patterns cannot be edited.</value></data>
+  <data name="ArchitecturalPatterns.CannotDelete" xml:space="preserve"><value>System default architectural patterns cannot be deleted.</value></data>
+  <data name="TechEcosystem.Agnostic" xml:space="preserve"><value>Agnostic</value></data>
 
   <!-- ── Technologies ────────────────────────────────────────────────────── -->
   <data name="Technologies.Title" xml:space="preserve"><value>Technologies</value></data>
@@ -223,6 +235,19 @@
   <data name="Technologies.SearchPlaceholder" xml:space="preserve"><value>Search by name...</value></data>
   <data name="Technologies.ShortDescription" xml:space="preserve"><value>Short Description</value></data>
   <data name="Technologies.VersionLabel" xml:space="preserve"><value>Version</value></data>
+  <data name="Technologies.Created" xml:space="preserve"><value>Technology created successfully.</value></data>
+  <data name="Technologies.Updated" xml:space="preserve"><value>Technology updated successfully.</value></data>
+  <data name="Technologies.Deleted" xml:space="preserve"><value>Technology deleted successfully.</value></data>
+  <data name="Technologies.ClonedAs" xml:space="preserve"><value>Technology cloned as &quot;{0}&quot;.</value></data>
+  <data name="Technologies.CannotEdit" xml:space="preserve"><value>System default technologies cannot be edited.</value></data>
+  <data name="Technologies.CannotDelete" xml:space="preserve"><value>System default technologies cannot be deleted.</value></data>
+  <data name="TechCategory.Database" xml:space="preserve"><value>Database</value></data>
+  <data name="TechCategory.Auth" xml:space="preserve"><value>Authentication</value></data>
+  <data name="TechCategory.Messaging" xml:space="preserve"><value>Messaging</value></data>
+  <data name="TechCategory.Observability" xml:space="preserve"><value>Observability</value></data>
+  <data name="TechCategory.Testing" xml:space="preserve"><value>Testing</value></data>
+  <data name="TechCategory.ArtificialIntelligence" xml:space="preserve"><value>Artificial Intelligence</value></data>
+  <data name="TechCategory.Other" xml:space="preserve"><value>Other</value></data>
 
   <!-- ── AgentProfiles ───────────────────────────────────────────────────── -->
   <data name="AgentProfiles.Title" xml:space="preserve"><value>Agent Profiles</value></data>
@@ -243,6 +268,16 @@
   <data name="AgentProfiles.DeleteProfile" xml:space="preserve"><value>Delete profile</value></data>
   <data name="AgentProfiles.CreatedOn" xml:space="preserve"><value>Created on</value></data>
   <data name="AgentProfiles.UpdatedOn" xml:space="preserve"><value>Updated on</value></data>
+  <data name="AgentProfiles.Created" xml:space="preserve"><value>Agent profile created successfully.</value></data>
+  <data name="AgentProfiles.Updated" xml:space="preserve"><value>Agent profile updated successfully.</value></data>
+  <data name="AgentProfiles.Deleted" xml:space="preserve"><value>Agent profile deleted successfully.</value></data>
+  <data name="AgentProfiles.ClonedAs" xml:space="preserve"><value>Profile cloned as &quot;{0}&quot;.</value></data>
+  <data name="AgentProfiles.CannotEdit" xml:space="preserve"><value>System default profiles cannot be edited.</value></data>
+  <data name="AgentProfiles.CannotDelete" xml:space="preserve"><value>System default profiles cannot be deleted.</value></data>
+  <data name="ToneType.Technical" xml:space="preserve"><value>Technical</value></data>
+  <data name="ToneType.Didactic" xml:space="preserve"><value>Didactic</value></data>
+  <data name="ToneType.Direct" xml:space="preserve"><value>Direct</value></data>
+  <data name="ToneType.Detailed" xml:space="preserve"><value>Detailed</value></data>
 
   <!-- ── Users ───────────────────────────────────────────────────────────── -->
   <data name="Users.Title" xml:space="preserve"><value>Users</value></data>
@@ -269,6 +304,8 @@
   <data name="Users.NoResultsHint" xml:space="preserve"><value>Try a different search term.</value></data>
   <data name="Users.Deactivate" xml:space="preserve"><value>Deactivate</value></data>
   <data name="Users.DeactivateConfirm" xml:space="preserve"><value>Deactivate user {0}?</value></data>
+  <data name="Users.Updated" xml:space="preserve"><value>User &quot;{0}&quot; updated.</value></data>
+  <data name="Users.Deactivated" xml:space="preserve"><value>User &quot;{0}&quot; deactivated.</value></data>
 
   <!-- ── Shared pages ────────────────────────────────────────────────────── -->
   <data name="Shared.NotFound.Title" xml:space="preserve"><value>Page not found</value></data>
@@ -347,6 +384,12 @@
   <data name="Templates.Import.InfoItem2" xml:space="preserve"><value>Wizard structured data (for future editing)</value></data>
   <data name="Templates.Import.InfoItem3" xml:space="preserve"><value>Technologies and architectural patterns — created automatically if they don't exist</value></data>
   <data name="Templates.Import.Submit" xml:space="preserve"><value>Import templates</value></data>
+  <data name="Templates.Cloned" xml:space="preserve"><value>Template cloned successfully!</value></data>
+  <data name="Templates.Deleted" xml:space="preserve"><value>Template deleted successfully!</value></data>
+  <data name="Templates.Import.SelectFile" xml:space="preserve"><value>Select a JSON file.</value></data>
+  <data name="Templates.Import.JsonOnly" xml:space="preserve"><value>Only .json files are supported.</value></data>
+  <data name="Templates.Import.InvalidJson" xml:space="preserve"><value>Invalid or corrupted JSON file.</value></data>
+  <data name="Templates.Import.NoTemplates" xml:space="preserve"><value>No templates found in the file.</value></data>
   <data name="Templates.Version.GeneratedPrompt" xml:space="preserve"><value>Generated prompt</value></data>
   <data name="Templates.Version.Copy" xml:space="preserve"><value>Copy</value></data>
   <data name="Templates.Version.Copied" xml:space="preserve"><value>Copied!</value></data>

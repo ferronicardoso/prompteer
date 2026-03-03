@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Prompteer.Application.DTOs;
 using Prompteer.Application.Services;
 using Prompteer.Domain.Interfaces;
@@ -11,17 +12,19 @@ public class TemplatesController : Controller
 {
     private readonly IPromptTemplateService _templateService;
     private readonly ICurrentUserService _currentUser;
+    private readonly IStringLocalizer<SharedResource> _l;
 
-    public TemplatesController(IPromptTemplateService templateService, ICurrentUserService currentUser)
+    public TemplatesController(IPromptTemplateService templateService, ICurrentUserService currentUser, IStringLocalizer<SharedResource> l)
     {
         _templateService = templateService;
         _currentUser     = currentUser;
+        _l               = l;
     }
 
     // GET /Templates
     public async Task<IActionResult> Index(int page = 1, string? search = null)
     {
-        ViewData["Title"] = "Templates de Prompt";
+        ViewData["Title"] = _l["Templates.Title"].Value;
         ViewData["Search"] = search;
 
         var currentUser = await _currentUser.GetCurrentUserAsync();
@@ -61,7 +64,7 @@ public class TemplatesController : Controller
     public async Task<IActionResult> Clone(Guid id, string newName)
     {
         await _templateService.CloneAsync(id, newName);
-        TempData["Success"] = "Template clonado com sucesso!";
+        TempData["Success"] = _l["Templates.Cloned"].Value;
         return RedirectToAction(nameof(Index));
     }
 
@@ -71,7 +74,7 @@ public class TemplatesController : Controller
     public async Task<IActionResult> Delete(Guid id)
     {
         await _templateService.DeleteAsync(id);
-        TempData["Success"] = "Template excluído com sucesso!";
+        TempData["Success"] = _l["Templates.Deleted"].Value;
         return RedirectToAction(nameof(Index));
     }
 
@@ -82,7 +85,7 @@ public class TemplatesController : Controller
         if (template == null) return NotFound();
 
         var versions = await _templateService.GetVersionsAsync(id);
-        ViewData["Title"] = $"Versões — {template.Name}";
+        ViewData["Title"] = $"{_l["Templates.Details.Versions"].Value} — {template.Name}";
         return View(new VersionsViewModel { Template = template, Versions = versions });
     }
 
@@ -95,7 +98,7 @@ public class TemplatesController : Controller
         var version = await _templateService.GetVersionAsync(templateId, versionNumber);
         if (version == null) return NotFound();
 
-        ViewData["Title"] = $"Versão {versionNumber} — {template.Name}";
+        ViewData["Title"] = $"{_l["Common.Version"].Value} {versionNumber} — {template.Name}";
         return View(new VersionDetailViewModel { Template = template, Version = version });
     }
 
@@ -109,7 +112,7 @@ public class TemplatesController : Controller
         var version2 = await _templateService.GetVersionAsync(templateId, v2);
         if (version1 == null || version2 == null) return NotFound();
 
-        ViewData["Title"] = $"Comparar versões — {template.Name}";
+        ViewData["Title"] = $"{_l["Templates.Details.Compare"].Value} — {template.Name}";
         return View(new CompareViewModel { Template = template, Version1 = version1, Version2 = version2 });
     }
 
@@ -141,7 +144,7 @@ public class TemplatesController : Controller
     // GET /Templates/Import
     public IActionResult Import()
     {
-        ViewData["Title"] = "Importar Templates";
+        ViewData["Title"] = _l["Templates.Import.Title"].Value;
         return View();
     }
 
@@ -149,17 +152,17 @@ public class TemplatesController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> Import(IFormFile? file, bool skipDuplicates = true)
     {
-        ViewData["Title"] = "Importar Templates";
+        ViewData["Title"] = _l["Templates.Import.Title"].Value;
 
         if (file is null || file.Length == 0)
         {
-            ModelState.AddModelError("", "Selecione um arquivo JSON.");
+            ModelState.AddModelError("", _l["Templates.Import.SelectFile"].Value);
             return View();
         }
 
         if (!file.FileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
         {
-            ModelState.AddModelError("", "Apenas arquivos .json são suportados.");
+            ModelState.AddModelError("", _l["Templates.Import.JsonOnly"].Value);
             return View();
         }
 
@@ -172,13 +175,13 @@ public class TemplatesController : Controller
         }
         catch
         {
-            ModelState.AddModelError("", "Arquivo JSON inválido ou corrompido.");
+            ModelState.AddModelError("", _l["Templates.Import.InvalidJson"].Value);
             return View();
         }
 
         if (package?.Templates == null || package.Templates.Count == 0)
         {
-            ModelState.AddModelError("", "Nenhum template encontrado no arquivo.");
+            ModelState.AddModelError("", _l["Templates.Import.NoTemplates"].Value);
             return View();
         }
 

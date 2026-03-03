@@ -1,7 +1,7 @@
 @using Prompteer.Web.Models
 @model VersionDetailViewModel
 @{
-    ViewData["Title"] = $"Version {Model.Version.VersionNumber} — {Model.Template.Name}";
+    ViewData["Title"] = $"{L["Common.Version"]} {Model.Version.VersionNumber} — {Model.Template.Name}";
 }
 
 <div class="space-y-4">

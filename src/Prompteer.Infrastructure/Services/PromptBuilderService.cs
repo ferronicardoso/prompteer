@@ -1,4 +1,5 @@
 using Prompteer.Application.Services;
+using System.Globalization;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Prompteer.Application.Wizard;
@@ -44,15 +45,15 @@ public class PromptBuilderService : IPromptBuilderService
         var profile = await _db.AgentProfiles.FindAsync(data.AgentProfileId.Value);
         if (profile is null) return;
 
-        sb.AppendLine($"# Instruções para Agente de IA");
+        sb.AppendLine($"# {T("AI Agent Instructions", "Instruções para Agente de IA")}");
         sb.AppendLine();
-        sb.AppendLine($"## Perfil do Agente");
+        sb.AppendLine($"## {T("Agent Profile", "Perfil do Agente")}");
         sb.AppendLine();
-        sb.AppendLine($"{profile.Role}, com profundo conhecimento em **{profile.KnowledgeDomain}**.");
+        sb.AppendLine($"{profile.Role}, {T("with deep knowledge in", "com profundo conhecimento em")} **{profile.KnowledgeDomain}**.");
         sb.AppendLine();
-        sb.AppendLine($"**Tom:** {GetToneDisplay(profile.Tone)}");
+        sb.AppendLine($"**{T("Tone", "Tom")}:** {GetToneDisplay(profile.Tone)}");
         sb.AppendLine();
-        sb.AppendLine($"### Restrições de Comportamento");
+        sb.AppendLine($"### {T("Behavior Constraints", "Restrições de Comportamento")}");
         sb.AppendLine();
         sb.AppendLine(profile.DefaultConstraints);
         sb.AppendLine();
@@ -83,12 +84,12 @@ public class PromptBuilderService : IPromptBuilderService
 
         sb.AppendLine("---");
         sb.AppendLine();
-        sb.AppendLine($"## Projeto: {data.ProjectName}");
+        sb.AppendLine($"## {T("Project", "Projeto")}: {data.ProjectName}");
         sb.AppendLine();
 
         if (!string.IsNullOrWhiteSpace(data.ProjectDescription))
         {
-            sb.AppendLine("### Descrição Geral");
+            sb.AppendLine($"### {T("General Description", "Descrição Geral")}");
             sb.AppendLine();
             sb.AppendLine(data.ProjectDescription.Trim());
             sb.AppendLine();
@@ -107,7 +108,7 @@ public class PromptBuilderService : IPromptBuilderService
 
         sb.AppendLine("---");
         sb.AppendLine();
-        sb.AppendLine("## Stack Tecnológica e Arquitetura");
+        sb.AppendLine($"## {T("Tech Stack and Architecture", "Stack Tecnológica e Arquitetura")}");
         sb.AppendLine();
 
         if (data.TechnologyIds.Any())
@@ -117,7 +118,7 @@ public class PromptBuilderService : IPromptBuilderService
                 .OrderBy(t => t.Category).ThenBy(t => t.Name)
                 .ToListAsync();
 
-            sb.AppendLine("### Tecnologias");
+            sb.AppendLine($"### {T("Technologies", "Tecnologias")}");
             sb.AppendLine();
             foreach (var tech in techs)
             {
@@ -134,7 +135,7 @@ public class PromptBuilderService : IPromptBuilderService
                 .OrderBy(p => p.Name)
                 .ToListAsync();
 
-            sb.AppendLine("### Padrões Arquiteturais");
+            sb.AppendLine($"### {T("Architectural Patterns", "Padrões Arquiteturais")}");
             sb.AppendLine();
             foreach (var p in patterns)
                 sb.AppendLine($"- **{p.Name}** — {p.Description}");
@@ -143,7 +144,7 @@ public class PromptBuilderService : IPromptBuilderService
 
         if (data.RequiredPackages.Any())
         {
-            sb.AppendLine("### Pacotes e Bibliotecas Obrigatórios");
+            sb.AppendLine($"### {T("Required Packages and Libraries", "Pacotes e Bibliotecas Obrigatórios")}");
             sb.AppendLine();
             foreach (var pkg in data.RequiredPackages)
                 sb.AppendLine($"- `{pkg}`");
@@ -152,7 +153,7 @@ public class PromptBuilderService : IPromptBuilderService
 
         if (!string.IsNullOrWhiteSpace(data.CodeConventions))
         {
-            sb.AppendLine("### Convenções de Código");
+            sb.AppendLine($"### {T("Code Conventions", "Convenções de Código")}");
             sb.AppendLine();
             sb.AppendLine(data.CodeConventions.Trim());
             sb.AppendLine();
@@ -170,18 +171,18 @@ public class PromptBuilderService : IPromptBuilderService
 
         sb.AppendLine("---");
         sb.AppendLine();
-        sb.AppendLine("## Ambiente e Infraestrutura");
+        sb.AppendLine($"## {T("Environment and Infrastructure", "Ambiente e Infraestrutura")}");
         sb.AppendLine();
 
         if (data.DeploymentTargets.Any())
         {
-            sb.AppendLine($"**Destino de deploy:** {string.Join(", ", data.DeploymentTargets)}");
+            sb.AppendLine($"**{T("Deployment target", "Destino de deploy")}:** {string.Join(", ", data.DeploymentTargets)}");
             sb.AppendLine();
         }
 
         if (!string.IsNullOrWhiteSpace(data.GitStrategy))
         {
-            sb.AppendLine($"**Estratégia Git:** {data.GitStrategy}");
+            sb.AppendLine($"**{T("Git strategy", "Estratégia Git")}:** {data.GitStrategy}");
             sb.AppendLine();
         }
 
@@ -204,12 +205,12 @@ public class PromptBuilderService : IPromptBuilderService
 
         sb.AppendLine("---");
         sb.AppendLine();
-        sb.AppendLine("## Estratégia de Testes");
+        sb.AppendLine($"## {T("Testing Strategy", "Estratégia de Testes")}");
         sb.AppendLine();
 
         if (data.TestTypes.Any())
         {
-            sb.AppendLine($"**Tipos de testes:** {string.Join(", ", data.TestTypes)}");
+            sb.AppendLine($"**{T("Test types", "Tipos de testes")}:** {string.Join(", ", data.TestTypes)}");
             sb.AppendLine();
         }
 
@@ -221,13 +222,13 @@ public class PromptBuilderService : IPromptBuilderService
 
         if (data.MinCoverage.HasValue)
         {
-            sb.AppendLine($"**Cobertura mínima:** {data.MinCoverage}%");
+            sb.AppendLine($"**{T("Minimum coverage", "Cobertura mínima")}:** {data.MinCoverage}%");
             sb.AppendLine();
         }
 
         if (!string.IsNullOrWhiteSpace(data.TestObservations))
         {
-            sb.AppendLine("**Observações:**");
+            sb.AppendLine($"**{T("Notes", "Observações")}:**");
             sb.AppendLine();
             sb.AppendLine(data.TestObservations.Trim());
             sb.AppendLine();
@@ -241,9 +242,9 @@ public class PromptBuilderService : IPromptBuilderService
 
         sb.AppendLine("---");
         sb.AppendLine();
-        sb.AppendLine("## Módulos do Projeto");
+        sb.AppendLine($"## {T("Project Modules", "Módulos do Projeto")}");
         sb.AppendLine();
-        sb.AppendLine("Implemente os módulos na seguinte ordem:");
+        sb.AppendLine(T("Implement the modules in the following order:", "Implemente os módulos na seguinte ordem:"));
         sb.AppendLine();
 
         foreach (var module in data.Modules.OrderBy(m => m.Order))
@@ -268,7 +269,7 @@ public class PromptBuilderService : IPromptBuilderService
 
         sb.AppendLine("---");
         sb.AppendLine();
-        sb.AppendLine("## Regras e Diretrizes");
+        sb.AppendLine($"## {T("Rules and Guidelines", "Regras e Diretrizes")}");
         sb.AppendLine();
 
         if (hasFlags)
@@ -287,10 +288,14 @@ public class PromptBuilderService : IPromptBuilderService
 
     private static string GetToneDisplay(Domain.Enums.ToneType tone) => tone switch
     {
-        Domain.Enums.ToneType.Technical => "Técnico",
-        Domain.Enums.ToneType.Didactic  => "Didático",
-        Domain.Enums.ToneType.Direct    => "Direto",
-        Domain.Enums.ToneType.Detailed  => "Detalhista",
+        Domain.Enums.ToneType.Technical => T("Technical", "Técnico"),
+        Domain.Enums.ToneType.Didactic  => T("Didactic",  "Didático"),
+        Domain.Enums.ToneType.Direct    => T("Direct",    "Direto"),
+        Domain.Enums.ToneType.Detailed  => T("Detailed",  "Detalhista"),
         _                               => tone.ToString()
     };
+
+    private static string T(string en, string ptBr) =>
+        CultureInfo.CurrentUICulture.TwoLetterISOLanguageName
+            .Equals("pt", StringComparison.OrdinalIgnoreCase) ? ptBr : en;
 }
