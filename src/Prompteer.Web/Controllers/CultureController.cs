@@ -23,9 +23,10 @@ public class CultureController : Controller
             CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
             new CookieOptions
             {
-                Expires  = DateTimeOffset.UtcNow.AddYears(1),
+                Expires     = DateTimeOffset.UtcNow.AddYears(1),
                 IsEssential = true,
-                SameSite = SameSiteMode.Lax
+                SameSite    = SameSiteMode.Lax,
+                Secure      = Request.IsHttps
             });
 
         return LocalRedirect(Url.IsLocalUrl(returnUrl) ? returnUrl : "/");

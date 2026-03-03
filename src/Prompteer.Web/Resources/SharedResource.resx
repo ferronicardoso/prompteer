@@ -141,5 +141,7 @@
   <data name="Settings.DateFormatNote" xml:space="preserve"><value>Format used to display dates throughout the application.</value></data>
   <data name="Settings.GeneralSaved" xml:space="preserve"><value>General settings saved successfully.</value></data>
   <data name="Settings.SaveGeneral" xml:space="preserve"><value>Save General Settings</value></data>
-  <data name="Settings.GeneralSubtitle" xml:space="preserve"><value>Language, time zone and date format</value></data>
+  <data name="Settings.ErrorApiKeyRequired" xml:space="preserve"><value>Enter the API Key before fetching models.</value></data>
+  <data name="Settings.ErrorEntraRequired" xml:space="preserve"><value>TenantId and ClientId are required.</value></data>
+  <data name="Settings.ErrorSaveFailed" xml:space="preserve"><value>Failed to save: {0}</value></data>
 </root>

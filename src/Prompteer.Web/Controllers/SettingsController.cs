@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Prompteer.Application.DTOs;
 using Prompteer.Application.Services;
 using Prompteer.Web.Helpers;
+using Prompteer.Web.Resources;
 
 namespace Prompteer.Web.Controllers;
 
 public class SettingsController(
     IAppSettingService settings,
     IAIService aiService,
-    IWebHostEnvironment env) : Controller
+    IWebHostEnvironment env,
+    IStringLocalizer<SharedResource> localizer) : Controller
 {
     // GET /Settings  or  /Settings?tab=entra&saved=entra  or  &error=msg
     public async Task<IActionResult> Index(string? tab, string? saved, string? error)
@@ -55,7 +58,7 @@ public class SettingsController(
             apiKey = await settings.GetAsync("AI:ApiKey");
 
         if (string.IsNullOrWhiteSpace(apiKey))
-            return Json(new { success = false, error = "Enter the API Key before fetching models." });
+            return Json(new { success = false, error = localizer["Settings.ErrorApiKeyRequired"].Value });
 
         try
         {
@@ -79,7 +82,7 @@ public class SettingsController(
         domain       = domain?.Trim() ?? "";
 
         if (string.IsNullOrWhiteSpace(tenantId) || string.IsNullOrWhiteSpace(clientId))
-            return RedirectToAction(nameof(Index), new { tab = "entra", error = "TenantId and ClientId are required." });
+            return RedirectToAction(nameof(Index), new { tab = "entra", error = localizer["Settings.ErrorEntraRequired"].Value });
 
         try
         {
@@ -89,7 +92,7 @@ public class SettingsController(
         }
         catch (Exception ex)
         {
-            return RedirectToAction(nameof(Index), new { tab = "entra", error = Uri.EscapeDataString($"Failed to save: {ex.Message}") });
+            return RedirectToAction(nameof(Index), new { tab = "entra", error = Uri.EscapeDataString(string.Format(localizer["Settings.ErrorSaveFailed"].Value, ex.Message)) });
         }
     }
 
