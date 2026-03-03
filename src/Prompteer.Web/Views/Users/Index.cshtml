@@ -124,7 +124,7 @@
                                 }
                             </td>
                             <td class="px-5 py-3.5 text-gray-500">
-                                @(user.LastLoginAt?.ToString("dd/MM/yyyy HH:mm") ?? L["Common.Never"].Value)
+                                @(user.LastLoginAt?.ToString((string)ViewData["DateTimeFormat"]!) ?? L["Common.Never"].Value)
                             </td>
                             <td class="px-5 py-3.5">
                                 <div class="flex items-center justify-end gap-2">

@@ -19,8 +19,8 @@
                 <p class="text-sm text-slate-500 mt-1">@Model.Template.Description</p>
             }
             <div class="flex items-center gap-4 mt-2 text-xs text-slate-400">
-                <span><i data-lucide="calendar" class="w-3.5 h-3.5 inline-block mr-1"></i>@L["Templates.Details.CreatedOn"] @Model.Template.CreatedAt.ToString("dd/MM/yyyy")</span>
-                <span><i data-lucide="clock" class="w-3.5 h-3.5 inline-block mr-1"></i>@L["Templates.Details.UpdatedOn"] @Model.Template.UpdatedAt.ToString("dd/MM/yyyy")</span>
+                <span><i data-lucide="calendar" class="w-3.5 h-3.5 inline-block mr-1"></i>@L["Templates.Details.CreatedOn"] @Model.Template.CreatedAt.ToString((string)ViewData["DateFormat"]!)</span>
+                <span><i data-lucide="clock" class="w-3.5 h-3.5 inline-block mr-1"></i>@L["Templates.Details.UpdatedOn"] @Model.Template.UpdatedAt.ToString((string)ViewData["DateFormat"]!)</span>
                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">
                     v@(Model.Template.CurrentVersionNumber)
                 </span>
@@ -109,7 +109,7 @@
                                     <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">@L["Templates.Details.Current"]</span>
                                 }
                             </td>
-                            <td class="px-4 py-3 text-slate-500">@v.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td class="px-4 py-3 text-slate-500">@v.CreatedAt.ToString((string)ViewData["DateTimeFormat"]!)</td>
                             <td class="px-4 py-3">
                                 <div class="flex items-center justify-end gap-2">
                                     <a asp-action="Version"

@@ -5,6 +5,7 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
 using Prompteer.Web.Extensions;
+using Prompteer.Web.Filters;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -119,10 +120,12 @@ builder.Services.AddAuthorization(options =>
 // ─── Serviços ────────────────────────────────────────────────────────────────
 builder.Services.AddMemoryCache();
 builder.Services.AddLocalization();
+builder.Services.AddScoped<AppSettingsViewDataFilter>();
 builder.Services.AddControllersWithViews()
     .AddViewLocalization()
     .AddDataAnnotationsLocalization()
-    .AddMicrosoftIdentityUI();
+    .AddMicrosoftIdentityUI()
+    .AddMvcOptions(options => options.Filters.AddService<AppSettingsViewDataFilter>());
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 

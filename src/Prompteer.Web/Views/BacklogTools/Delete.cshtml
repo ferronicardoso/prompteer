@@ -34,7 +34,7 @@
             </div>
             <div class="py-3 flex gap-4">
                 <dt class="w-40 flex-shrink-0 text-sm font-medium text-slate-500">@L["Common.Created"]</dt>
-                <dd class="text-sm text-slate-900">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+                <dd class="text-sm text-slate-900">@Model.CreatedAt.ToString((string)ViewData["DateTimeFormat"]!)</dd>
             </div>
         </dl>
 

@@ -81,7 +81,7 @@
                             <div class="min-w-0">
                                 <p class="text-sm font-medium text-slate-900 truncate">@t.Name</p>
                                 <p class="text-xs text-slate-500 mt-0.5">
-                                    v@(t.CurrentVersionNumber) · @t.UpdatedAt.ToString("dd/MM/yyyy HH:mm")
+                                    v@(t.CurrentVersionNumber) · @t.UpdatedAt.ToString((string)ViewData["DateTimeFormat"]!)
                                 </p>
                             </div>
                             <a asp-controller="Templates" asp-action="Edit" asp-route-id="@t.Id"

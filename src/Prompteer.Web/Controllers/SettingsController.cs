@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Prompteer.Application.DTOs;
 using Prompteer.Application.Services;
+using Prompteer.Web.Filters;
 using Prompteer.Web.Helpers;
 
 namespace Prompteer.Web.Controllers;
@@ -12,7 +14,8 @@ public class SettingsController(
     IAppSettingService settings,
     IAIService aiService,
     IWebHostEnvironment env,
-    IStringLocalizer<SharedResource> localizer) : Controller
+    IStringLocalizer<SharedResource> localizer,
+    IMemoryCache cache) : Controller
 {
     // GET /Settings  or  /Settings?tab=entra&saved=entra  or  &error=msg
     public async Task<IActionResult> Index(string? tab, string? saved, string? error)
@@ -125,6 +128,8 @@ public class SettingsController(
             ["App:TimeZone"]   = timeZone,
             ["App:DateFormat"] = dateFormat
         });
+
+        cache.Remove(AppSettingsViewDataFilter.CacheKey);
 
         return RedirectToAction(nameof(Index), new { tab = "general", saved = "general" });
     }
