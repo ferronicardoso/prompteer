@@ -1,7 +1,7 @@
 @using Prompteer.Web.Models
 @model VersionDetailViewModel
 @{
-    ViewData["Title"] = $"Versão {Model.Version.VersionNumber} — {Model.Template.Name}";
+    ViewData["Title"] = $"{L["Common.Version"]} {Model.Version.VersionNumber} — {Model.Template.Name}";
 }
 
 <div class="space-y-4">
@@ -11,7 +11,7 @@
         <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
         <a asp-action="Details" asp-route-id="@Model.Template.Id" class="hover:text-brand-600 transition-colors">@Model.Template.Name</a>
         <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-        <a asp-action="Versions" asp-route-id="@Model.Template.Id" class="hover:text-brand-600 transition-colors">Versões</a>
+        <a asp-action="Versions" asp-route-id="@Model.Template.Id" class="hover:text-brand-600 transition-colors">@L["Templates.Details.Versions"]</a>
         <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
         <span>v@(Model.Version.VersionNumber)</span>
     </div>
@@ -19,24 +19,24 @@
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-xl font-semibold text-slate-900">Versão @Model.Version.VersionNumber — @Model.Template.Name</h1>
-            <p class="text-sm text-slate-500 mt-0.5">Criada em @Model.Version.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+            <h1 class="text-xl font-semibold text-slate-900">@L["Common.Version"] @Model.Version.VersionNumber — @Model.Template.Name</h1>
+            <p class="text-sm text-slate-500 mt-0.5">@L["Common.Created"] @Model.Version.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
         </div>
         <a asp-action="Versions" asp-route-id="@Model.Template.Id" class="btn btn-secondary btn-sm">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            Voltar para versões
+            @L["Templates.Version.BackToVersions"]
         </a>
     </div>
 
     <!-- Prompt Content -->
     <div class="card" x-data="{ copied: false }">
         <div class="flex items-center justify-between mb-3">
-            <h2 class="text-sm font-semibold text-slate-700">Prompt gerado</h2>
+            <h2 class="text-sm font-semibold text-slate-700">@L["Templates.Version.GeneratedPrompt"]</h2>
             <button type="button"
                     @@click="navigator.clipboard.writeText(window.__rawPromptVersion); copied = true; setTimeout(() => copied = false, 2000)"
                     class="btn btn-ghost btn-sm">
                 <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                <span x-text="copied ? 'Copiado!' : 'Copiar'">Copiar</span>
+                <span x-text="copied ? '@L["Templates.Version.Copied"]' : '@L["Templates.Version.Copy"]'">@L["Templates.Version.Copy"]</span>
             </button>
         </div>
         <div class="overflow-auto max-h-[40rem] rounded-lg border border-slate-200 bg-white p-5">

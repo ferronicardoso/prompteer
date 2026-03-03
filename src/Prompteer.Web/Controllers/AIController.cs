@@ -1,18 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Prompteer.Application.DTOs;
 using Prompteer.Application.Services;
 
 namespace Prompteer.Web.Controllers;
 
 [Route("api/ai")]
-public class AIController(IAIService aiService) : Controller
+public class AIController(IAIService aiService, IStringLocalizer<SharedResource> l) : Controller
 {
     [HttpPost("generate")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Generate([FromBody] AIGenerateRequestDto request)
     {
         if (string.IsNullOrWhiteSpace(request.FieldType))
-            return BadRequest(new AIGenerateResponseDto { Success = false, Error = "FieldType é obrigatório." });
+            return BadRequest(new AIGenerateResponseDto { Success = false, Error = l["AI.FieldTypeRequired"].Value });
 
         try
         {
@@ -25,7 +26,7 @@ public class AIController(IAIService aiService) : Controller
         }
         catch (Exception ex)
         {
-            return Ok(new AIGenerateResponseDto { Success = false, Error = $"Erro ao gerar conteúdo: {ex.Message}" });
+            return Ok(new AIGenerateResponseDto { Success = false, Error = string.Format(l["AI.GenerateError"].Value, ex.Message) });
         }
     }
 

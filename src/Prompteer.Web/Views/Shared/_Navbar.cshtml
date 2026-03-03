@@ -2,10 +2,11 @@
     var pageTitle   = ViewData["Title"]?.ToString() ?? "Dashboard";
     var breadcrumb  = ViewData["Breadcrumb"] as string;
     var userName    = User.Identity?.IsAuthenticated == true
-        ? (User.FindFirst("name")?.Value ?? User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Usuário")
+        ? (User.FindFirst("name")?.Value ?? User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? L["Nav.SignIn"].Value)
         : null;
     var initial     = userName?.Length > 0 ? userName[0].ToString().ToUpper() : "?";
     var isLocalAdmin = User.FindFirst("local_admin")?.Value == "true";
+    var currentCulture = System.Globalization.CultureInfo.CurrentUICulture.Name;
     string RoleBadgeCss() => User.IsInRole("Admin")  ? "bg-red-500/20 text-red-200" :
                               User.IsInRole("Editor") ? "bg-blue-500/20 text-blue-200" : "";
     string RoleLabel()    => User.IsInRole("Admin")  ? "Admin" :
@@ -28,8 +29,30 @@
         <a asp-controller="PromptGenerator" asp-action="Index"
            class="btn btn-primary btn-sm">
             <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-            Novo Prompt
+            @L["Nav.NewPrompt"]
         </a>
+
+        @* Language switcher *@
+        <div class="flex items-center gap-1 p-1 bg-slate-100 rounded-lg text-xs">
+            <form asp-controller="Culture" asp-action="SetCulture" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="culture" value="en" />
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                <button type="submit"
+                        class="px-2 py-1 rounded-md font-medium transition-all @(currentCulture == "en" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700")">
+                    EN
+                </button>
+            </form>
+            <form asp-controller="Culture" asp-action="SetCulture" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="culture" value="pt-BR" />
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
+                <button type="submit"
+                        class="px-2 py-1 rounded-md font-medium transition-all @(currentCulture == "pt-BR" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700")">
+                    PT
+                </button>
+            </form>
+        </div>
 
         @if (userName is not null)
         {
@@ -97,19 +120,19 @@
                         <a asp-controller="Users" asp-action="Index"
                            class="flex items-center gap-2.5 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                             <i data-lucide="users" class="w-4 h-4 text-slate-400"></i>
-                            Gerenciar Usuários
+                            @L["Nav.ManageUsers"]
                         </a>
                     }
                     <a asp-controller="Settings" asp-action="Index"
                        class="flex items-center gap-2.5 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                         <i data-lucide="settings" class="w-4 h-4 text-slate-400"></i>
-                        Configurações
+                        @L["Nav.Settings"]
                     </a>
                     <div class="border-t border-slate-100 mt-1 pt-1">
                         <a asp-controller="Account" asp-action="SignOut"
                            class="flex items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
                             <i data-lucide="log-out" class="w-4 h-4"></i>
-                            Sair
+                            @L["Nav.SignOut"]
                         </a>
                     </div>
                 </div>
@@ -120,10 +143,9 @@
             <a asp-controller="Account" asp-action="Login"
                class="btn btn-secondary btn-sm">
                 <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
-                Entrar
+                @L["Nav.SignIn"]
             </a>
         }
     </div>
 
 </header>
-

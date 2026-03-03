@@ -15,51 +15,51 @@
     <!-- Navigation -->
     <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
 
-        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">Principal</p>
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">@L["Sidebar.Main"]</p>
 
         <a asp-controller="Dashboard" asp-action="Index"
            class="sidebar-link @(controller == "Dashboard" ? "sidebar-link-active" : "")">
             <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-            Dashboard
+            @L["Sidebar.Dashboard"]
         </a>
 
         <a asp-controller="PromptGenerator" asp-action="Index"
            class="sidebar-link @(controller == "PromptGenerator" ? "sidebar-link-active" : "")">
             <i data-lucide="wand-2" class="w-4 h-4"></i>
-            Gerador de Prompts
+            @L["Sidebar.PromptGenerator"]
         </a>
 
         <a asp-controller="Templates" asp-action="Index"
            class="sidebar-link @(controller == "Templates" ? "sidebar-link-active" : "")">
             <i data-lucide="file-text" class="w-4 h-4"></i>
-            Templates
+            @L["Sidebar.Templates"]
         </a>
 
         <div class="pt-4">
-            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">Cadastros</p>
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-3 mb-2">@L["Sidebar.Registrations"]</p>
 
             <a asp-controller="AgentProfiles" asp-action="Index"
                class="sidebar-link @(controller == "AgentProfiles" ? "sidebar-link-active" : "")">
                 <i data-lucide="bot" class="w-4 h-4"></i>
-                Perfis de Agente
+                @L["Sidebar.AgentProfiles"]
             </a>
 
             <a asp-controller="Technologies" asp-action="Index"
                class="sidebar-link @(controller == "Technologies" ? "sidebar-link-active" : "")">
                 <i data-lucide="cpu" class="w-4 h-4"></i>
-                Tecnologias
+                @L["Sidebar.Technologies"]
             </a>
 
             <a asp-controller="ArchitecturalPatterns" asp-action="Index"
                class="sidebar-link @(controller == "ArchitecturalPatterns" ? "sidebar-link-active" : "")">
                 <i data-lucide="layers" class="w-4 h-4"></i>
-                Padrões Arquiteturais
+                @L["Sidebar.ArchitecturalPatterns"]
             </a>
 
             <a asp-controller="BacklogTools" asp-action="Index"
                class="sidebar-link @(controller == "BacklogTools" ? "sidebar-link-active" : "")">
                 <i data-lucide="clipboard-list" class="w-4 h-4"></i>
-                Ferramentas de Backlog
+                @L["Sidebar.BacklogTools"]
             </a>
         </div>
 
@@ -72,13 +72,13 @@
             <a asp-controller="Users" asp-action="Index"
                class="sidebar-link @(controller == "Users" ? "sidebar-link-active" : "")">
                 <i data-lucide="users" class="w-4 h-4"></i>
-                Usuários
+                @L["Sidebar.Users"]
             </a>
         }
         <a asp-controller="Settings" asp-action="Index"
            class="sidebar-link @(controller == "Settings" ? "sidebar-link-active" : "")">
             <i data-lucide="settings" class="w-4 h-4"></i>
-            Configurações
+            @L["Sidebar.Settings"]
         </a>
         <p class="text-xs text-slate-500 px-3 pt-1">.NET 10 · EF Core · PostgreSQL</p>
     </div>

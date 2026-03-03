@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- ── Language names ─────────────────────────────────────────────── -->
+  <data name="Lang.English" xml:space="preserve"><value>Inglês</value></data>
+  <data name="Lang.Portuguese" xml:space="preserve"><value>Português</value></data>
+  <data name="Lang.SelectLanguage" xml:space="preserve"><value>Idioma</value></data>
+
+  <!-- ── Common ──────────────────────────────────────────────────────── -->
+  <data name="Common.Save" xml:space="preserve"><value>Salvar</value></data>
+  <data name="Common.Cancel" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="Common.Edit" xml:space="preserve"><value>Editar</value></data>
+  <data name="Common.Delete" xml:space="preserve"><value>Excluir</value></data>
+  <data name="Common.Configured" xml:space="preserve"><value>Configurado</value></data>
+  <data name="Common.NotConfigured" xml:space="preserve"><value>Não configurado</value></data>
+
+  <!-- ── Login ───────────────────────────────────────────────────────── -->
+  <data name="Login.PageTitle" xml:space="preserve"><value>Entrar</value></data>
+  <data name="Login.Headline" xml:space="preserve"><value>Gere prompts estruturados para agentes de IA.</value></data>
+  <data name="Login.Headline1" xml:space="preserve"><value>Gere prompts</value></data>
+  <data name="Login.Headline2" xml:space="preserve"><value>estruturados</value></data>
+  <data name="Login.Headline3" xml:space="preserve"><value>para agentes de IA.</value></data>
+  <data name="Login.SubheadLine" xml:space="preserve"><value>Construa instruções completas para Claude, GitHub Copilot e outros agentes — de forma rápida, consistente e reutilizável.</value></data>
+  <data name="Login.Feature.Wizard" xml:space="preserve"><value>Wizard em 9 etapas</value></data>
+  <data name="Login.Feature.WizardDesc" xml:space="preserve"><value>Gere prompts detalhados passo a passo</value></data>
+  <data name="Login.Feature.Templates" xml:space="preserve"><value>Templates versionados</value></data>
+  <data name="Login.Feature.TemplatesDesc" xml:space="preserve"><value>Salve, clone e compare versões</value></data>
+  <data name="Login.Feature.MultiAI" xml:space="preserve"><value>Multi-provider AI</value></data>
+  <data name="Login.Feature.MultiAIDesc" xml:space="preserve"><value>OpenAI e Anthropic integrados</value></data>
+  <data name="Login.Feature.SecureAccess" xml:space="preserve"><value>Acesso seguro via Microsoft</value></data>
+  <data name="Login.Feature.SecureAccessDesc" xml:space="preserve"><value>Autenticação corporativa com Entra ID</value></data>
+  <data name="Login.WelcomeBack" xml:space="preserve"><value>Bem-vindo de volta</value></data>
+  <data name="Login.SubtitleLocal" xml:space="preserve"><value>Acesse com seu e-mail e senha de administrador.</value></data>
+  <data name="Login.SubtitleEntra" xml:space="preserve"><value>Acesse com sua conta Microsoft ou com e-mail e senha.</value></data>
+  <data name="Login.AccountCreated" xml:space="preserve"><value>Conta criada com sucesso!</value></data>
+  <data name="Login.HelloUser" xml:space="preserve"><value>Olá, {0}! Faça login para continuar a configuração.</value></data>
+  <data name="Login.SignInWithMicrosoft" xml:space="preserve"><value>Entrar com Microsoft</value></data>
+  <data name="Login.OrWithLocalPassword" xml:space="preserve"><value>ou com senha local</value></data>
+  <data name="Login.Email" xml:space="preserve"><value>E-mail</value></data>
+  <data name="Login.Password" xml:space="preserve"><value>Senha</value></data>
+  <data name="Login.Submit" xml:space="preserve"><value>Entrar</value></data>
+  <data name="Login.LocalAdminNote" xml:space="preserve"><value>Login local disponível apenas para o administrador inicial.</value></data>
+  <data name="Login.SetupNote" xml:space="preserve"><value>Configure o Microsoft Entra ID nas Configurações após o primeiro acesso.</value></data>
+
+  <!-- ── Navbar ──────────────────────────────────────────────────────── -->
+  <data name="Nav.NewPrompt" xml:space="preserve"><value>Novo Prompt</value></data>
+  <data name="Nav.ManageUsers" xml:space="preserve"><value>Gerenciar Usuários</value></data>
+  <data name="Nav.Settings" xml:space="preserve"><value>Configurações</value></data>
+  <data name="Nav.SignOut" xml:space="preserve"><value>Sair</value></data>
+  <data name="Nav.SignIn" xml:space="preserve"><value>Entrar</value></data>
+
+  <!-- ── Sidebar ─────────────────────────────────────────────────────── -->
+  <data name="Sidebar.Main" xml:space="preserve"><value>Principal</value></data>
+  <data name="Sidebar.Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Sidebar.PromptGenerator" xml:space="preserve"><value>Gerador de Prompts</value></data>
+  <data name="Sidebar.Templates" xml:space="preserve"><value>Templates</value></data>
+  <data name="Sidebar.Registrations" xml:space="preserve"><value>Cadastros</value></data>
+  <data name="Sidebar.AgentProfiles" xml:space="preserve"><value>Perfis de Agente</value></data>
+  <data name="Sidebar.Technologies" xml:space="preserve"><value>Tecnologias</value></data>
+  <data name="Sidebar.ArchitecturalPatterns" xml:space="preserve"><value>Padrões Arquiteturais</value></data>
+  <data name="Sidebar.BacklogTools" xml:space="preserve"><value>Ferramentas de Backlog</value></data>
+  <data name="Sidebar.Users" xml:space="preserve"><value>Usuários</value></data>
+  <data name="Sidebar.Settings" xml:space="preserve"><value>Configurações</value></data>
+
+  <!-- ── Settings ────────────────────────────────────────────────────── -->
+  <data name="Settings.Title" xml:space="preserve"><value>Configurações</value></data>
+  <data name="Settings.Subtitle" xml:space="preserve"><value>Provedor de IA, Microsoft Entra ID e preferências gerais</value></data>
+  <data name="Settings.AIIntegration" xml:space="preserve"><value>Integração de IA</value></data>
+  <data name="Settings.MicrosoftEntra" xml:space="preserve"><value>Microsoft Entra ID</value></data>
+  <data name="Settings.General" xml:space="preserve"><value>Geral</value></data>
+  <data name="Settings.Status" xml:space="preserve"><value>Status:</value></data>
+  <data name="Settings.AIProvider" xml:space="preserve"><value>Provedor de IA</value></data>
+  <data name="Settings.ApiKey" xml:space="preserve"><value>API Key</value></data>
+  <data name="Settings.ApiKeyNote" xml:space="preserve"><value>A chave é armazenada no banco de dados da aplicação.</value></data>
+  <data name="Settings.FetchModels" xml:space="preserve"><value>Buscar modelos disponíveis</value></data>
+  <data name="Settings.FetchingModels" xml:space="preserve"><value>Buscando…</value></data>
+  <data name="Settings.Model" xml:space="preserve"><value>Modelo</value></data>
+  <data name="Settings.ModelNote" xml:space="preserve"><value>Clique em "Buscar modelos" para atualizar a lista.</value></data>
+  <data name="Settings.AISaved" xml:space="preserve"><value>Configurações de IA salvas com sucesso.</value></data>
+  <data name="Settings.SaveAI" xml:space="preserve"><value>Salvar</value></data>
+  <data name="Settings.EntraSaved" xml:space="preserve"><value>Configurações do Microsoft Entra salvas. Reinicie a aplicação para aplicar.</value></data>
+  <data name="Settings.SaveEntra" xml:space="preserve"><value>Salvar configuração Entra</value></data>
+  <data name="Settings.EntraRestartNote" xml:space="preserve"><value>Reinicie a aplicação para ativar as alterações.</value></data>
+  <data name="Settings.TenantId" xml:space="preserve"><value>Tenant ID</value></data>
+  <data name="Settings.TenantIdNote" xml:space="preserve"><value>GUID do diretório — Azure Portal → Microsoft Entra ID → Visão geral.</value></data>
+  <data name="Settings.ClientId" xml:space="preserve"><value>Client ID (Application ID)</value></data>
+  <data name="Settings.ClientIdNote" xml:space="preserve"><value>ID do aplicativo registrado em Registros de aplicativo.</value></data>
+  <data name="Settings.ClientSecret" xml:space="preserve"><value>Client Secret</value></data>
+  <data name="Settings.ClientSecretKeep" xml:space="preserve"><value>(deixe em branco para manter o atual)</value></data>
+  <data name="Settings.ClientSecretNote" xml:space="preserve"><value>Azure Portal → Registros de aplicativo → Certificados e segredos.</value></data>
+  <data name="Settings.Domain" xml:space="preserve"><value>Domínio</value></data>
+  <data name="Settings.DomainOptional" xml:space="preserve"><value>(opcional)</value></data>
+  <data name="Settings.AzureGuideTitle" xml:space="preserve"><value>Como configurar o registro do aplicativo no Azure:</value></data>
+  <data name="Settings.SelectProvider" xml:space="preserve"><value>Selecione um provedor.</value></data>
+  <data name="Settings.ErrorFetchModels" xml:space="preserve"><value>Erro ao buscar modelos.</value></data>
+  <data name="Settings.ErrorServerComm" xml:space="preserve"><value>Falha na comunicação com o servidor.</value></data>
+  <data name="Settings.DefaultLanguage" xml:space="preserve"><value>Idioma Padrão</value></data>
+  <data name="Settings.DefaultLanguageNote" xml:space="preserve"><value>Idioma utilizado quando o usuário não definiu uma preferência. Pode ser definido via variável de ambiente APP_LANGUAGE.</value></data>
+  <data name="Settings.TimeZone" xml:space="preserve"><value>Fuso Horário</value></data>
+  <data name="Settings.TimeZoneNote" xml:space="preserve"><value>Fuso horário padrão para exibição de datas e horas. Pode ser definido via variável de ambiente TZ.</value></data>
+  <data name="Settings.DateFormat" xml:space="preserve"><value>Formato de Data</value></data>
+  <data name="Settings.DateFormatNote" xml:space="preserve"><value>Formato utilizado para exibir datas na aplicação.</value></data>
+  <data name="Settings.GeneralSaved" xml:space="preserve"><value>Configurações gerais salvas com sucesso.</value></data>
+  <data name="Settings.GeneralSubtitle" xml:space="preserve"><value>Configure o idioma padrão, fuso horário e formato de data da aplicação.</value></data>
+  <data name="AI.FieldTypeRequired" xml:space="preserve"><value>FieldType é obrigatório.</value></data>
+  <data name="AI.GenerateError" xml:space="preserve"><value>Erro ao gerar conteúdo: {0}</value></data>
+  <data name="Settings.SaveGeneral" xml:space="preserve"><value>Salvar Configurações Gerais</value></data>
+  <data name="Settings.ErrorApiKeyRequired" xml:space="preserve"><value>Informe a API Key antes de buscar os modelos.</value></data>
+  <data name="Settings.ErrorEntraRequired" xml:space="preserve"><value>TenantId e ClientId são obrigatórios.</value></data>
+  <data name="Settings.ErrorSaveFailed" xml:space="preserve"><value>Falha ao salvar: {0}</value></data>
+
+  <!-- ── Common ─────────────────────────────────────────────────────────── -->
+  <data name="Common.Name" xml:space="preserve"><value>Nome</value></data>
+  <data name="Common.Description" xml:space="preserve"><value>Descrição</value></data>
+  <data name="Common.Back" xml:space="preserve"><value>Voltar</value></data>
+  <data name="Common.Filter" xml:space="preserve"><value>Filtrar</value></data>
+  <data name="Common.Clear" xml:space="preserve"><value>Limpar</value></data>
+  <data name="Common.Default" xml:space="preserve"><value>Padrão</value></data>
+  <data name="Common.Created" xml:space="preserve"><value>Criado em</value></data>
+  <data name="Common.Updated" xml:space="preserve"><value>Atualizado</value></data>
+  <data name="Common.NoResults" xml:space="preserve"><value>Nenhum resultado encontrado.</value></data>
+  <data name="Common.Confirm" xml:space="preserve"><value>Confirmar</value></data>
+  <data name="Common.Actions" xml:space="preserve"><value>Ações</value></data>
+  <data name="Common.Clone" xml:space="preserve"><value>Clonar</value></data>
+  <data name="Common.View" xml:space="preserve"><value>Ver</value></data>
+  <data name="Common.SaveChanges" xml:space="preserve"><value>Salvar Alterações</value></data>
+  <data name="Common.ConfirmDelete" xml:space="preserve"><value>Confirmar Exclusão</value></data>
+  <data name="Common.DeleteWarning" xml:space="preserve"><value>Esta ação não pode ser desfeita.</value></data>
+  <data name="Common.Ecosystem" xml:space="preserve"><value>Ecossistema</value></data>
+  <data name="Common.Instructions" xml:space="preserve"><value>Instruções</value></data>
+  <data name="Common.Version" xml:space="preserve"><value>Versão</value></data>
+  <data name="Common.Role" xml:space="preserve"><value>Papel</value></data>
+  <data name="Common.Tone" xml:space="preserve"><value>Tom</value></data>
+  <data name="Common.GenerateWithAI" xml:space="preserve"><value>Gerar com IA</value></data>
+  <data name="Common.ActiveAccess" xml:space="preserve"><value>Acesso ativo</value></data>
+  <data name="Common.Status" xml:space="preserve"><value>Status</value></data>
+  <data name="Common.LastAccess" xml:space="preserve"><value>Último acesso</value></data>
+  <data name="Common.Never" xml:space="preserve"><value>Nunca</value></data>
+  <data name="Common.SearchPlaceholder" xml:space="preserve"><value>Buscar...</value></data>
+  <data name="Common.Deactivate" xml:space="preserve"><value>Desativar</value></data>
+
+  <!-- ── BacklogTools ────────────────────────────────────────────────────── -->
+  <data name="BacklogTools.Title" xml:space="preserve"><value>Ferramentas de Backlog</value></data>
+  <data name="BacklogTools.Subtitle" xml:space="preserve"><value>Gerencie as ferramentas de gerenciamento de backlog</value></data>
+  <data name="BacklogTools.NewTool" xml:space="preserve"><value>Nova Ferramenta</value></data>
+  <data name="BacklogTools.DefaultInstructions" xml:space="preserve"><value>Instruções Padrão</value></data>
+  <data name="BacklogTools.Create.Title" xml:space="preserve"><value>Nova Ferramenta de Backlog</value></data>
+  <data name="BacklogTools.Create.Breadcrumb" xml:space="preserve"><value>Nova Ferramenta</value></data>
+  <data name="BacklogTools.Edit.Title" xml:space="preserve"><value>Editar Ferramenta de Backlog</value></data>
+  <data name="BacklogTools.Edit.Breadcrumb" xml:space="preserve"><value>Editar Ferramenta</value></data>
+  <data name="BacklogTools.Delete.Title" xml:space="preserve"><value>Excluir Ferramenta de Backlog</value></data>
+  <data name="BacklogTools.Delete.Warning" xml:space="preserve"><value>Tem certeza que deseja excluir a ferramenta {0}? Esta ação não pode ser desfeita.</value></data>
+  <data name="BacklogTools.NoResults" xml:space="preserve"><value>Nenhuma ferramenta de backlog encontrada.</value></data>
+  <data name="BacklogTools.CreateFirst" xml:space="preserve"><value>Criar primeira ferramenta</value></data>
+  <data name="BacklogTools.SearchPlaceholder" xml:space="preserve"><value>Buscar por nome...</value></data>
+  <data name="BacklogTools.Created" xml:space="preserve"><value>Ferramenta de backlog criada com sucesso.</value></data>
+  <data name="BacklogTools.Updated" xml:space="preserve"><value>Ferramenta de backlog atualizada com sucesso.</value></data>
+  <data name="BacklogTools.Deleted" xml:space="preserve"><value>Ferramenta de backlog excluída com sucesso.</value></data>
+  <data name="BacklogTools.CannotEdit" xml:space="preserve"><value>Ferramentas padrão do sistema não podem ser editadas.</value></data>
+  <data name="BacklogTools.CannotDelete" xml:space="preserve"><value>Ferramentas padrão do sistema não podem ser excluídas.</value></data>
+
+  <!-- ── ArchitecturalPatterns ───────────────────────────────────────────── -->
+  <data name="ArchitecturalPatterns.Title" xml:space="preserve"><value>Padrões Arquiteturais</value></data>
+  <data name="ArchitecturalPatterns.Subtitle" xml:space="preserve"><value>Gerencie os padrões de arquitetura disponíveis nos prompts</value></data>
+  <data name="ArchitecturalPatterns.NewPattern" xml:space="preserve"><value>Novo Padrão</value></data>
+  <data name="ArchitecturalPatterns.Create.Title" xml:space="preserve"><value>Novo Padrão Arquitetural</value></data>
+  <data name="ArchitecturalPatterns.Create.Breadcrumb" xml:space="preserve"><value>Novo Padrão</value></data>
+  <data name="ArchitecturalPatterns.Edit.Title" xml:space="preserve"><value>Editar Padrão Arquitetural</value></data>
+  <data name="ArchitecturalPatterns.Edit.Breadcrumb" xml:space="preserve"><value>Editar Padrão</value></data>
+  <data name="ArchitecturalPatterns.Delete.Title" xml:space="preserve"><value>Excluir Padrão Arquitetural</value></data>
+  <data name="ArchitecturalPatterns.Delete.Warning" xml:space="preserve"><value>Tem certeza que deseja excluir o padrão {0}? Esta ação não pode ser desfeita.</value></data>
+  <data name="ArchitecturalPatterns.NoResults" xml:space="preserve"><value>Nenhum padrão arquitetural encontrado.</value></data>
+  <data name="ArchitecturalPatterns.CreateFirst" xml:space="preserve"><value>Criar primeiro padrão</value></data>
+  <data name="ArchitecturalPatterns.SearchPlaceholder" xml:space="preserve"><value>Buscar por nome ou descrição...</value></data>
+  <data name="ArchitecturalPatterns.Created" xml:space="preserve"><value>Padrão arquitetural criado com sucesso.</value></data>
+  <data name="ArchitecturalPatterns.Updated" xml:space="preserve"><value>Padrão arquitetural atualizado com sucesso.</value></data>
+  <data name="ArchitecturalPatterns.Deleted" xml:space="preserve"><value>Padrão arquitetural excluído com sucesso.</value></data>
+  <data name="ArchitecturalPatterns.ClonedAs" xml:space="preserve"><value>Padrão clonado como &quot;{0}&quot;.</value></data>
+  <data name="ArchitecturalPatterns.CannotEdit" xml:space="preserve"><value>Padrões arquiteturais do sistema não podem ser editados.</value></data>
+  <data name="ArchitecturalPatterns.CannotDelete" xml:space="preserve"><value>Padrões arquiteturais padrão do sistema não podem ser excluídos.</value></data>
+  <data name="TechEcosystem.Agnostic" xml:space="preserve"><value>Agnóstico</value></data>
+
+  <!-- ── Technologies ────────────────────────────────────────────────────── -->
+  <data name="Technologies.Title" xml:space="preserve"><value>Tecnologias</value></data>
+  <data name="Technologies.Subtitle" xml:space="preserve"><value>Gerencie as tecnologias disponíveis para uso nos prompts</value></data>
+  <data name="Technologies.NewTechnology" xml:space="preserve"><value>Nova Tecnologia</value></data>
+  <data name="Technologies.Category" xml:space="preserve"><value>Categoria</value></data>
+  <data name="Technologies.AllCategories" xml:space="preserve"><value>Todas as categorias</value></data>
+  <data name="Technologies.AllEcosystems" xml:space="preserve"><value>Todos os ecossistemas</value></data>
+  <data name="Technologies.Create.Title" xml:space="preserve"><value>Nova Tecnologia</value></data>
+  <data name="Technologies.Create.Breadcrumb" xml:space="preserve"><value>Nova Tecnologia</value></data>
+  <data name="Technologies.Edit.Title" xml:space="preserve"><value>Editar Tecnologia</value></data>
+  <data name="Technologies.Edit.Breadcrumb" xml:space="preserve"><value>Editar Tecnologia</value></data>
+  <data name="Technologies.Delete.Title" xml:space="preserve"><value>Excluir Tecnologia</value></data>
+  <data name="Technologies.Delete.Warning" xml:space="preserve"><value>Tem certeza que deseja excluir a tecnologia {0}? Esta ação não pode ser desfeita.</value></data>
+  <data name="Technologies.NoResults" xml:space="preserve"><value>Nenhuma tecnologia encontrada.</value></data>
+  <data name="Technologies.CreateFirst" xml:space="preserve"><value>Criar primeira tecnologia</value></data>
+  <data name="Technologies.SearchPlaceholder" xml:space="preserve"><value>Buscar por nome...</value></data>
+  <data name="Technologies.ShortDescription" xml:space="preserve"><value>Descrição Curta</value></data>
+  <data name="Technologies.VersionLabel" xml:space="preserve"><value>Versão</value></data>
+  <data name="Technologies.Created" xml:space="preserve"><value>Tecnologia criada com sucesso.</value></data>
+  <data name="Technologies.Updated" xml:space="preserve"><value>Tecnologia atualizada com sucesso.</value></data>
+  <data name="Technologies.Deleted" xml:space="preserve"><value>Tecnologia excluída com sucesso.</value></data>
+  <data name="Technologies.ClonedAs" xml:space="preserve"><value>Tecnologia clonada como &quot;{0}&quot;.</value></data>
+  <data name="Technologies.CannotEdit" xml:space="preserve"><value>Tecnologias padrão do sistema não podem ser editadas.</value></data>
+  <data name="Technologies.CannotDelete" xml:space="preserve"><value>Tecnologias padrão do sistema não podem ser excluídas.</value></data>
+  <data name="TechCategory.Database" xml:space="preserve"><value>Banco de Dados</value></data>
+  <data name="TechCategory.Auth" xml:space="preserve"><value>Autenticação</value></data>
+  <data name="TechCategory.Messaging" xml:space="preserve"><value>Mensageria</value></data>
+  <data name="TechCategory.Observability" xml:space="preserve"><value>Observabilidade</value></data>
+  <data name="TechCategory.Testing" xml:space="preserve"><value>Testes</value></data>
+  <data name="TechCategory.ArtificialIntelligence" xml:space="preserve"><value>Inteligência Artificial</value></data>
+  <data name="TechCategory.Other" xml:space="preserve"><value>Outro</value></data>
+
+  <!-- ── AgentProfiles ───────────────────────────────────────────────────── -->
+  <data name="AgentProfiles.Title" xml:space="preserve"><value>Perfis de Agente</value></data>
+  <data name="AgentProfiles.Subtitle" xml:space="preserve"><value>Gerencie os perfis de comportamento dos agentes de IA</value></data>
+  <data name="AgentProfiles.NewProfile" xml:space="preserve"><value>Novo Perfil</value></data>
+  <data name="AgentProfiles.KnowledgeDomain" xml:space="preserve"><value>Domínio de Conhecimento</value></data>
+  <data name="AgentProfiles.DefaultConstraints" xml:space="preserve"><value>Restrições Padrão</value></data>
+  <data name="AgentProfiles.SystemDefault" xml:space="preserve"><value>Padrão do sistema</value></data>
+  <data name="AgentProfiles.Create.Title" xml:space="preserve"><value>Novo Perfil de Agente</value></data>
+  <data name="AgentProfiles.Create.Breadcrumb" xml:space="preserve"><value>Novo Perfil</value></data>
+  <data name="AgentProfiles.Edit.Title" xml:space="preserve"><value>Editar Perfil de Agente</value></data>
+  <data name="AgentProfiles.Edit.Breadcrumb" xml:space="preserve"><value>Editar Perfil</value></data>
+  <data name="AgentProfiles.Delete.Title" xml:space="preserve"><value>Excluir Perfil de Agente</value></data>
+  <data name="AgentProfiles.Delete.Warning" xml:space="preserve"><value>Tem certeza que deseja excluir o perfil {0}? Esta ação não pode ser desfeita.</value></data>
+  <data name="AgentProfiles.NoResults" xml:space="preserve"><value>Nenhum perfil de agente encontrado.</value></data>
+  <data name="AgentProfiles.CreateFirst" xml:space="preserve"><value>Criar primeiro perfil</value></data>
+  <data name="AgentProfiles.SearchPlaceholder" xml:space="preserve"><value>Buscar por nome ou papel...</value></data>
+  <data name="AgentProfiles.DeleteProfile" xml:space="preserve"><value>Excluir perfil</value></data>
+  <data name="AgentProfiles.CreatedOn" xml:space="preserve"><value>Criado em</value></data>
+  <data name="AgentProfiles.UpdatedOn" xml:space="preserve"><value>Atualizado em</value></data>
+  <data name="AgentProfiles.Created" xml:space="preserve"><value>Perfil de agente criado com sucesso.</value></data>
+  <data name="AgentProfiles.Updated" xml:space="preserve"><value>Perfil de agente atualizado com sucesso.</value></data>
+  <data name="AgentProfiles.Deleted" xml:space="preserve"><value>Perfil de agente excluído com sucesso.</value></data>
+  <data name="AgentProfiles.ClonedAs" xml:space="preserve"><value>Perfil clonado como &quot;{0}&quot;.</value></data>
+  <data name="AgentProfiles.CannotEdit" xml:space="preserve"><value>Perfis padrão do sistema não podem ser editados.</value></data>
+  <data name="AgentProfiles.CannotDelete" xml:space="preserve"><value>Perfis padrão do sistema não podem ser excluídos.</value></data>
+  <data name="ToneType.Technical" xml:space="preserve"><value>Técnico</value></data>
+  <data name="ToneType.Didactic" xml:space="preserve"><value>Didático</value></data>
+  <data name="ToneType.Direct" xml:space="preserve"><value>Direto</value></data>
+  <data name="ToneType.Detailed" xml:space="preserve"><value>Detalhista</value></data>
+
+  <!-- ── Users ───────────────────────────────────────────────────────────── -->
+  <data name="Users.Title" xml:space="preserve"><value>Usuários</value></data>
+  <data name="Users.Subtitle" xml:space="preserve"><value>Usuários autenticados via Microsoft Entra ID.</value></data>
+  <data name="Users.ManageInEntra" xml:space="preserve"><value>Gerenciar no Entra ID</value></data>
+  <data name="Users.RolesManagedInEntra" xml:space="preserve"><value>Papéis gerenciados no Microsoft Entra ID</value></data>
+  <data name="Users.RolesNote" xml:space="preserve"><value>Os papéis (Admin, Editor, Viewer) são atribuídos em Enterprise Applications → Users and Groups no portal do Entra. O papel exibido aqui é o último sincronizado no login do usuário.</value></data>
+  <data name="Users.SearchPlaceholder" xml:space="preserve"><value>Buscar por nome ou e-mail...</value></data>
+  <data name="Users.Search" xml:space="preserve"><value>Buscar</value></data>
+  <data name="Users.UserHeader" xml:space="preserve"><value>Usuário</value></data>
+  <data name="Users.Email" xml:space="preserve"><value>E-mail</value></data>
+  <data name="Users.Active" xml:space="preserve"><value>Ativo</value></data>
+  <data name="Users.Inactive" xml:space="preserve"><value>Inativo</value></data>
+  <data name="Users.Found" xml:space="preserve"><value>usuário(s) encontrado(s)</value></data>
+  <data name="Users.Edit.Title" xml:space="preserve"><value>Editar Usuário</value></data>
+  <data name="Users.Edit.Subtitle" xml:space="preserve"><value>Gerencie o status de acesso do usuário.</value></data>
+  <data name="Users.Edit.CurrentRole" xml:space="preserve"><value>Papel atual (via Entra ID)</value></data>
+  <data name="Users.Edit.SyncedLastLogin" xml:space="preserve"><value>Sincronizado no último login</value></data>
+  <data name="Users.Edit.RoleNote" xml:space="preserve"><value>O papel é definido no Microsoft Entra ID — em Enterprise Applications → Users and Groups. Alterações aplicadas no próximo login do usuário.</value></data>
+  <data name="Users.Edit.ActiveAccess" xml:space="preserve"><value>Acesso ativo</value></data>
+  <data name="Users.Edit.ActiveNote" xml:space="preserve"><value>Desativar bloqueia o acesso sem remover o registro.</value></data>
+  <data name="Users.Edit.LastAccess" xml:space="preserve"><value>Último acesso:</value></data>
+  <data name="Users.NoResults" xml:space="preserve"><value>Nenhum usuário encontrado</value></data>
+  <data name="Users.NoResultsHint" xml:space="preserve"><value>Tente um termo de busca diferente.</value></data>
+  <data name="Users.Deactivate" xml:space="preserve"><value>Desativar</value></data>
+  <data name="Users.DeactivateConfirm" xml:space="preserve"><value>Desativar o usuário {0}?</value></data>
+  <data name="Users.Updated" xml:space="preserve"><value>Usuário &quot;{0}&quot; atualizado.</value></data>
+  <data name="Users.Deactivated" xml:space="preserve"><value>Usuário &quot;{0}&quot; desativado.</value></data>
+
+  <!-- ── Shared pages ────────────────────────────────────────────────────── -->
+  <data name="Shared.NotFound.Title" xml:space="preserve"><value>Página não encontrada</value></data>
+  <data name="Shared.NotFound.Message" xml:space="preserve"><value>A página que você está procurando não existe ou foi removida.</value></data>
+  <data name="Shared.NotFound.BackToDashboard" xml:space="preserve"><value>Voltar ao Dashboard</value></data>
+  <data name="Shared.Error.Title" xml:space="preserve"><value>Erro</value></data>
+  <data name="Shared.Error.Message" xml:space="preserve"><value>Ocorreu um erro inesperado ao processar sua requisição. Por favor, tente novamente.</value></data>
+  <data name="Shared.Error.Oops" xml:space="preserve"><value>Ops! Algo deu errado</value></data>
+  <data name="Shared.Error.RequestId" xml:space="preserve"><value>ID da requisição:</value></data>
+  <data name="Shared.Error.BackToDashboard" xml:space="preserve"><value>Voltar ao Dashboard</value></data>
+  <data name="Shared.AccessDenied.Title" xml:space="preserve"><value>Acesso Negado</value></data>
+  <data name="Shared.AccessDenied.Message" xml:space="preserve"><value>Você não possui permissão para acessar esta página. Caso acredite que isso seja um erro, entre em contato com um administrador.</value></data>
+  <data name="Shared.AccessDenied.BackToDashboard" xml:space="preserve"><value>Voltar ao Dashboard</value></data>
+
+  <!-- ── Dashboard ───────────────────────────────────────────────────────── -->
+  <data name="Dashboard.SavedTemplates" xml:space="preserve"><value>Templates salvos</value></data>
+  <data name="Dashboard.GeneratedVersions" xml:space="preserve"><value>Versões geradas</value></data>
+  <data name="Dashboard.AgentProfiles" xml:space="preserve"><value>Perfis de agente</value></data>
+  <data name="Dashboard.RegisteredTechnologies" xml:space="preserve"><value>Tecnologias cadastradas</value></data>
+  <data name="Dashboard.RecentTemplates" xml:space="preserve"><value>Templates Recentes</value></data>
+  <data name="Dashboard.ViewAll" xml:space="preserve"><value>Ver todos →</value></data>
+  <data name="Dashboard.NoTemplates" xml:space="preserve"><value>Nenhum template salvo ainda.</value></data>
+  <data name="Dashboard.CreateFirstPrompt" xml:space="preserve"><value>Criar primeiro prompt</value></data>
+  <data name="Dashboard.TopTechnologies" xml:space="preserve"><value>Tecnologias mais usadas</value></data>
+  <data name="Dashboard.TopPatterns" xml:space="preserve"><value>Padrões mais usados</value></data>
+  <data name="Dashboard.NoData" xml:space="preserve"><value>Sem dados ainda</value></data>
+  <data name="Dashboard.EditInWizard" xml:space="preserve"><value>Editar no wizard</value></data>
+
+  <!-- ── Templates ───────────────────────────────────────────────────────── -->
+  <data name="Templates.Title" xml:space="preserve"><value>Templates de Prompt</value></data>
+  <data name="Templates.Subtitle" xml:space="preserve"><value>Gerencie seus templates de prompt gerados pelo wizard</value></data>
+  <data name="Templates.Import" xml:space="preserve"><value>Importar</value></data>
+  <data name="Templates.ExportAll" xml:space="preserve"><value>Exportar todos</value></data>
+  <data name="Templates.NewTemplate" xml:space="preserve"><value>Novo Template</value></data>
+  <data name="Templates.Name" xml:space="preserve"><value>Nome</value></data>
+  <data name="Templates.Description" xml:space="preserve"><value>Descrição</value></data>
+  <data name="Templates.Technologies" xml:space="preserve"><value>Tecnologias</value></data>
+  <data name="Templates.NoResults" xml:space="preserve"><value>Nenhum template encontrado.</value></data>
+  <data name="Templates.CreateFirst" xml:space="preserve"><value>Criar primeiro template</value></data>
+  <data name="Templates.SearchPlaceholder" xml:space="preserve"><value>Buscar por nome ou descrição...</value></data>
+  <data name="Templates.CloneTemplate" xml:space="preserve"><value>Clonar template</value></data>
+  <data name="Templates.CloneName" xml:space="preserve"><value>Nome do clone</value></data>
+  <data name="Templates.Delete.Title" xml:space="preserve"><value>Excluir template</value></data>
+  <data name="Templates.Delete.Warning" xml:space="preserve"><value>Tem certeza que deseja excluir {0}? Esta ação não pode ser desfeita.</value></data>
+  <data name="Templates.ImportResult.Success" xml:space="preserve"><value>template(s) importado(s) com sucesso</value></data>
+  <data name="Templates.ImportResult.Skipped" xml:space="preserve"><value>ignorado(s) (duplicado)</value></data>
+  <data name="Templates.ImportResult.Errors" xml:space="preserve"><value>Erro(s) durante a importação</value></data>
+  <data name="Templates.ImportResult.AllSkipped" xml:space="preserve"><value>template(s) ignorado(s) pois já existem com o mesmo nome.</value></data>
+  <data name="Templates.Details.CreatedOn" xml:space="preserve"><value>Criado em</value></data>
+  <data name="Templates.Details.UpdatedOn" xml:space="preserve"><value>Atualizado em</value></data>
+  <data name="Templates.Details.CurrentPrompt" xml:space="preserve"><value>Prompt atual</value></data>
+  <data name="Templates.Details.Copy" xml:space="preserve"><value>Copiar</value></data>
+  <data name="Templates.Details.Copied" xml:space="preserve"><value>Copiado!</value></data>
+  <data name="Templates.Details.VersionHistory" xml:space="preserve"><value>Histórico de versões</value></data>
+  <data name="Templates.Details.Versions" xml:space="preserve"><value>Versões</value></data>
+  <data name="Templates.Details.Edit" xml:space="preserve"><value>Editar</value></data>
+  <data name="Templates.Details.NoVersions" xml:space="preserve"><value>Nenhuma versão encontrada.</value></data>
+  <data name="Templates.Details.Current" xml:space="preserve"><value>atual</value></data>
+  <data name="Templates.Details.Compare" xml:space="preserve"><value>Comparar</value></data>
+  <data name="Templates.Compare.Title" xml:space="preserve"><value>Comparar versões —</value></data>
+  <data name="Templates.Compare.Differences" xml:space="preserve"><value>Diferenças entre</value></data>
+  <data name="Templates.Compare.Back" xml:space="preserve"><value>Voltar</value></data>
+  <data name="Templates.Compare.Previous" xml:space="preserve"><value>anterior</value></data>
+  <data name="Templates.Compare.Newer" xml:space="preserve"><value>mais recente</value></data>
+  <data name="Templates.Compare.RemovedLine" xml:space="preserve"><value>Linha removida</value></data>
+  <data name="Templates.Compare.AddedLine" xml:space="preserve"><value>Linha adicionada</value></data>
+  <data name="Templates.Compare.UnchangedLine" xml:space="preserve"><value>Linha inalterada</value></data>
+  <data name="Templates.Import.Title" xml:space="preserve"><value>Importar Templates</value></data>
+  <data name="Templates.Import.Subtitle" xml:space="preserve"><value>Carregue um arquivo .json exportado pelo Prompteer</value></data>
+  <data name="Templates.Import.DropZone" xml:space="preserve"><value>Clique ou arraste o arquivo aqui</value></data>
+  <data name="Templates.Import.FileType" xml:space="preserve"><value>Apenas arquivos .json exportados pelo Prompteer</value></data>
+  <data name="Templates.Import.SkipDuplicates" xml:space="preserve"><value>Pular templates duplicados</value></data>
+  <data name="Templates.Import.SkipDuplicatesNote" xml:space="preserve"><value>Se um template com o mesmo nome já existir, ele será ignorado. Desmarque para criar uma cópia.</value></data>
+  <data name="Templates.Import.InfoTitle" xml:space="preserve"><value>O que é importado:</value></data>
+  <data name="Templates.Import.InfoItem1" xml:space="preserve"><value>Nome, descrição e prompt gerado de cada template</value></data>
+  <data name="Templates.Import.InfoItem2" xml:space="preserve"><value>Dados estruturados do wizard (para edição futura)</value></data>
+  <data name="Templates.Import.InfoItem3" xml:space="preserve"><value>Tecnologias e padrões arquiteturais — criados automaticamente se não existirem</value></data>
+  <data name="Templates.Import.Submit" xml:space="preserve"><value>Importar templates</value></data>
+  <data name="Templates.Cloned" xml:space="preserve"><value>Template clonado com sucesso!</value></data>
+  <data name="Templates.Deleted" xml:space="preserve"><value>Template excluído com sucesso!</value></data>
+  <data name="Templates.Import.SelectFile" xml:space="preserve"><value>Selecione um arquivo JSON.</value></data>
+  <data name="Templates.Import.JsonOnly" xml:space="preserve"><value>Apenas arquivos .json são suportados.</value></data>
+  <data name="Templates.Import.InvalidJson" xml:space="preserve"><value>Arquivo JSON inválido ou corrompido.</value></data>
+  <data name="Templates.Import.NoTemplates" xml:space="preserve"><value>Nenhum template encontrado no arquivo.</value></data>
+  <data name="Templates.Version.GeneratedPrompt" xml:space="preserve"><value>Prompt gerado</value></data>
+  <data name="Templates.Version.Copy" xml:space="preserve"><value>Copiar</value></data>
+  <data name="Templates.Version.Copied" xml:space="preserve"><value>Copiado!</value></data>
+  <data name="Templates.Version.BackToVersions" xml:space="preserve"><value>Voltar para versões</value></data>
+  <data name="Templates.Versions.Title" xml:space="preserve"><value>Versões de</value></data>
+  <data name="Templates.Versions.Available" xml:space="preserve"><value>versão(ões) disponíveis</value></data>
+  <data name="Templates.Versions.Back" xml:space="preserve"><value>Voltar</value></data>
+  <data name="Templates.Versions.NoVersions" xml:space="preserve"><value>Nenhuma versão encontrada.</value></data>
+  <data name="Templates.Versions.ViewVersion" xml:space="preserve"><value>Ver esta versão</value></data>
+
+  <!-- ── PromptGenerator ─────────────────────────────────────────────────── -->
+  <data name="PromptGenerator.Step1.Title" xml:space="preserve"><value>Passo 1 — Agente</value></data>
+  <data name="PromptGenerator.Step1.Subtitle" xml:space="preserve"><value>Selecione o perfil do agente que irá executar as instruções geradas.</value></data>
+  <data name="PromptGenerator.Step1.SelectProfile" xml:space="preserve"><value>Selecione um perfil...</value></data>
+  <data name="PromptGenerator.Step1.AgentProfile" xml:space="preserve"><value>Perfil de Agente</value></data>
+  <data name="PromptGenerator.Step1.CreateNew" xml:space="preserve"><value>Criar novo perfil de agente</value></data>
+  <data name="PromptGenerator.Step1.CreateProfile" xml:space="preserve"><value>Criar Perfil</value></data>
+  <data name="PromptGenerator.Step2.Title" xml:space="preserve"><value>Passo 2 — Backlog</value></data>
+  <data name="PromptGenerator.Step2.Subtitle" xml:space="preserve"><value>Selecione a ferramenta de backlog e defina as instruções de gerenciamento.</value></data>
+  <data name="PromptGenerator.Step2.NoTool" xml:space="preserve"><value>Nenhuma ferramenta</value></data>
+  <data name="PromptGenerator.Step2.BacklogTool" xml:space="preserve"><value>Ferramenta de Backlog</value></data>
+  <data name="PromptGenerator.Step2.BacklogInstructions" xml:space="preserve"><value>Instruções de Backlog</value></data>
+  <data name="PromptGenerator.Step2.Edit" xml:space="preserve"><value>Editar</value></data>
+  <data name="PromptGenerator.Step2.Preview" xml:space="preserve"><value>Visualizar</value></data>
+  <data name="PromptGenerator.Step2.AutoFillNote" xml:space="preserve"><value>Ao selecionar uma ferramenta, as instruções padrão serão preenchidas automaticamente.</value></data>
+  <data name="PromptGenerator.Step2.CreateNew" xml:space="preserve"><value>Criar nova ferramenta de backlog</value></data>
+  <data name="PromptGenerator.Step2.CreateTool" xml:space="preserve"><value>Criar Ferramenta</value></data>
+  <data name="PromptGenerator.Step3.Title" xml:space="preserve"><value>Passo 3 — Projeto</value></data>
+  <data name="PromptGenerator.Step4.Title" xml:space="preserve"><value>Passo 4 — Arquitetura</value></data>
+  <data name="PromptGenerator.Next" xml:space="preserve"><value>Próximo</value></data>
+  <data name="PromptGenerator.Back" xml:space="preserve"><value>Voltar</value></data>
+
+  <data name="Templates.CloneSuffix" xml:space="preserve"><value>(cópia)</value></data>
+  <data name="Templates.ExportAllTitle" xml:space="preserve"><value>Exportar todos os templates como JSON</value></data>
+  <data name="Login.InvalidCredentials" xml:space="preserve"><value>E-mail ou senha inválidos.</value></data>
+  <data name="Login.AccountDisabled" xml:space="preserve"><value>Sua conta está desativada.</value></data>
+
+  <!-- ── Setup ─────────────────────────────────────────────────────────── -->
+  <data name="Setup.Title" xml:space="preserve"><value>Configuração Inicial</value></data>
+  <data name="Setup.Subtitle" xml:space="preserve"><value>Crie a conta de administrador para começar</value></data>
+  <data name="Setup.Step1" xml:space="preserve"><value>Admin</value></data>
+  <data name="Setup.Step3" xml:space="preserve"><value>Pronto</value></data>
+  <data name="Setup.Description" xml:space="preserve"><value>Esta conta é usada para o {0} e para configurar a autenticação via Microsoft Entra ID. Após a configuração, todos os usuários entrarão com suas contas Microsoft.</value></data>
+  <data name="Setup.DescriptionBoldPart" xml:space="preserve"><value>primeiro acesso</value></data>
+  <data name="Setup.FullName" xml:space="preserve"><value>Nome completo</value></data>
+  <data name="Setup.FullNamePlaceholder" xml:space="preserve"><value>Ex: João Silva</value></data>
+  <data name="Setup.EmailPlaceholder" xml:space="preserve"><value>admin@empresa.com</value></data>
+  <data name="Setup.PasswordPlaceholder" xml:space="preserve"><value>Mínimo 8 caracteres</value></data>
+  <data name="Setup.ConfirmPassword" xml:space="preserve"><value>Confirmar senha</value></data>
+  <data name="Setup.ConfirmPasswordPlaceholder" xml:space="preserve"><value>Repita a senha</value></data>
+  <data name="Setup.Submit" xml:space="preserve"><value>Criar conta e continuar</value></data>
+  <data name="Setup.FooterHint" xml:space="preserve"><value>Após criar a conta, você configurará a integração com o {0} para que os demais usuários autentiquem com suas contas Microsoft.</value></data>
+  <data name="Setup.FooterNote" xml:space="preserve"><value>Prompteer · Configuração executada apenas uma vez</value></data>
+
+  <!-- ── PromptGenerator Step subtitles ──────────────────────────────────── -->
+  <data name="PromptGenerator.Step3.Subtitle" xml:space="preserve"><value>Defina o nome, descrição e tecnologias do projeto.</value></data>
+  <data name="PromptGenerator.Step4.Subtitle" xml:space="preserve"><value>Defina os padrões arquiteturais, pacotes necessários e convenções de código.</value></data>
+  <data name="PromptGenerator.Step5.Subtitle" xml:space="preserve"><value>Configure os destinos de implantação, estratégia de branches e CI/CD.</value></data>
+  <data name="PromptGenerator.Step6.Subtitle" xml:space="preserve"><value>Configure a estratégia de testes do projeto.</value></data>
+  <data name="PromptGenerator.Step7.Subtitle" xml:space="preserve"><value>Defina os módulos do sistema e seus itens. Arraste para reordenar.</value></data>
+  <data name="PromptGenerator.Step8.Subtitle" xml:space="preserve"><value>Defina as regras de comportamento e restrições do agente.</value></data>
+  <data name="PromptGenerator.Step9.Subtitle" xml:space="preserve"><value>Revise o prompt gerado, copie ou salve como template.</value></data>
+
+  <!-- ── Templates Compare ───────────────────────────────────────────────── -->
+  <data name="Templates.Compare.DifferencesBetween" xml:space="preserve"><value>Diferenças entre v{0} e v{1}</value></data>
+  <data name="PromptGenerator.StepName.Agent" xml:space="preserve"><value>Agente</value></data>
+  <data name="PromptGenerator.StepName.Backlog" xml:space="preserve"><value>Backlog</value></data>
+  <data name="PromptGenerator.StepName.Project" xml:space="preserve"><value>Projeto</value></data>
+  <data name="PromptGenerator.StepName.Architecture" xml:space="preserve"><value>Arquitetura</value></data>
+  <data name="PromptGenerator.StepName.Environment" xml:space="preserve"><value>Ambiente</value></data>
+  <data name="PromptGenerator.StepName.Tests" xml:space="preserve"><value>Testes</value></data>
+  <data name="PromptGenerator.StepName.Modules" xml:space="preserve"><value>Módulos</value></data>
+  <data name="PromptGenerator.StepName.Rules" xml:space="preserve"><value>Regras</value></data>
+  <data name="PromptGenerator.StepName.Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="ArchitecturalPatterns.DescriptionPlaceholder" xml:space="preserve"><value>Descreva o padrão arquitetural e seu uso...</value></data>
+  <data name="Technologies.ShortDescriptionPlaceholder" xml:space="preserve"><value>Breve descrição opcional...</value></data>
+  <data name="AgentProfiles.NamePlaceholder" xml:space="preserve"><value>Ex: Arquiteto .NET Sênior</value></data>
+  <data name="AgentProfiles.RolePlaceholder" xml:space="preserve"><value>Descreva o papel e responsabilidades deste agente...</value></data>
+  <data name="AgentProfiles.KnowledgeDomainPlaceholder" xml:space="preserve"><value>Ex: Arquitetura de software, padrões de projeto, .NET</value></data>
+  <data name="AgentProfiles.ConstraintsPlaceholder" xml:space="preserve"><value>Descreva as restrições e diretrizes padrão para este agente...</value></data>
+</root>

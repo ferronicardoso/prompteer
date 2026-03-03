@@ -2,7 +2,7 @@
 @using System.Text.Json
 @model PagedResult<PromptTemplateSummaryDto>
 @{
-    ViewData["Title"] = "Templates de Prompt";
+    ViewData["Title"] = "Prompt Templates";
     var search = ViewData["Search"]?.ToString() ?? "";
     ImportResultDto? importResult = null;
     if (TempData["ImportResult"] is string ir)
@@ -13,24 +13,24 @@
     @* Header *@
     <div class="flex items-center justify-between flex-wrap gap-3">
         <div>
-            <h1 class="text-xl font-semibold text-slate-900">Templates de Prompt</h1>
-            <p class="text-sm text-slate-500 mt-0.5">Gerencie seus templates de prompt gerados pelo wizard</p>
+            <h1 class="text-xl font-semibold text-slate-900">@L["Templates.Title"]</h1>
+            <p class="text-sm text-slate-500 mt-0.5">@L["Templates.Subtitle"]</p>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
             <a asp-action="Import"
                class="btn btn-secondary">
                 <i data-lucide="upload" class="w-4 h-4"></i>
-                Importar
+                @L["Templates.Import"]
             </a>
             <a asp-action="ExportAll"
                class="btn btn-secondary"
-               title="Exportar todos os templates como JSON">
+               title="@L["Templates.ExportAllTitle"]">
                 <i data-lucide="download" class="w-4 h-4"></i>
-                Exportar todos
+                @L["Templates.ExportAll"]
             </a>
             <a asp-controller="PromptGenerator" asp-action="Index" class="btn btn-primary">
                 <i data-lucide="plus" class="w-4 h-4"></i>
-                Novo Template
+                @L["Templates.NewTemplate"]
             </a>
         </div>
     </div>
@@ -44,8 +44,8 @@
                 <i data-lucide="check-circle" class="w-5 h-5 flex-shrink-0 mt-0.5 text-green-600"></i>
                 <div>
                     <p class="font-semibold">
-                        @importResult.Imported template(s) importado(s) com sucesso
-                        @if (importResult.Skipped > 0) { <text>· @importResult.Skipped ignorado(s) (duplicado)</text> }
+                        @importResult.Imported @L["Templates.ImportResult.Success"]
+                        @if (importResult.Skipped > 0) { <text>· @importResult.Skipped @L["Templates.ImportResult.Skipped"]</text> }
                     </p>
                     @if (importResult.ImportedNames.Any())
                     {
@@ -59,7 +59,7 @@
             <div class="flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
                 <i data-lucide="alert-circle" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
                 <div>
-                    <p class="font-semibold">Erro(s) durante a importação</p>
+                    <p class="font-semibold">@L["Templates.ImportResult.Errors"]</p>
                     <ul class="list-disc list-inside mt-1 space-y-0.5">
                         @foreach (var e in importResult.Errors)
                         {
@@ -73,7 +73,7 @@
         {
             <div class="flex items-center gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 text-sm">
                 <i data-lucide="alert-triangle" class="w-5 h-5 flex-shrink-0"></i>
-                <p>@importResult.Skipped template(s) ignorado(s) pois já existem com o mesmo nome.</p>
+                <p>@importResult.Skipped @L["Templates.ImportResult.AllSkipped"]</p>
             </div>
         }
     }
@@ -83,13 +83,13 @@
         <div class="relative flex-1 max-w-sm">
             <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
             <input type="text" name="search" value="@search"
-                   placeholder="Buscar por nome ou descrição..."
+                   placeholder="@L["Templates.SearchPlaceholder"]"
                    class="form-input pl-9 w-full" />
         </div>
-        <button type="submit" class="btn btn-secondary">Filtrar</button>
+        <button type="submit" class="btn btn-secondary">@L["Common.Filter"]</button>
         @if (!string.IsNullOrEmpty(search))
         {
-            <a asp-action="Index" class="btn btn-ghost">Limpar</a>
+            <a asp-action="Index" class="btn btn-ghost">@L["Common.Clear"]</a>
         }
     </form>
 
@@ -99,8 +99,8 @@
         {
             <div class="text-center py-16">
                 <i data-lucide="file-text" class="w-10 h-10 text-slate-300 mx-auto mb-3"></i>
-                <p class="text-sm text-slate-500">Nenhum template encontrado.</p>
-                <a asp-controller="PromptGenerator" asp-action="Index" class="btn btn-primary btn-sm mt-3">Criar primeiro template</a>
+                <p class="text-sm text-slate-500">@L["Templates.NoResults"]</p>
+                <a asp-controller="PromptGenerator" asp-action="Index" class="btn btn-primary btn-sm mt-3">@L["Templates.CreateFirst"]</a>
             </div>
         }
         else
@@ -108,11 +108,11 @@
             <table class="w-full text-sm">
                 <thead>
                     <tr class="border-b border-slate-200 bg-slate-50">
-                        <th class="text-left px-4 py-3 font-medium text-slate-600">Nome</th>
-                        <th class="text-left px-4 py-3 font-medium text-slate-600">Descrição</th>
-                        <th class="text-left px-4 py-3 font-medium text-slate-600">Versão</th>
-                        <th class="text-left px-4 py-3 font-medium text-slate-600">Tecnologias</th>
-                        <th class="text-left px-4 py-3 font-medium text-slate-600">Atualizado</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">@L["Templates.Name"]</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">@L["Templates.Description"]</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">@L["Common.Version"]</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">@L["Templates.Technologies"]</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">@L["Common.Updated"]</th>
                         <th class="px-4 py-3"></th>
                     </tr>
                 </thead>
@@ -146,21 +146,21 @@
                             <td class="px-4 py-3">
                                 <div class="flex items-center justify-end gap-1">
                                     <!-- Edit -->
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-ghost btn-sm" title="Editar no wizard">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-ghost btn-sm" title="@L["Dashboard.EditInWizard"]">
                                         <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
-                                        Editar
+                                        @L["Common.Edit"]
                                     </a>
 
                                     <!-- Clone trigger -->
-                                    <button type="button" @@click="cloneOpen = true" class="btn btn-ghost btn-sm" title="Clonar template">
+                                    <button type="button" @@click="cloneOpen = true" class="btn btn-ghost btn-sm" title="@L["Templates.CloneTemplate"]">
                                         <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                                        Clonar
+                                        @L["Common.Clone"]
                                     </button>
 
                                     <!-- Delete trigger -->
-                                    <button type="button" @@click="deleteOpen = true" class="btn btn-ghost btn-sm text-red-600 hover:text-red-700" title="Excluir template">
+                                    <button type="button" @@click="deleteOpen = true" class="btn btn-ghost btn-sm text-red-600 hover:text-red-700" title="@L["Templates.Delete.Title"]">
                                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                                        Excluir
+                                        @L["Common.Delete"]
                                     </button>
                                 </div>
 
@@ -169,16 +169,16 @@
                                      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
                                      @@keydown.escape.window="cloneOpen = false">
                                     <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm" @@click.stop>
-                                        <h3 class="text-base font-semibold text-slate-900 mb-4">Clonar template</h3>
+                                        <h3 class="text-base font-semibold text-slate-900 mb-4">@L["Templates.CloneTemplate"]</h3>
                                         <form asp-action="Clone" method="post">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="@item.Id" />
-                                            <label class="block text-sm font-medium text-slate-700 mb-1">Nome do clone</label>
-                                            <input type="text" name="newName" value="@(item.Name) (cópia)"
+                                            <label class="block text-sm font-medium text-slate-700 mb-1">@L["Templates.CloneName"]</label>
+                                            <input type="text" name="newName" value="@(item.Name) @L["Templates.CloneSuffix"].Value"
                                                    class="form-input w-full mb-4" required />
                                             <div class="flex justify-end gap-2">
-                                                <button type="button" @@click="cloneOpen = false" class="btn btn-ghost">Cancelar</button>
-                                                <button type="submit" class="btn btn-primary">Clonar</button>
+                                                <button type="button" @@click="cloneOpen = false" class="btn btn-ghost">@L["Common.Cancel"]</button>
+                                                <button type="submit" class="btn btn-primary">@L["Common.Clone"]</button>
                                             </div>
                                         </form>
                                     </div>
@@ -189,16 +189,16 @@
                                      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
                                      @@keydown.escape.window="deleteOpen = false">
                                     <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-sm" @@click.stop>
-                                        <h3 class="text-base font-semibold text-slate-900 mb-2">Excluir template</h3>
+                                        <h3 class="text-base font-semibold text-slate-900 mb-2">@L["Templates.Delete.Title"]</h3>
                                         <p class="text-sm text-slate-500 mb-4">
-                                            Tem certeza que deseja excluir <strong>@item.Name</strong>? Esta ação não pode ser desfeita.
+                                            @string.Format(L["Templates.Delete.Warning"], item.Name)
                                         </p>
                                         <div class="flex justify-end gap-2">
-                                            <button type="button" @@click="deleteOpen = false" class="btn btn-ghost">Cancelar</button>
+                                            <button type="button" @@click="deleteOpen = false" class="btn btn-ghost">@L["Common.Cancel"]</button>
                                             <form asp-action="Delete" method="post">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="id" value="@item.Id" />
-                                                <button type="submit" class="btn btn-danger">Excluir</button>
+                                                <button type="submit" class="btn btn-danger">@L["Common.Delete"]</button>
                                             </form>
                                         </div>
                                     </div>

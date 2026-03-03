@@ -1,23 +1,23 @@
 @using Prompteer.Web.Models
 @model WizardViewModel
 @{
-    ViewData["Title"] = "Gerador de Prompts — Passo 8: Regras";
+    ViewData["Title"] = "Prompt Generator — Step 8: Rules";
     var ruleFlags = Model.Data.RuleFlags;
     var predefinedRules = new[]
     {
-        "Planeje antes de codar",
-        "Confirme após cada módulo implementado",
-        "Nunca pule etapas sem confirmação",
-        "Pergunte antes de implementar ambiguidades",
-        "Não modifique arquivos não relacionados à tarefa",
-        "Siga rigorosamente os padrões definidos"
+        "Plan before coding",
+        "Confirm after each implemented module",
+        "Never skip steps without confirmation",
+        "Ask before implementing ambiguities",
+        "Do not modify files unrelated to the task",
+        "Strictly follow the defined patterns"
     };
     var ruleSuggestions = new[]
     {
-        "Utilize comentários apenas quando necessário para clareza.",
-        "Prefira soluções simples e diretas — sem over-engineering.",
-        "Crie testes para cada funcionalidade implementada.",
-        "Documente decisões arquiteturais importantes."
+        "Use comments only when necessary for clarity.",
+        "Prefer simple and direct solutions — no over-engineering.",
+        "Create tests for each implemented feature.",
+        "Document important architectural decisions."
     };
 }
 
@@ -25,8 +25,8 @@
     <partial name="_StepLayout" model="Model" />
 
     <div class="mb-6">
-        <h1 class="text-xl font-semibold text-slate-900">Passo 8 — Regras</h1>
-        <p class="text-sm text-slate-500 mt-1">Defina as regras de comportamento e restrições do agente.</p>
+        <h1 class="text-xl font-semibold text-slate-900">Step 8 — Rules</h1>
+        <p class="text-sm text-slate-500 mt-1">@L["PromptGenerator.Step8.Subtitle"]</p>
     </div>
 
     <form method="post" asp-action="Step" asp-route-step="8" asp-route-draftId="@Model.DraftId">
@@ -35,7 +35,7 @@
         <div class="card space-y-6">
             <!-- Predefined Rule Flags -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-3">Regras de Comportamento</label>
+                <label class="block text-sm font-medium text-slate-700 mb-3">Behavior Rules</label>
                 <div class="space-y-3">
                     @foreach (var rule in predefinedRules)
                     {
@@ -51,9 +51,9 @@
 
             <!-- Additional Rules -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Regras Adicionais</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Additional Rules</label>
                 <textarea id="additionalRules" name="AdditionalRules" rows="6" class="form-textarea w-full"
-                          placeholder="Adicione regras personalizadas aqui...">@Model.Data.AdditionalRules</textarea>
+                          placeholder="Add custom rules here...">@Model.Data.AdditionalRules</textarea>
                 <div class="flex flex-wrap gap-2 mt-2">
                     @foreach (var s in ruleSuggestions)
                     {
@@ -73,7 +73,7 @@
             </button>
             <button type="submit" class="btn btn-primary">
                 <i data-lucide="wand-2" class="w-4 h-4"></i>
-                Gerar Prompt
+                Generate Prompt
             </button>
         </div>
     </form>

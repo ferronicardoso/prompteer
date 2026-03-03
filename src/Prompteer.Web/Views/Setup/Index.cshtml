@@ -1,6 +1,6 @@
 @model Prompteer.Web.Models.SetupViewModel
 @{
-    ViewData["Title"] = "Configuração Inicial";
+    ViewData["Title"] = L["Setup.Title"].Value;
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
@@ -25,8 +25,8 @@
                         <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
                     </div>
                     <div>
-                        <h1 class="text-lg font-bold text-white">Configuração Inicial</h1>
-                        <p class="text-indigo-200 text-sm mt-0.5">Crie a conta de administrador para começar</p>
+                        <h1 class="text-lg font-bold text-white">@L["Setup.Title"]</h1>
+                        <p class="text-indigo-200 text-sm mt-0.5">@L["Setup.Subtitle"]</p>
                     </div>
                 </div>
 
@@ -34,7 +34,7 @@
                 <div class="flex items-center gap-2 mt-5">
                     <div class="flex items-center gap-1.5">
                         <div class="w-6 h-6 rounded-full bg-white text-indigo-600 text-xs font-bold flex items-center justify-center">1</div>
-                        <span class="text-white text-xs font-medium">Admin</span>
+                        <span class="text-white text-xs font-medium">@L["Setup.Step1"]</span>
                     </div>
                     <div class="flex-1 h-px bg-white/30 mx-1"></div>
                     <div class="flex items-center gap-1.5">
@@ -44,7 +44,7 @@
                     <div class="flex-1 h-px bg-white/30 mx-1"></div>
                     <div class="flex items-center gap-1.5">
                         <div class="w-6 h-6 rounded-full bg-white/20 text-white text-xs font-bold flex items-center justify-center">3</div>
-                        <span class="text-indigo-200 text-xs">Pronto</span>
+                        <span class="text-indigo-200 text-xs">@L["Setup.Step3"]</span>
                     </div>
                 </div>
             </div>
@@ -52,8 +52,7 @@
             @* Form *@
             <div class="px-8 py-7">
                 <p class="text-sm text-slate-500 mb-6">
-                    Esta conta é usada para o <strong>primeiro acesso</strong> e para configurar a autenticação via Microsoft Entra ID.
-                    Após a configuração, todos os usuários entrarão com suas contas Microsoft.
+                    @Html.Raw(string.Format(L["Setup.Description"].Value, "<strong>" + L["Setup.DescriptionBoldPart"].Value + "</strong>"))
                 </p>
 
                 <form asp-action="Index" method="post" class="space-y-4" novalidate>
@@ -65,10 +64,10 @@
                     @* Display Name *@
                     <div>
                         <label asp-for="DisplayName" class="block text-sm font-medium text-slate-700 mb-1.5">
-                            Nome completo
+                            @L["Setup.FullName"]
                         </label>
                         <input asp-for="DisplayName"
-                               placeholder="Ex: João Silva"
+                               placeholder="@L["Setup.FullNamePlaceholder"].Value"
                                autocomplete="name"
                                class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
                         <span asp-validation-for="DisplayName" class="text-xs text-red-600 mt-1 block"></span>
@@ -77,11 +76,11 @@
                     @* Email *@
                     <div>
                         <label asp-for="Email" class="block text-sm font-medium text-slate-700 mb-1.5">
-                            E-mail
+                            @L["Login.Email"]
                         </label>
                         <input asp-for="Email"
                                type="email"
-                               placeholder="admin@empresa.com"
+                               placeholder="@L["Setup.EmailPlaceholder"].Value"
                                autocomplete="email"
                                class="w-full px-3.5 py-2.5 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
                         <span asp-validation-for="Email" class="text-xs text-red-600 mt-1 block"></span>
@@ -90,12 +89,12 @@
                     @* Password *@
                     <div>
                         <label asp-for="Password" class="block text-sm font-medium text-slate-700 mb-1.5">
-                            Senha
+                            @L["Login.Password"]
                         </label>
                         <div class="relative" x-data="{ show: false }">
                             <input asp-for="Password"
                                    :type="show ? 'text' : 'password'"
-                                   placeholder="Mínimo 8 caracteres"
+                                   placeholder="@L["Setup.PasswordPlaceholder"].Value"
                                    autocomplete="new-password"
                                    class="w-full px-3.5 py-2.5 pr-10 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
                             <button type="button" @@click="show = !show"
@@ -109,12 +108,12 @@
                     @* Confirm Password *@
                     <div>
                         <label asp-for="ConfirmPassword" class="block text-sm font-medium text-slate-700 mb-1.5">
-                            Confirmar senha
+                            @L["Setup.ConfirmPassword"]
                         </label>
                         <div class="relative" x-data="{ show: false }">
                             <input asp-for="ConfirmPassword"
                                    :type="show ? 'text' : 'password'"
-                                   placeholder="Repita a senha"
+                                   placeholder="@L["Setup.ConfirmPasswordPlaceholder"].Value"
                                    autocomplete="new-password"
                                    class="w-full px-3.5 py-2.5 pr-10 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition" />
                             <button type="button" @@click="show = !show"
@@ -128,7 +127,7 @@
                     <button type="submit"
                             class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-sm mt-2">
                         <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        Criar conta e continuar
+                        @L["Setup.Submit"]
                     </button>
                 </form>
             </div>
@@ -138,16 +137,14 @@
                 <div class="flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-50 border border-amber-200">
                     <i data-lucide="info" class="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5"></i>
                     <p class="text-xs text-amber-700">
-                        Após criar a conta, você configurará a integração com o
-                        <strong>Microsoft Entra ID</strong> para que os demais usuários
-                        autentiquem com suas contas Microsoft.
+                        @Html.Raw(string.Format(L["Setup.FooterHint"].Value, "<strong>Microsoft Entra ID</strong>"))
                     </p>
                 </div>
             </div>
         </div>
 
         <p class="text-center text-xs text-slate-400 mt-6">
-            Prompteer · Configuração executada apenas uma vez
+            @L["Setup.FooterNote"]
         </p>
     </div>
 </div>

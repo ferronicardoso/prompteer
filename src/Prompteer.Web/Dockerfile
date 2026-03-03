@@ -56,5 +56,9 @@ EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080 \
     ASPNETCORE_ENVIRONMENT=Production \
     DOTNET_RUNNING_IN_CONTAINER=true
+# Optional localisation overrides:
+#   TZ          – IANA timezone (e.g. America/Sao_Paulo). Sets the system clock timezone.
+#   APP_LANGUAGE – UI language: "en" (default) or "pt-BR".
+# Example: docker run -e TZ=America/Sao_Paulo -e APP_LANGUAGE=pt-BR ...
 
 ENTRYPOINT ["dotnet", "Prompteer.Web.dll"]

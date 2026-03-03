@@ -26,92 +26,92 @@ public static class DatabaseSeeder
         {
             new()
             {
-                Name = "Arquiteto Full-Stack .NET",
-                Role = "Você é um arquiteto de software e desenvolvedor full-stack sênior especialista no ecossistema .NET",
+                Name = "Full-Stack .NET Architect",
+                Role = "You are a senior software architect and full-stack developer specializing in the .NET ecosystem",
                 KnowledgeDomain = "ASP.NET Core, Entity Framework Core, Clean Architecture, DDD, microservices, Azure",
                 Tone = ToneType.Technical,
-                DefaultConstraints = "Prefira soluções pragmáticas e evite over-engineering. Siga as convenções do ecossistema .NET. Escreva código limpo, testável e bem documentado quando necessário.",
+                DefaultConstraints = "Prefer pragmatic solutions and avoid over-engineering. Follow .NET ecosystem conventions. Write clean, testable and well-documented code when necessary.",
                 IsSystemDefault = true
             },
             new()
             {
-                Name = "Especialista DevOps & Infraestrutura",
-                Role = "Você é um engenheiro DevOps sênior especialista em automação de infraestrutura e pipelines CI/CD",
-                KnowledgeDomain = "Docker, Kubernetes, Terraform, GitHub Actions, Azure DevOps, GitLab CI, observabilidade",
+                Name = "DevOps & Infrastructure Specialist",
+                Role = "You are a senior DevOps engineer specializing in infrastructure automation and CI/CD pipelines",
+                KnowledgeDomain = "Docker, Kubernetes, Terraform, GitHub Actions, Azure DevOps, GitLab CI, observability",
                 Tone = ToneType.Direct,
-                DefaultConstraints = "Priorize automação, segurança e reprodutibilidade. Siga as melhores práticas de IaC. Todos os scripts devem ser idempotentes.",
+                DefaultConstraints = "Prioritize automation, security and reproducibility. Follow IaC best practices. All scripts must be idempotent.",
                 IsSystemDefault = true
             },
             new()
             {
-                Name = "Desenvolvedor Frontend (React/Vue)",
-                Role = "Você é um desenvolvedor frontend sênior especialista em interfaces modernas e responsivas",
-                KnowledgeDomain = "React, Vue.js, TypeScript, Tailwind CSS, Vite, acessibilidade, performance web",
+                Name = "Frontend Developer (React/Vue)",
+                Role = "You are a senior frontend developer specializing in modern and responsive interfaces",
+                KnowledgeDomain = "React, Vue.js, TypeScript, Tailwind CSS, Vite, accessibility, web performance",
                 Tone = ToneType.Didactic,
-                DefaultConstraints = "Priorize acessibilidade (WCAG 2.1), performance e experiência do usuário. Use TypeScript sempre. Componentes devem ser reutilizáveis e testáveis.",
+                DefaultConstraints = "Prioritize accessibility (WCAG 2.1), performance and user experience. Always use TypeScript. Components must be reusable and testable.",
                 IsSystemDefault = true
             },
             new()
             {
-                Name = "Desenvolvedor Backend API REST",
-                Role = "Você é um desenvolvedor backend sênior especialista em APIs RESTful e microsserviços",
-                KnowledgeDomain = "REST, gRPC, OpenAPI, autenticação JWT/OAuth2, rate limiting, versionamento de API",
+                Name = "Backend REST API Developer",
+                Role = "You are a senior backend developer specializing in RESTful APIs and microservices",
+                KnowledgeDomain = "REST, gRPC, OpenAPI, JWT/OAuth2 authentication, rate limiting, API versioning",
                 Tone = ToneType.Technical,
-                DefaultConstraints = "Siga os princípios REST. Documente todos os endpoints com OpenAPI. Implemente tratamento de erros padronizado (RFC 7807). Priorize segurança.",
+                DefaultConstraints = "Follow REST principles. Document all endpoints with OpenAPI. Implement standardized error handling (RFC 7807). Prioritize security.",
                 IsSystemDefault = true
             },
             new()
             {
-                Name = "Administrador de Banco de Dados",
-                Role = "Você é um DBA sênior especialista em modelagem de dados, performance e administração de bancos relacionais e NoSQL",
-                KnowledgeDomain = "PostgreSQL, SQL Server, MongoDB, Redis, modelagem relacional, índices, particionamento, replicação",
+                Name = "Database Administrator",
+                Role = "You are a senior DBA specializing in data modeling, performance and administration of relational and NoSQL databases",
+                KnowledgeDomain = "PostgreSQL, SQL Server, MongoDB, Redis, relational modeling, indexes, partitioning, replication",
                 Tone = ToneType.Detailed,
-                DefaultConstraints = "Sempre considere performance e índices. Documente o schema. Evite queries N+1. Use transações adequadamente. Prefira migrações incrementais e reversíveis.",
+                DefaultConstraints = "Always consider performance and indexes. Document the schema. Avoid N+1 queries. Use transactions appropriately. Prefer incremental and reversible migrations.",
                 IsSystemDefault = true
             },
             new()
             {
-                Name = "Especialista em Segurança",
-                Role = "Você é um especialista em segurança de aplicações (AppSec) com foco em desenvolvimento seguro",
-                KnowledgeDomain = "OWASP Top 10, SAST/DAST, autenticação, autorização, criptografia, secrets management",
+                Name = "Security Specialist",
+                Role = "You are an application security specialist (AppSec) focused on secure development",
+                KnowledgeDomain = "OWASP Top 10, SAST/DAST, authentication, authorization, encryption, secrets management",
                 Tone = ToneType.Direct,
-                DefaultConstraints = "Nunca armazene segredos em código. Siga o princípio do menor privilégio. Valide todas as entradas. Trate dados sensíveis com cuidado e documente decisões de segurança.",
+                DefaultConstraints = "Never store secrets in code. Follow the principle of least privilege. Validate all inputs. Handle sensitive data carefully and document security decisions.",
                 IsSystemDefault = true
             },
             new()
             {
-                Name = "Redator Técnico / Documentação",
-                Role = "Você é um redator técnico sênior especialista em documentação de software e APIs",
+                Name = "Technical Writer / Documentation",
+                Role = "You are a senior technical writer specializing in software and API documentation",
                 KnowledgeDomain = "Markdown, OpenAPI/Swagger, diagramas C4/PlantUML, wikis, runbooks, ADRs",
                 Tone = ToneType.Didactic,
-                DefaultConstraints = "Escreva de forma clara e objetiva. Use exemplos concretos. Documente o porquê, não apenas o como. Mantenha a documentação sincronizada com o código.",
+                DefaultConstraints = "Write clearly and objectively. Use concrete examples. Document the why, not just the how. Keep documentation in sync with the code.",
                 IsSystemDefault = true
             },
             new()
             {
-                Name = "Engenheiro de QA & Testes",
-                Role = "Você é um engenheiro de qualidade sênior especialista em estratégias e automação de testes",
-                KnowledgeDomain = "testes unitários, de integração, E2E, TDD, BDD, xUnit, Playwright, Selenium, cobertura de código",
+                Name = "QA & Testing Engineer",
+                Role = "You are a senior quality engineer specializing in test strategies and automation",
+                KnowledgeDomain = "unit tests, integration tests, E2E, TDD, BDD, xUnit, Playwright, Selenium, code coverage",
                 Tone = ToneType.Detailed,
-                DefaultConstraints = "Siga a pirâmide de testes. Escreva testes legíveis com arrange/act/assert. Testes devem ser independentes e determinísticos. Documente casos de borda.",
+                DefaultConstraints = "Follow the testing pyramid. Write readable tests with arrange/act/assert. Tests must be independent and deterministic. Document edge cases.",
                 IsSystemDefault = true
             },
             new()
             {
-                Name = "Engenheiro de Dados Python",
-                Role = "Você é um engenheiro de dados sênior especialista em pipelines de dados e análise com Python",
+                Name = "Python Data Engineer",
+                Role = "You are a senior data engineer specializing in data pipelines and analysis with Python",
                 KnowledgeDomain = "Python, pandas, PySpark, Airflow, dbt, data lakes, PostgreSQL, SQLAlchemy",
                 Tone = ToneType.Technical,
-                DefaultConstraints = "Priorize pipelines idempotentes e rastreáveis. Use tipagem com mypy. Documente transformações de dados. Considere volume e latência em cada decisão.",
+                DefaultConstraints = "Prioritize idempotent and traceable pipelines. Use typing with mypy. Document data transformations. Consider volume and latency in every decision.",
                 IsSystemDefault = true
             },
             new()
             {
-                Name = "Desenvolvedor Mobile (Flutter/React Native)",
-                Role = "Você é um desenvolvedor mobile sênior especialista em aplicações multiplataforma",
-                KnowledgeDomain = "Flutter, Dart, React Native, TypeScript, state management, integração com APIs REST, App Store / Google Play",
+                Name = "Mobile Developer (Flutter/React Native)",
+                Role = "You are a senior mobile developer specializing in cross-platform applications",
+                KnowledgeDomain = "Flutter, Dart, React Native, TypeScript, state management, REST API integration, App Store / Google Play",
                 Tone = ToneType.Didactic,
-                DefaultConstraints = "Priorize performance e experiência nativa. Implemente tratamento de estado offline. Siga as diretrizes de UI do Material Design e Human Interface Guidelines.",
+                DefaultConstraints = "Prioritize performance and native experience. Implement offline state handling. Follow Material Design and Human Interface Guidelines UI guidelines.",
                 IsSystemDefault = true
             }
         };
@@ -120,7 +120,7 @@ public static class DatabaseSeeder
         await db.SaveChangesAsync();
     }
 
-    // ─── Tecnologias ─────────────────────────────────────────────────────────
+    // ─── Technologies ─────────────────────────────────────────────────────────
     private static async Task SeedTechnologiesAsync(AppDbContext db)
     {
         if (await db.Technologies.IgnoreQueryFilters().AnyAsync()) return;
@@ -128,76 +128,76 @@ public static class DatabaseSeeder
         var techs = new List<Technology>
         {
             // .NET Framework
-            new() { Name = ".NET 10", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Plataforma .NET de alta performance da Microsoft", IsSystemDefault = true },
-            new() { Name = "ASP.NET Core MVC", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Framework web MVC para .NET", IsSystemDefault = true },
-            new() { Name = "ASP.NET Core Web API", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Framework para APIs RESTful em .NET", IsSystemDefault = true },
-            new() { Name = "Blazor", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Framework web interativo com C# para .NET", IsSystemDefault = true },
+            new() { Name = ".NET 10", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "High-performance .NET platform by Microsoft", IsSystemDefault = true },
+            new() { Name = "ASP.NET Core MVC", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "MVC web framework for .NET", IsSystemDefault = true },
+            new() { Name = "ASP.NET Core Web API", Category = TechCategory.Framework, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Framework for RESTful APIs in .NET", IsSystemDefault = true },
+            new() { Name = "Blazor", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Interactive web framework with C# for .NET", IsSystemDefault = true },
             // ORM
-            new() { Name = "Entity Framework Core", Category = TechCategory.ORM, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "ORM Code First para .NET", IsSystemDefault = true },
-            new() { Name = "Dapper", Category = TechCategory.ORM, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Micro ORM leve para .NET", IsSystemDefault = true },
+            new() { Name = "Entity Framework Core", Category = TechCategory.ORM, Ecosystem = TechEcosystem.DotNet, Version = "10", ShortDescription = "Code First ORM for .NET", IsSystemDefault = true },
+            new() { Name = "Dapper", Category = TechCategory.ORM, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Lightweight Micro ORM for .NET", IsSystemDefault = true },
             // Banco de dados
-            new() { Name = "PostgreSQL", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Banco relacional open-source robusto", IsSystemDefault = true },
-            new() { Name = "SQL Server", Category = TechCategory.Database, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Banco relacional da Microsoft", IsSystemDefault = true },
-            new() { Name = "MySQL", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Banco relacional open-source amplamente usado", IsSystemDefault = true },
-            new() { Name = "MongoDB", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Banco NoSQL orientado a documentos", IsSystemDefault = true },
-            new() { Name = "Redis", Category = TechCategory.Cache, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Cache in-memory e store de dados chave-valor", IsSystemDefault = true },
+            new() { Name = "PostgreSQL", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Robust open-source relational database", IsSystemDefault = true },
+            new() { Name = "SQL Server", Category = TechCategory.Database, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Microsoft relational database", IsSystemDefault = true },
+            new() { Name = "MySQL", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Widely used open-source relational database", IsSystemDefault = true },
+            new() { Name = "MongoDB", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Document-oriented NoSQL database", IsSystemDefault = true },
+            new() { Name = "Redis", Category = TechCategory.Cache, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "In-memory cache and key-value data store", IsSystemDefault = true },
             // Frontend
-            new() { Name = "Tailwind CSS", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Agnostic, Version = "3", ShortDescription = "Framework CSS utility-first", IsSystemDefault = true },
-            new() { Name = "React", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, ShortDescription = "Biblioteca JavaScript para UIs componentizadas", IsSystemDefault = true },
-            new() { Name = "Vue.js", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, Version = "3", ShortDescription = "Framework JavaScript progressivo", IsSystemDefault = true },
-            new() { Name = "Angular", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, ShortDescription = "Framework SPA completo da Google", IsSystemDefault = true },
-            new() { Name = "Alpine.js", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Agnostic, Version = "3", ShortDescription = "Framework JS leve para interatividade inline", IsSystemDefault = true },
+            new() { Name = "Tailwind CSS", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Agnostic, Version = "3", ShortDescription = "Utility-first CSS framework", IsSystemDefault = true },
+            new() { Name = "React", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, ShortDescription = "JavaScript library for component-based UIs", IsSystemDefault = true },
+            new() { Name = "Vue.js", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, Version = "3", ShortDescription = "Progressive JavaScript framework", IsSystemDefault = true },
+            new() { Name = "Angular", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Node, ShortDescription = "Full-featured SPA framework by Google", IsSystemDefault = true },
+            new() { Name = "Alpine.js", Category = TechCategory.Frontend, Ecosystem = TechEcosystem.Agnostic, Version = "3", ShortDescription = "Lightweight JS framework for inline interactivity", IsSystemDefault = true },
             // Node
-            new() { Name = "Node.js", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Node, ShortDescription = "Runtime JavaScript server-side", IsSystemDefault = true },
-            new() { Name = "NestJS", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Node, ShortDescription = "Framework Node.js progressivo com TypeScript", IsSystemDefault = true },
+            new() { Name = "Node.js", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Node, ShortDescription = "Server-side JavaScript runtime", IsSystemDefault = true },
+            new() { Name = "NestJS", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Node, ShortDescription = "Progressive Node.js framework with TypeScript", IsSystemDefault = true },
             // Python
-            new() { Name = "Python", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Python, ShortDescription = "Linguagem de programação versátil", IsSystemDefault = true },
-            new() { Name = "FastAPI", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Python, ShortDescription = "Framework web moderno e rápido para Python", IsSystemDefault = true },
+            new() { Name = "Python", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Python, ShortDescription = "Versatile programming language", IsSystemDefault = true },
+            new() { Name = "FastAPI", Category = TechCategory.Framework, Ecosystem = TechEcosystem.Python, ShortDescription = "Modern and fast web framework for Python", IsSystemDefault = true },
             // Mensageria
-            new() { Name = "RabbitMQ", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Message broker AMQP", IsSystemDefault = true },
-            new() { Name = "Azure Service Bus", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Serviço de mensageria gerenciado da Azure", IsSystemDefault = true },
-            new() { Name = "Kafka", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Plataforma de streaming de eventos distribuída", IsSystemDefault = true },
+            new() { Name = "RabbitMQ", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "AMQP message broker", IsSystemDefault = true },
+            new() { Name = "Azure Service Bus", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Managed messaging service from Azure", IsSystemDefault = true },
+            new() { Name = "Kafka", Category = TechCategory.Messaging, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Distributed event streaming platform", IsSystemDefault = true },
             // DevOps
-            new() { Name = "Docker", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Plataforma de containerização", IsSystemDefault = true },
-            new() { Name = "Kubernetes", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Orquestrador de containers", IsSystemDefault = true },
-            new() { Name = "GitHub Actions", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "CI/CD nativo do GitHub", IsSystemDefault = true },
-            new() { Name = "Azure DevOps", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Plataforma DevOps completa da Microsoft", IsSystemDefault = true },
-            new() { Name = "Terraform", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Infraestrutura como código (IaC)", IsSystemDefault = true },
+            new() { Name = "Docker", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Containerization platform", IsSystemDefault = true },
+            new() { Name = "Kubernetes", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Container orchestrator", IsSystemDefault = true },
+            new() { Name = "GitHub Actions", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Native CI/CD for GitHub", IsSystemDefault = true },
+            new() { Name = "Azure DevOps", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Complete DevOps platform by Microsoft", IsSystemDefault = true },
+            new() { Name = "Terraform", Category = TechCategory.DevOps, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Infrastructure as Code (IaC)", IsSystemDefault = true },
             // Testes
-            new() { Name = "xUnit", Category = TechCategory.Testing, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Framework de testes unitários para .NET", IsSystemDefault = true },
-            new() { Name = "NUnit", Category = TechCategory.Testing, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Framework de testes para .NET", IsSystemDefault = true },
-            new() { Name = "Playwright", Category = TechCategory.Testing, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Automação de testes E2E para web", IsSystemDefault = true },
-            new() { Name = "Elasticsearch", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Motor de busca e analytics distribuído", IsSystemDefault = true },
+            new() { Name = "xUnit", Category = TechCategory.Testing, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Unit testing framework for .NET", IsSystemDefault = true },
+            new() { Name = "NUnit", Category = TechCategory.Testing, Ecosystem = TechEcosystem.DotNet, ShortDescription = "Testing framework for .NET", IsSystemDefault = true },
+            new() { Name = "Playwright", Category = TechCategory.Testing, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "E2E test automation for web", IsSystemDefault = true },
+            new() { Name = "Elasticsearch", Category = TechCategory.Database, Ecosystem = TechEcosystem.Agnostic, ShortDescription = "Distributed search and analytics engine", IsSystemDefault = true },
         };
 
         await db.Technologies.AddRangeAsync(techs);
         await db.SaveChangesAsync();
     }
 
-    // ─── Padrões Arquiteturais ────────────────────────────────────────────────
+    // ─── Architectural Patterns ─────────────────────────────────────────────
     private static async Task SeedArchitecturalPatternsAsync(AppDbContext db)
     {
         if (await db.ArchitecturalPatterns.IgnoreQueryFilters().AnyAsync()) return;
 
         var patterns = new List<ArchitecturalPattern>
         {
-            new() { Name = "Clean Architecture", Description = "Separação em camadas (Domain, Application, Infrastructure, Presentation) com dependências apontando para o centro.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
-            new() { Name = "DDD (Domain-Driven Design)", Description = "Modelagem do software em torno do domínio de negócio com Aggregates, Entities, Value Objects e Domain Events.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
-            new() { Name = "CQRS", Description = "Separação entre comandos (escrita) e consultas (leitura), com handlers dedicados para cada operação.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
-            new() { Name = "Repository Pattern", Description = "Abstração da camada de acesso a dados atrás de interfaces, desacoplando a lógica de negócio da persistência.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
-            new() { Name = "Unit of Work", Description = "Agrupa múltiplas operações de banco em uma única transação, garantindo consistência.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
-            new() { Name = "Microservices", Description = "Arquitetura baseada em serviços independentes, com deploy autônomo, comunicando via APIs ou mensagens.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
-            new() { Name = "Event Sourcing", Description = "Persiste o estado da aplicação como uma sequência de eventos imutáveis, permitindo reconstrução do estado.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
-            new() { Name = "SAGA Pattern", Description = "Gerencia transações distribuídas através de uma sequência de transações locais com compensações em caso de falha.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
-            new() { Name = "BFF (Backend for Frontend)", Description = "Camada backend dedicada a cada tipo de cliente (web, mobile), otimizando as respostas para cada interface.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
-            new() { Name = "Hexagonal Architecture", Description = "Isola o núcleo da aplicação de infraestrutura externa via portas (interfaces) e adaptadores (implementações).", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Clean Architecture", Description = "Layer separation (Domain, Application, Infrastructure, Presentation) with dependencies pointing inward.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "DDD (Domain-Driven Design)", Description = "Software modeling around the business domain with Aggregates, Entities, Value Objects and Domain Events.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "CQRS", Description = "Separation between commands (write) and queries (read), with dedicated handlers for each operation.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Repository Pattern", Description = "Abstraction of the data access layer behind interfaces, decoupling business logic from persistence.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Unit of Work", Description = "Groups multiple database operations into a single transaction, ensuring consistency.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Microservices", Description = "Architecture based on independent services, with autonomous deployment, communicating via APIs or messages.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Event Sourcing", Description = "Persists application state as a sequence of immutable events, allowing state reconstruction.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "SAGA Pattern", Description = "Manages distributed transactions through a sequence of local transactions with compensations on failure.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "BFF (Backend for Frontend)", Description = "Dedicated backend layer for each client type (web, mobile), optimizing responses for each interface.", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
+            new() { Name = "Hexagonal Architecture", Description = "Isolates the application core from external infrastructure via ports (interfaces) and adapters (implementations).", Ecosystem = TechEcosystem.Agnostic, IsSystemDefault = true },
         };
 
         await db.ArchitecturalPatterns.AddRangeAsync(patterns);
         await db.SaveChangesAsync();
     }
 
-    // ─── Ferramentas de Backlog ───────────────────────────────────────────────
+    // ─── Backlog Tools ───────────────────────────────────────────────────────
     private static async Task SeedBacklogToolsAsync(AppDbContext db)
     {
         if (await db.BacklogTools.IgnoreQueryFilters().AnyAsync()) return;
@@ -209,16 +209,16 @@ public static class DatabaseSeeder
                 Name = "Backlog.md",
                 IsSystemDefault = true,
                 DefaultInstructions = """
-                    ## Gestão de Backlog (Backlog.md)
+                    ## Backlog Management (Backlog.md)
 
-                    Use o MCP do **Backlog.md** para todo o planejamento e gestão de tarefas:
+                    Use the **Backlog.md** MCP for all planning and task management:
 
-                    - Crie tarefas para cada módulo ou funcionalidade antes de iniciar a implementação
-                    - Registre épicos para agrupamentos lógicos de funcionalidades
-                    - Atualize o status das tarefas a cada avanço: To Do → In Progress → Done
-                    - Nunca inicie a implementação de um módulo sem que sua tarefa esteja criada
-                    - Ao concluir um módulo, marque a tarefa como Done antes de prosseguir
-                    - Use o campo `description` para registrar detalhes de implementação e decisões
+                    - Create tasks for each module or feature before starting implementation
+                    - Register epics for logical groupings of features
+                    - Update task status with each progress: To Do → In Progress → Done
+                    - Never start implementing a module without its task being created
+                    - When completing a module, mark the task as Done before proceeding
+                    - Use the `description` field to record implementation details and decisions
                     """
             },
             new()
@@ -226,15 +226,15 @@ public static class DatabaseSeeder
                 Name = "GitHub Issues",
                 IsSystemDefault = true,
                 DefaultInstructions = """
-                    ## Gestão de Backlog (GitHub Issues)
+                    ## Backlog Management (GitHub Issues)
 
-                    Use o **GitHub Issues** para rastreamento de tarefas:
+                    Use **GitHub Issues** for task tracking:
 
-                    - Crie uma issue para cada funcionalidade ou módulo
-                    - Use labels para categorizar: `feature`, `bug`, `enhancement`, `documentation`
-                    - Associe issues a milestones para organizar por versão/sprint
-                    - Referencie issues nos commits com `closes #123` para fechamento automático
-                    - Use o GitHub Project Board para visualizar o fluxo (To Do / In Progress / Done)
+                    - Create an issue for each feature or module
+                    - Use labels to categorize: `feature`, `bug`, `enhancement`, `documentation`
+                    - Associate issues with milestones to organize by version/sprint
+                    - Reference issues in commits with `closes #123` for automatic closing
+                    - Use the GitHub Project Board to visualize the flow (To Do / In Progress / Done)
                     """
             },
             new()
@@ -242,15 +242,15 @@ public static class DatabaseSeeder
                 Name = "Jira",
                 IsSystemDefault = true,
                 DefaultInstructions = """
-                    ## Gestão de Backlog (Jira)
+                    ## Backlog Management (Jira)
 
-                    Use o **Jira** para gerenciamento do projeto:
+                    Use **Jira** for project management:
 
-                    - Crie Epics para módulos principais e Stories para funcionalidades
-                    - Use o fluxo: Backlog → To Do → In Progress → Code Review → Done
-                    - Estime usando story points (Fibonacci)
-                    - Vincule commits e PRs às issues usando a chave do ticket (ex: PROJ-123)
-                    - Atualize o status da issue antes de iniciar e ao concluir cada tarefa
+                    - Create Epics for main modules and Stories for features
+                    - Use the flow: Backlog → To Do → In Progress → Code Review → Done
+                    - Estimate using story points (Fibonacci)
+                    - Link commits and PRs to issues using the ticket key (ex: PROJ-123)
+                    - Update the issue status before starting and when completing each task
                     """
             },
             new()
@@ -258,15 +258,15 @@ public static class DatabaseSeeder
                 Name = "Linear",
                 IsSystemDefault = true,
                 DefaultInstructions = """
-                    ## Gestão de Backlog (Linear)
+                    ## Backlog Management (Linear)
 
-                    Use o **Linear** para rastreamento ágil de tarefas:
+                    Use **Linear** for agile task tracking:
 
-                    - Crie issues no Linear para cada funcionalidade
-                    - Organize por ciclos (cycles) para sprints iterativas
-                    - Use prioridades: Urgent, High, Medium, Low
-                    - Vincule branches Git seguindo o padrão gerado pelo Linear
-                    - Atualize o status a cada mudança significativa no desenvolvimento
+                    - Create issues in Linear for each feature
+                    - Organize by cycles for iterative sprints
+                    - Use priorities: Urgent, High, Medium, Low
+                    - Link Git branches following the pattern generated by Linear
+                    - Update the status with each significant change in development
                     """
             },
             new()
@@ -274,15 +274,15 @@ public static class DatabaseSeeder
                 Name = "Trello",
                 IsSystemDefault = false,
                 DefaultInstructions = """
-                    ## Gestão de Backlog (Trello)
+                    ## Backlog Management (Trello)
 
-                    Use o **Trello** para organização visual:
+                    Use **Trello** for visual organization:
 
-                    - Crie cards no board para cada tarefa ou funcionalidade
-                    - Use as listas: Backlog, Em Andamento, Em Revisão, Concluído
-                    - Adicione checklists dentro dos cards para sub-tarefas
-                    - Use etiquetas (labels) para categorizar por tipo ou prioridade
-                    - Mova os cards conforme o progresso do desenvolvimento
+                    - Create cards on the board for each task or feature
+                    - Use lists: Backlog, In Progress, In Review, Done
+                    - Add checklists inside cards for sub-tasks
+                    - Use labels to categorize by type or priority
+                    - Move cards as development progresses
                     """
             },
             new()
@@ -290,15 +290,15 @@ public static class DatabaseSeeder
                 Name = "Azure DevOps Boards",
                 IsSystemDefault = false,
                 DefaultInstructions = """
-                    ## Gestão de Backlog (Azure DevOps Boards)
+                    ## Backlog Management (Azure DevOps Boards)
 
-                    Use o **Azure DevOps Boards** para gestão de trabalho:
+                    Use **Azure DevOps Boards** for work management:
 
-                    - Crie Work Items do tipo Epic, Feature e User Story conforme a hierarquia
-                    - Use o fluxo: New → Active → Resolved → Closed
-                    - Estime Story Points no campo de esforço
-                    - Vincule commits e PRs aos Work Items com `#<ID>` nas mensagens
-                    - Configure o board com colunas refletindo o fluxo da equipe
+                    - Create Work Items of type Epic, Feature and User Story according to hierarchy
+                    - Use the flow: New → Active → Resolved → Closed
+                    - Estimate Story Points in the effort field
+                    - Link commits and PRs to Work Items with `#<ID>` in messages
+                    - Configure the board with columns reflecting the team flow
                     """
             },
         };

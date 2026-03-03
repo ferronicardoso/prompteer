@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Localization;
 using Microsoft.Identity.Web;
 using Prompteer.Domain.Entities;
 using Prompteer.Domain.Enums;
@@ -24,19 +25,22 @@ public class AccountController : Controller
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IMemoryCache _cache;
     private readonly IConfiguration _config;
+    private readonly IStringLocalizer<SharedResource> _localizer;
 
     public AccountController(
         AppDbContext db,
         ICurrentUserService currentUser,
         IHttpClientFactory httpClientFactory,
         IMemoryCache cache,
-        IConfiguration config)
+        IConfiguration config,
+        IStringLocalizer<SharedResource> localizer)
     {
         _db = db;
         _currentUser = currentUser;
         _httpClientFactory = httpClientFactory;
         _cache = cache;
         _config = config;
+        _localizer = localizer;
     }
 
     // ── Login page ────────────────────────────────────────────────────────────
@@ -75,13 +79,13 @@ public class AccountController : Controller
 
         if (user is null || !PasswordHasher.Verify(model.Password, user.PasswordHash!))
         {
-            ModelState.AddModelError(string.Empty, "E-mail ou senha inválidos.");
+            ModelState.AddModelError(string.Empty, _localizer["Login.InvalidCredentials"].Value);
             return View("Login", model);
         }
 
         if (!user.IsActive)
         {
-            ModelState.AddModelError(string.Empty, "Sua conta está desativada.");
+            ModelState.AddModelError(string.Empty, _localizer["Login.AccountDisabled"].Value);
             return View("Login", model);
         }
 

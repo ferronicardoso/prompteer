@@ -2,7 +2,7 @@
 @using Prompteer.Application.DTOs
 @model WizardViewModel
 @{
-    ViewData["Title"] = "Gerador de Prompts — Passo 3: Projeto";
+    ViewData["Title"] = "Prompt Generator — Step 3: Project";
     var techGroups = Model.Technologies.GroupBy(t => t.CategoryDisplay).OrderBy(g => g.Key);
     var selectedTechIds = Model.Data.TechnologyIds.Select(id => id.ToString()).ToHashSet();
 }
@@ -11,8 +11,8 @@
     <partial name="_StepLayout" model="Model" />
 
     <div class="mb-6">
-        <h1 class="text-xl font-semibold text-slate-900">Passo 3 — Projeto</h1>
-        <p class="text-sm text-slate-500 mt-1">Defina o nome, descrição e as tecnologias do projeto.</p>
+        <h1 class="text-xl font-semibold text-slate-900">@L["PromptGenerator.Step3.Title"]</h1>
+        <p class="text-sm text-slate-500 mt-1">@L["PromptGenerator.Step3.Subtitle"]</p>
     </div>
 
     <form method="post" asp-action="Step" asp-route-step="3" asp-route-draftId="@Model.DraftId">
@@ -21,24 +21,24 @@
         <div class="card space-y-6">
             <!-- Project Name -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Nome do Projeto <span class="text-red-500">*</span></label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Project Name <span class="text-red-500">*</span></label>
                 <input type="text" name="ProjectName" value="@Model.Data.ProjectName" class="form-input w-full"
-                       placeholder="Ex: Sistema de Gestão de Pedidos" />
+                       placeholder="Ex: Order Management System" />
             </div>
 
             <!-- Project Description -->
             <div>
                 <div class="flex items-center justify-between mb-1">
-                    <label class="text-sm font-medium text-slate-700">Descrição do Projeto</label>
-                    <button type="button" onclick="aiGenerate('projectDescriptionField','ProjectDescription',{name:document.querySelector('[name=ProjectName]').value,technologies:Array.from(document.querySelectorAll('[name=TechnologyIds] option:checked')).map(o=>o.text).join(', ')},this)" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Gerar com IA</button>
+                    <label class="text-sm font-medium text-slate-700">Project Description</label>
+                    <button type="button" onclick="aiGenerate('projectDescriptionField','ProjectDescription',{name:document.querySelector('[name=ProjectName]').value,technologies:Array.from(document.querySelectorAll('[name=TechnologyIds] option:checked')).map(o=>o.text).join(', ')},this)" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> @L["Common.GenerateWithAI"]</button>
                 </div>
                 <textarea id="projectDescriptionField" name="ProjectDescription" rows="4" class="form-textarea w-full"
-                          placeholder="Descreva o objetivo e contexto do projeto...">@Model.Data.ProjectDescription</textarea>
+                          placeholder="Describe the project objective and context...">@Model.Data.ProjectDescription</textarea>
             </div>
 
             <!-- Technologies -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Tecnologias</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Technologies</label>
                 <select id="techSelect" name="TechnologyIds" multiple class="form-select w-full">
                     @foreach (var group in techGroups)
                     {
@@ -58,55 +58,55 @@
                 <button type="button" @@click="open = !open"
                         class="w-full flex items-center gap-2 px-4 py-3 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">
                     <i data-lucide="plus-circle" class="w-4 h-4 text-brand-600"></i>
-                    <span>Adicionar nova tecnologia</span>
+                    <span>Add new technology</span>
                     <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-auto transition-transform" :class="open && 'rotate-180'"></i>
                 </button>
                 <div x-show="open" x-collapse class="border-t border-slate-200 p-4 space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">Nome <span class="text-red-500">*</span></label>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">@L["Common.Name"] <span class="text-red-500">*</span></label>
                             <input id="newTechName" type="text" class="form-input w-full" placeholder="Ex: .NET, React, PostgreSQL" />
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">Versão</label>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">@L["Common.Version"]</label>
                             <input id="newTechVersion" type="text" class="form-input w-full" placeholder="Ex: 8.0, 18, 16" />
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">Categoria <span class="text-red-500">*</span></label>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">@L["Technologies.Category"] <span class="text-red-500">*</span></label>
                             <select id="newTechCategory" class="form-select w-full">
                                 <option value="0">Framework</option>
-                                <option value="1">Banco de Dados</option>
+                                <option value="1">Database</option>
                                 <option value="2">ORM</option>
                                 <option value="3">Frontend</option>
-                                <option value="4">Autenticação</option>
-                                <option value="5">Mensageria</option>
+                                <option value="4">Authentication</option>
+                                <option value="5">Messaging</option>
                                 <option value="6">Cache</option>
-                                <option value="7">Observabilidade</option>
+                                <option value="7">Observability</option>
                                 <option value="8">DevOps</option>
-                                <option value="9">Testes</option>
-                                <option value="11">Inteligência Artificial</option>
-                                <option value="10">Outro</option>
+                                <option value="9">Testing</option>
+                                <option value="11">Artificial Intelligence</option>
+                                <option value="10">Other</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">Ecossistema <span class="text-red-500">*</span></label>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">@L["Common.Ecosystem"] <span class="text-red-500">*</span></label>
                             <select id="newTechEcosystem" class="form-select w-full">
                                 <option value="0">.NET</option>
                                 <option value="1">Node.js</option>
                                 <option value="2">Python</option>
                                 <option value="3">Java</option>
-                                <option value="4">Agnóstico</option>
+                                <option value="4">Agnostic</option>
                             </select>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-slate-700 mb-1">Descrição Curta</label>
-                        <input id="newTechDesc" type="text" class="form-input w-full" placeholder="Breve descrição da tecnologia..." />
+                        <label class="block text-xs font-medium text-slate-700 mb-1">@L["Technologies.ShortDescription"]</label>
+                        <input id="newTechDesc" type="text" class="form-input w-full" placeholder="Brief description of the technology..." />
                     </div>
                     <div id="newTechError" class="hidden text-xs text-red-600"></div>
                     <button type="button" id="btnCreateTech" class="btn btn-primary text-sm">
                         <i data-lucide="save" class="w-3.5 h-3.5"></i>
-                        Adicionar Tecnologia
+                        Add Technology
                     </button>
                 </div>
             </div>
@@ -116,10 +116,10 @@
         <div class="flex items-center justify-between mt-6">
             <button type="submit" formaction="@Url.Action("Previous", new { step = 3, draftId = Model.DraftId })" class="btn btn-secondary">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                Voltar
+                @L["PromptGenerator.Back"]
             </button>
             <button type="submit" class="btn btn-primary">
-                Próximo
+                @L["PromptGenerator.Next"]
                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
         </div>
@@ -144,7 +144,7 @@
         const errEl = document.getElementById('newTechError');
 
         if (!name) {
-            errEl.textContent = 'Informe o nome da tecnologia.';
+            errEl.textContent = 'Enter the technology name.';
             errEl.classList.remove('hidden');
             return;
         }
@@ -168,7 +168,7 @@
             document.getElementById('newTechVersion').value = '';
             document.getElementById('newTechDesc').value = '';
         } catch {
-            errEl.textContent = 'Erro ao adicionar tecnologia. Tente novamente.';
+            errEl.textContent = 'Error adding technology. Please try again.';
             errEl.classList.remove('hidden');
         }
     });
