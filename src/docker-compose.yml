@@ -7,7 +7,7 @@ services:
     environment:
       POSTGRES_DB: prompteer
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD environment variable is required}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -30,7 +30,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ConnectionStrings__DefaultConnection: >-
-        Host=db;Port=5432;Database=prompteer;Username=postgres;Password=${POSTGRES_PASSWORD:-postgres}
+        Host=db;Port=5432;Database=prompteer;Username=postgres;Password=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD environment variable is required}
     ports:
       - "8080:8080"
 

@@ -1,5 +1,13 @@
 # Prompteer
 
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)](https://dotnet.microsoft.com/download)
+[![PostgreSQL 17](https://img.shields.io/badge/PostgreSQL-17-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/ferronicardoso/prompteer)
+[![Docker Hub](https://img.shields.io/docker/v/ferronicardoso/prompteer?label=Docker%20Hub&logo=docker)](https://hub.docker.com/r/ferronicardoso/prompteer)
+[![Docker Pulls](https://img.shields.io/docker/pulls/ferronicardoso/prompteer)](https://hub.docker.com/r/ferronicardoso/prompteer)
+[![GitHub Actions](https://github.com/ferronicardoso/prompteer/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/ferronicardoso/prompteer/actions/workflows/docker-publish.yml)
+
 A personal tool for generating structured prompts for AI agents (Claude Code, GitHub Copilot CLI, and similar). Prompteer guides you through a 9-step wizard, collects context about your project, tech stack, architecture, modules, and behavioral rules, and generates a ready-to-use Markdown prompt.
 
 ---
@@ -13,6 +21,7 @@ A personal tool for generating structured prompts for AI agents (Claude Code, Gi
 - [Project Structure](#project-structure)
 - [Domain Model](#domain-model)
 - [Prerequisites](#prerequisites)
+- [Quick Start — Docker Hub](#quick-start--docker-hub)
 - [Running with Docker](#running-with-docker)
 - [Running Locally](#running-locally)
 - [Environment Variables](#environment-variables)
@@ -315,14 +324,76 @@ AppSetting
 
 ---
 
+## Quick Start — Docker Hub
+
+The easiest way to run Prompteer is by pulling the pre-built image directly from Docker Hub — no local build required.
+
+### 1. Create a `docker-compose.yml`
+
+```yaml
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: prompteer
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d prompteer"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    image: ferronicardoso/prompteer:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: >-
+        Host=db;Port=5432;Database=prompteer;Username=postgres;Password=${POSTGRES_PASSWORD}
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
+```
+
+### 2. Start the application
+
+```bash
+# Set a strong password (required)
+export POSTGRES_PASSWORD=your_strong_password_here
+
+docker compose up -d
+```
+
+The application will be available at `http://localhost:8080`.
+
+On the first run, Prompteer redirects automatically to `/Setup` where you create the admin account.
+
+### Available tags
+
+| Tag | Description |
+|-----|-------------|
+| `latest` | Most recent stable release |
+| `1.0.0` | Specific version (semver) |
+
+---
+
 ## Running with Docker
 
 ```bash
 # From the src/ directory
 cd src
 
-# (Optional) set database password
-export POSTGRES_PASSWORD=mypassword
+# Set a strong database password (required)
+export POSTGRES_PASSWORD=your_strong_password_here
 
 # Start all services
 docker compose up -d --build
@@ -377,9 +448,9 @@ The application will be available at `https://localhost:7xxx` / `http://localhos
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `ConnectionStrings__DefaultConnection` | PostgreSQL connection string | `Host=localhost;Port=5432;Database=prompteer;Username=postgres;Password=postgres` |
+| `ConnectionStrings__DefaultConnection` | PostgreSQL connection string | *(must be set explicitly)* |
 | `ASPNETCORE_ENVIRONMENT` | Application environment | `Development` |
-| `POSTGRES_PASSWORD` | PostgreSQL password (Docker) | `postgres` |
+| `POSTGRES_PASSWORD` | PostgreSQL password (Docker) | *(must be set explicitly)* |
 
 AI settings (provider, API key, model) are managed inside the application under **Settings** and stored in the `AppSettings` table.
 

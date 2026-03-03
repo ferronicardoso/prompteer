@@ -10,6 +10,10 @@
 # dotenv files
 .env
 
+# ASP.NET Core environment-specific secrets (never commit production credentials)
+appsettings.Production.json
+appsettings.Staging.json
+
 # User-specific files
 *.rsuser
 *.suo
