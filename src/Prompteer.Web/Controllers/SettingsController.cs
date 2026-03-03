@@ -3,7 +3,6 @@ using Microsoft.Extensions.Localization;
 using Prompteer.Application.DTOs;
 using Prompteer.Application.Services;
 using Prompteer.Web.Helpers;
-using Prompteer.Web.Resources;
 
 namespace Prompteer.Web.Controllers;
 
