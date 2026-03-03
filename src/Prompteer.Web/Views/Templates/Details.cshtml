@@ -24,9 +24,26 @@
                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">
                     v@(Model.Template.CurrentVersionNumber)
                 </span>
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium @(Model.Template.IsPublic ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700")">
+                    <i data-lucide="@(Model.Template.IsPublic ? "globe" : "lock")" class="w-3 h-3"></i>
+                    @(Model.Template.IsPublic ? L["Templates.Details.VisibilityPublic"] : L["Templates.Details.VisibilityPrivate"])
+                </span>
             </div>
         </div>
         <div class="flex items-center gap-2">
+            <a asp-action="Export" asp-route-id="@Model.Template.Id" class="btn btn-secondary btn-sm">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                @L["Templates.Details.Download"]
+            </a>
+            <form method="post" asp-action="SetVisibility" asp-route-id="@Model.Template.Id" class="inline">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="isPublic" value="@(!Model.Template.IsPublic ? "true" : "false")" />
+                <button type="submit"
+                        class="btn btn-sm whitespace-nowrap @(Model.Template.IsPublic ? "btn-secondary" : "btn-ghost border border-slate-300 text-slate-600 hover:border-brand-400 hover:text-brand-700 hover:bg-brand-50")">
+                    <i data-lucide="@(Model.Template.IsPublic ? "lock" : "globe")" class="w-4 h-4"></i>
+                    @(Model.Template.IsPublic ? L["Templates.Details.MakePrivate"] : L["Templates.Details.MakePublic"])
+                </button>
+            </form>
             <a asp-action="Versions" asp-route-id="@Model.Template.Id" class="btn btn-secondary btn-sm">
                 <i data-lucide="history" class="w-4 h-4"></i>
                 @L["Templates.Details.Versions"]

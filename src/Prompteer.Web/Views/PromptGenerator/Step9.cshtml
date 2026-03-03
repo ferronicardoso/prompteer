@@ -33,14 +33,6 @@
                     <textarea name="templateDesc" rows="2" class="form-textarea w-full"
                               placeholder="Optional template description...">@Model.Data.ProjectDescription</textarea>
                 </div>
-                <div class="flex items-center gap-3">
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" name="isPublic" value="true" checked class="sr-only peer" id="toggleIsPublic" />
-                        <div class="w-10 h-5 bg-slate-300 peer-focus:ring-2 peer-focus:ring-brand-500 rounded-full peer peer-checked:bg-brand-600 transition-colors"></div>
-                        <span class="ml-2 text-sm text-slate-700">Public</span>
-                    </label>
-                    <p class="text-xs text-slate-400">Disable to make this template private (visible only to you and admins).</p>
-                </div>
                 <button type="submit" class="btn btn-primary">
                     <i data-lucide="save" class="w-4 h-4"></i>
                     Save Template
@@ -70,14 +62,10 @@
     </div>
 
     <!-- Actions -->
-    <div class="flex items-center justify-between">
+    <div class="flex items-center">
         <a asp-action="Step" asp-route-step="8" asp-route-draftId="@Model.DraftId" class="btn btn-secondary">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
             Edit Rules
-        </a>
-        <a asp-action="Index" class="btn btn-ghost text-slate-500 hover:text-slate-700">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            New Prompt
         </a>
     </div>
 </div>

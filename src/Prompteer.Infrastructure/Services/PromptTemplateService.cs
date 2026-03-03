@@ -107,7 +107,7 @@ public class PromptTemplateService : IPromptTemplateService
 
     public async Task<PromptTemplateDto> SaveFromWizardAsync(
         Guid? templateId, string name, string? description,
-        WizardSessionData data, string generatedPrompt, bool isPublic = true, Guid? createdByUserId = null)
+        WizardSessionData data, string generatedPrompt, bool isPublic = false, Guid? createdByUserId = null)
     {
         PromptTemplate template;
         if (templateId.HasValue)
@@ -305,8 +305,15 @@ public class PromptTemplateService : IPromptTemplateService
             new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
     }
 
-    // ── Export ────────────────────────────────────────────────────────────────
+    public async Task SetVisibilityAsync(Guid id, bool isPublic)
+    {
+        var template = await _db.PromptTemplates.FindAsync(id)
+            ?? throw new KeyNotFoundException("Template não encontrado.");
+        template.IsPublic = isPublic;
+        await _db.SaveChangesAsync();
+    }
 
+    // ── Export ────────────────────────────────────────────────────────────────
     public async Task<TemplateExportDto> ExportAsync(IEnumerable<Guid>? templateIds, string exportedBy)
     {
         var query = _db.PromptTemplates

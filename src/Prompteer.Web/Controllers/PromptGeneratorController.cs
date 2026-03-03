@@ -147,7 +147,7 @@ public class PromptGeneratorController : Controller
     // POST /PromptGenerator/SaveTemplate
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SaveTemplate(Guid draftId, string templateName, string? templateDesc, string generatedPrompt, bool isPublic = true)
+    public async Task<IActionResult> SaveTemplate(Guid draftId, string templateName, string? templateDesc, string generatedPrompt, bool isPublic = false)
     {
         var data = await _draftService.GetDataAsync(draftId);
         var currentUser = await _currentUser.GetCurrentUserAsync();

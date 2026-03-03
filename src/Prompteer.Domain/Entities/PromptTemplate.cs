@@ -7,7 +7,7 @@ public class PromptTemplate : BaseEntity
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
     public int CurrentVersionNumber { get; set; }
-    public bool IsPublic { get; set; } = true;
+    public bool IsPublic { get; set; } = false;
 
     // Navigation
     public ICollection<PromptTemplateVersion> Versions { get; set; } = new List<PromptTemplateVersion>();
