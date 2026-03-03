@@ -392,14 +392,14 @@ public class PromptTemplateService : IPromptTemplateService
         var allTechs = await _db.Technologies.ToListAsync();
         var allPatterns = await _db.ArchitecturalPatterns.ToListAsync();
 
-        var techByName    = allTechs.ToDictionary(t => t.Name.ToLower(), t => t);
-        var patternByName = allPatterns.ToDictionary(p => p.Name.ToLower(), p => p);
+        var techByName    = allTechs.GroupBy(t => t.Name.ToLower()).ToDictionary(g => g.Key, g => g.First());
+        var patternByName = allPatterns.GroupBy(p => p.Name.ToLower()).ToDictionary(g => g.Key, g => g.First());
 
         // Pre-load agent profiles and backlog tools indexed by name (case-insensitive)
         var agentProfileByName = (await _db.AgentProfiles.ToListAsync())
-            .ToDictionary(a => a.Name.ToLower(), a => a);
+            .GroupBy(a => a.Name.ToLower()).ToDictionary(g => g.Key, g => g.First());
         var backlogToolByName = (await _db.BacklogTools.ToListAsync())
-            .ToDictionary(b => b.Name.ToLower(), b => b);
+            .GroupBy(b => b.Name.ToLower()).ToDictionary(g => g.Key, g => g.First());
 
         foreach (var item in package.Templates)
         {
