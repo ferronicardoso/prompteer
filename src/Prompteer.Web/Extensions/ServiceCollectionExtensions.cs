@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(
-                configuration.GetConnectionString("DefaultConnection"),
+                BuildConnectionString(configuration),
                 b => b.MigrationsAssembly("Prompteer.Infrastructure")));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -64,5 +64,27 @@ public static class ServiceCollectionExtensions
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         await db.Database.MigrateAsync();
         await DatabaseSeeder.SeedAsync(db);
+    }
+
+    private static string BuildConnectionString(IConfiguration configuration)
+    {
+        var host     = configuration["POSTGRES_HOST"];
+        var user     = configuration["POSTGRES_USER"];
+        var password = configuration["POSTGRES_PASSWORD"];
+        var database = configuration["POSTGRES_DATABASE"];
+
+        if (!string.IsNullOrWhiteSpace(host) && !string.IsNullOrWhiteSpace(password))
+        {
+            return $"Host={host};Port=5432;" +
+                   $"Database={database ?? "prompteer"};" +
+                   $"Username={user ?? "postgres"};" +
+                   $"Password={password}";
+        }
+
+        return configuration.GetConnectionString("DefaultConnection")
+               ?? throw new InvalidOperationException(
+                   "Database connection is not configured. " +
+                   "Set POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD and POSTGRES_DATABASE " +
+                   "or provide ConnectionStrings__DefaultConnection.");
     }
 }

@@ -359,8 +359,10 @@ services:
         condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ConnectionStrings__DefaultConnection: >-
-        Host=db;Port=5432;Database=prompteer;Username=postgres;Password=${POSTGRES_PASSWORD}
+      POSTGRES_HOST: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DATABASE: prompteer
     ports:
       - "8080:8080"
 
@@ -452,9 +454,12 @@ The application will be available at `https://localhost:7xxx` / `http://localhos
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `ConnectionStrings__DefaultConnection` | PostgreSQL connection string | *(must be set explicitly)* |
+| `POSTGRES_HOST` | PostgreSQL host | *(must be set)* |
+| `POSTGRES_USER` | PostgreSQL username | `postgres` |
+| `POSTGRES_PASSWORD` | PostgreSQL password | *(must be set)* |
+| `POSTGRES_DATABASE` | PostgreSQL database name | `prompteer` |
 | `ASPNETCORE_ENVIRONMENT` | Application environment | `Development` |
-| `POSTGRES_PASSWORD` | PostgreSQL password (Docker) | *(must be set explicitly)* |
+| `ConnectionStrings__DefaultConnection` | Full connection string (fallback if `POSTGRES_HOST` is not set) | — |
 
 AI settings (provider, API key, model) are managed inside the application under **Settings** and stored in the `AppSettings` table.
 
