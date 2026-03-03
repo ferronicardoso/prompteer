@@ -74,12 +74,12 @@
                 <i data-lucide="users" class="w-4 h-4"></i>
                 @L["Sidebar.Users"]
             </a>
+            <a asp-controller="Settings" asp-action="Index"
+               class="sidebar-link @(controller == "Settings" ? "sidebar-link-active" : "")">
+                <i data-lucide="settings" class="w-4 h-4"></i>
+                @L["Sidebar.Settings"]
+            </a>
         }
-        <a asp-controller="Settings" asp-action="Index"
-           class="sidebar-link @(controller == "Settings" ? "sidebar-link-active" : "")">
-            <i data-lucide="settings" class="w-4 h-4"></i>
-            @L["Sidebar.Settings"]
-        </a>
         <p class="text-xs text-slate-500 px-3 pt-1">.NET 10 · EF Core · PostgreSQL</p>
     </div>
 

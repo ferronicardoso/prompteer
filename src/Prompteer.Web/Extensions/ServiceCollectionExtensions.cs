@@ -71,7 +71,7 @@ public static class ServiceCollectionExtensions
         var host     = configuration["POSTGRES_HOST"];
         var user     = configuration["POSTGRES_USER"];
         var password = configuration["POSTGRES_PASSWORD"];
-        var database = configuration["POSTGRES_DATABASE"];
+        var database = configuration["POSTGRES_DB"] ?? configuration["POSTGRES_DATABASE"];
 
         if (!string.IsNullOrWhiteSpace(host) && !string.IsNullOrWhiteSpace(password))
         {
@@ -84,7 +84,7 @@ public static class ServiceCollectionExtensions
         return configuration.GetConnectionString("DefaultConnection")
                ?? throw new InvalidOperationException(
                    "Database connection is not configured. " +
-                   "Set POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD and POSTGRES_DATABASE " +
+                   "Set POSTGRES_HOST, POSTGRES_USER, POSTGRES_PASSWORD and POSTGRES_DB " +
                    "or provide ConnectionStrings__DefaultConnection.");
     }
 }
