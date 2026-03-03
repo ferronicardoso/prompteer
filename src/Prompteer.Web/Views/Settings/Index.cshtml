@@ -1,7 +1,7 @@
 @using Prompteer.Application.DTOs
 @model AISettingsDto
 @{
-    ViewData["Title"] = "Configurações";
+    ViewData["Title"] = L["Settings.Title"].Value;
     var cfg          = ViewContext.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
     var tenantId     = cfg["AzureAd:TenantId"] ?? "";
     var clientId     = cfg["AzureAd:ClientId"] ?? "";
@@ -9,17 +9,20 @@
     var entraEnabled = !string.IsNullOrWhiteSpace(tenantId) && !string.IsNullOrWhiteSpace(clientId);
 
     // Read from ViewData (set by controller via query-string, no TempData)
-    var activeTab   = ViewData["ActiveTab"]  as string ?? "ai";
-    var savedScope  = ViewData["SavedScope"] as string ?? "";
-    var errorMsg    = Uri.UnescapeDataString(ViewData["ErrorMsg"] as string ?? "");
+    var activeTab      = ViewData["ActiveTab"]      as string ?? "ai";
+    var savedScope     = ViewData["SavedScope"]     as string ?? "";
+    var errorMsg       = Uri.UnescapeDataString(ViewData["ErrorMsg"] as string ?? "");
+    var defaultLang    = ViewData["DefaultLanguage"] as string ?? "en";
+    var defaultTz      = ViewData["DefaultTimeZone"] as string ?? "UTC";
+    var defaultDateFmt = ViewData["DefaultDateFormat"] as string ?? "MM/dd/yyyy";
 }
 
 <div class="max-w-2xl" x-data="{ tab: '@activeTab' }">
 
     @* Page header *@
     <div class="mb-6">
-        <h1 class="text-xl font-semibold text-slate-900">Configurações</h1>
-        <p class="text-sm text-slate-500 mt-0.5">Provedor de IA e autenticação Microsoft Entra ID</p>
+        <h1 class="text-xl font-semibold text-slate-900">@L["Settings.Title"]</h1>
+        <p class="text-sm text-slate-500 mt-0.5">@L["Settings.Subtitle"]</p>
     </div>
 
     @* Tab bar *@
@@ -30,7 +33,7 @@
                     : 'text-slate-500 hover:text-slate-700'"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all">
             <i data-lucide="cpu" class="w-4 h-4"></i>
-            Integração de IA
+            @L["Settings.AIIntegration"]
             @if (Model.IsConfigured)
             {
                 <span class="w-2 h-2 rounded-full bg-green-500 ml-0.5"></span>
@@ -42,11 +45,19 @@
                     : 'text-slate-500 hover:text-slate-700'"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all">
             <i data-lucide="shield-check" class="w-4 h-4"></i>
-            Microsoft Entra ID
+            @L["Settings.MicrosoftEntra"]
             @if (entraEnabled)
             {
                 <span class="w-2 h-2 rounded-full bg-green-500 ml-0.5"></span>
             }
+        </button>
+        <button type="button" @@click="tab = 'general'"
+                :class="tab === 'general'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-700'"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all">
+            <i data-lucide="globe" class="w-4 h-4"></i>
+            @L["Settings.General"]
         </button>
     </div>
 
@@ -57,7 +68,7 @@
         {
             <div class="flex items-center gap-2 p-3 mb-5 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">
                 <i data-lucide="check-circle" class="w-4 h-4 flex-shrink-0"></i>
-                <span>Configurações de IA salvas com sucesso.</span>
+                <span>@L["Settings.AISaved"]</span>
             </div>
         }
 
@@ -67,17 +78,17 @@
 
                 @* Status *@
                 <div class="flex items-center gap-2 text-sm">
-                    <span class="text-slate-500">Status:</span>
+                    <span class="text-slate-500">@L["Settings.Status"]</span>
                     @if (Model.IsConfigured)
                     {
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>Configurado
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>@L["Common.Configured"]
                         </span>
                     }
                     else
                     {
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Não configurado
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>@L["Common.NotConfigured"]
                         </span>
                     }
                 </div>
@@ -86,7 +97,7 @@
 
                 @* Provider *@
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-3">Provedor de IA</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-3">@L["Settings.AIProvider"]</label>
                     <div class="grid grid-cols-2 gap-3">
                         <label class="provider-card cursor-pointer">
                             <input type="radio" asp-for="Provider" value="OpenAI" class="sr-only peer"
@@ -120,11 +131,11 @@
                 @* API Key *@
                 <div>
                     <label asp-for="ApiKey" class="block text-sm font-medium text-slate-700 mb-1">
-                        API Key <span class="text-red-500">*</span>
+                        @L["Settings.ApiKey"] <span class="text-red-500">*</span>
                     </label>
                     <input asp-for="ApiKey" id="ApiKey" type="password" autocomplete="off"
                            class="form-input w-full font-mono text-sm" placeholder="sk-..." />
-                    <p class="text-xs text-slate-400 mt-1">A chave é armazenada no banco de dados da aplicação.</p>
+                    <p class="text-xs text-slate-400 mt-1">@L["Settings.ApiKeyNote"]</p>
                 </div>
 
                 @* Fetch models *@
@@ -132,27 +143,27 @@
                     <button type="button" id="fetchModelsBtn" onclick="fetchModels()"
                             class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 transition-colors">
                         <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                        Buscar modelos disponíveis
+                        @L["Settings.FetchModels"]
                     </button>
                     <p id="fetchError" class="text-xs text-red-600 mt-1 hidden"></p>
                 </div>
 
                 @* Model select *@
                 <div id="modelSection" class="@(string.IsNullOrEmpty(Model.Model) ? "hidden" : "")">
-                    <label asp-for="Model" class="block text-sm font-medium text-slate-700 mb-1">Modelo</label>
+                    <label asp-for="Model" class="block text-sm font-medium text-slate-700 mb-1">@L["Settings.Model"]</label>
                     <select asp-for="Model" id="Model" class="form-select w-full">
                         @if (!string.IsNullOrEmpty(Model.Model))
                         {
                             <option value="@Model.Model" selected>@Model.Model</option>
                         }
                     </select>
-                    <p class="text-xs text-slate-400 mt-1">Clique em "Buscar modelos" para atualizar a lista.</p>
+                    <p class="text-xs text-slate-400 mt-1">@L["Settings.ModelNote"]</p>
                 </div>
 
                 <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
                     <button type="submit" class="btn btn-primary">
                         <i data-lucide="save" class="w-4 h-4"></i>
-                        Salvar
+                        @L["Settings.SaveAI"]
                     </button>
                 </div>
             </div>
@@ -166,7 +177,7 @@
         {
             <div class="flex items-center gap-2 p-3 mb-5 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">
                 <i data-lucide="check-circle" class="w-4 h-4 flex-shrink-0"></i>
-                <span>Configurações do Microsoft Entra salvas. Reinicie a aplicação para aplicar.</span>
+                <span>@L["Settings.EntraSaved"]</span>
             </div>
         }
 
@@ -184,53 +195,55 @@
 
                 @* Status *@
                 <div class="flex items-center gap-2 text-sm">
-                    <span class="text-slate-500">Status:</span>
+                    <span class="text-slate-500">@L["Settings.Status"]</span>
                     @if (entraEnabled)
                     {
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>Configurado
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>@L["Common.Configured"]
                         </span>
                     }
                     else
                     {
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Não configurado
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>@L["Common.NotConfigured"]
                         </span>
                     }
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Tenant ID</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">@L["Settings.TenantId"]</label>
                     <input name="tenantId" value="@tenantId"
                            placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                            class="form-input w-full font-mono text-sm" />
-                    <p class="text-xs text-slate-400 mt-1">GUID do diretório — Azure Portal → Microsoft Entra ID → Visão geral.</p>
+                    <p class="text-xs text-slate-400 mt-1">@L["Settings.TenantIdNote"]</p>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Client ID (Application ID)</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">@L["Settings.ClientId"]</label>
                     <input name="clientId" value="@clientId"
                            placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
                            class="form-input w-full font-mono text-sm" />
-                    <p class="text-xs text-slate-400 mt-1">ID do aplicativo registrado em Registros de aplicativo.</p>
+                    <p class="text-xs text-slate-400 mt-1">@L["Settings.ClientIdNote"]</p>
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1.5">
-                        Client Secret
+                        @L["Settings.ClientSecret"]
                         @if (entraEnabled)
                         {
-                            <span class="text-xs text-slate-400 font-normal ml-1">(deixe em branco para manter o atual)</span>
+                            <span class="text-xs text-slate-400 font-normal ml-1">@L["Settings.ClientSecretKeep"]</span>
                         }
                     </label>
                     <input name="clientSecret" type="password"
-                           placeholder="@(entraEnabled ? "••••••••••••" : "Cole o segredo do cliente aqui")"
+                           placeholder="@(entraEnabled ? "••••••••••••" : "")"
                            class="form-input w-full font-mono text-sm" autocomplete="new-password" />
-                    <p class="text-xs text-slate-400 mt-1">Azure Portal → Registros de aplicativo → Certificados e segredos.</p>
+                    <p class="text-xs text-slate-400 mt-1">@L["Settings.ClientSecretNote"]</p>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1.5">Domínio <span class="text-slate-400 font-normal text-xs">(opcional)</span></label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                        @L["Settings.Domain"] <span class="text-slate-400 font-normal text-xs">@L["Settings.DomainOptional"]</span>
+                    </label>
                     <input name="domain" value="@domain"
                            placeholder="contoso.onmicrosoft.com"
                            class="form-input w-full text-sm" />
@@ -239,11 +252,11 @@
                 <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
                     <button type="submit" class="btn btn-primary">
                         <i data-lucide="save" class="w-4 h-4"></i>
-                        Salvar configuração Entra
+                        @L["Settings.SaveEntra"]
                     </button>
                     @if (entraEnabled)
                     {
-                        <span class="text-xs text-slate-400">Reinicie a aplicação para ativar as alterações.</span>
+                        <span class="text-xs text-slate-400">@L["Settings.EntraRestartNote"]</span>
                     }
                 </div>
 
@@ -251,15 +264,106 @@
                 <div class="flex items-start gap-2.5 p-3.5 rounded-xl bg-blue-50 border border-blue-200">
                     <i data-lucide="info" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
                     <div class="text-xs text-blue-700 space-y-1">
-                        <p class="font-semibold">Como configurar o registro do aplicativo no Azure:</p>
+                        <p class="font-semibold">@L["Settings.AzureGuideTitle"]</p>
                         <ol class="list-decimal list-inside space-y-0.5">
-                            <li>Azure Portal → Microsoft Entra ID → Registros de aplicativo → Novo registro</li>
-                            <li>URI de redirecionamento: <code class="bg-blue-100 px-1 rounded">https://seudominio/signin-oidc</code></li>
-                            <li>Permissões de API: <code class="bg-blue-100 px-1 rounded">User.Read</code>, <code class="bg-blue-100 px-1 rounded">User.ReadBasic.All</code></li>
-                            <li>Funções do aplicativo: crie <code class="bg-blue-100 px-1 rounded">Admin</code>, <code class="bg-blue-100 px-1 rounded">Editor</code>, <code class="bg-blue-100 px-1 rounded">Viewer</code></li>
-                            <li>Atribua usuários em Aplicativos empresariais → Usuários e grupos</li>
+                            <li>Azure Portal → Microsoft Entra ID → App registrations → New registration</li>
+                            <li>Redirect URI: <code class="bg-blue-100 px-1 rounded">https://yourdomain/signin-oidc</code></li>
+                            <li>API permissions: <code class="bg-blue-100 px-1 rounded">User.Read</code>, <code class="bg-blue-100 px-1 rounded">User.ReadBasic.All</code></li>
+                            <li>App roles: create <code class="bg-blue-100 px-1 rounded">Admin</code>, <code class="bg-blue-100 px-1 rounded">Editor</code>, <code class="bg-blue-100 px-1 rounded">Viewer</code></li>
+                            <li>Assign users in Enterprise applications → Users and groups</li>
                         </ol>
                     </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @* ── Tab: General ─────────────────────────────────────────────────────────── *@
+    <div x-show="tab === 'general'" x-cloak>
+
+        @if (savedScope == "general")
+        {
+            <div class="flex items-center gap-2 p-3 mb-5 rounded-xl bg-green-50 border border-green-200 text-green-700 text-sm">
+                <i data-lucide="check-circle" class="w-4 h-4 flex-shrink-0"></i>
+                <span>@L["Settings.GeneralSaved"]</span>
+            </div>
+        }
+
+        <form asp-action="SaveGeneral" method="post">
+            @Html.AntiForgeryToken()
+            <div class="card space-y-5">
+
+                <div class="text-sm text-slate-500">@L["Settings.GeneralSubtitle"]</div>
+
+                <hr class="border-slate-100" />
+
+                @* Default Language *@
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">@L["Settings.DefaultLanguage"]</label>
+                    <select name="language" class="form-select w-full">
+                        @if (defaultLang == "en")
+                        {
+                            <option value="en" selected>@L["Lang.English"] (en)</option>
+                            <option value="pt-BR">@L["Lang.Portuguese"] (pt-BR)</option>
+                        }
+                        else
+                        {
+                            <option value="en">@L["Lang.English"] (en)</option>
+                            <option value="pt-BR" selected>@L["Lang.Portuguese"] (pt-BR)</option>
+                        }
+                    </select>
+                    <p class="text-xs text-slate-400 mt-1">@L["Settings.DefaultLanguageNote"]</p>
+                </div>
+
+                @* Time Zone *@
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">@L["Settings.TimeZone"]</label>
+                    <select name="timeZone" class="form-select w-full">
+                        @foreach (var tz in TimeZoneInfo.GetSystemTimeZones())
+                        {
+                            if (defaultTz == tz.Id)
+                            {
+                                <option value="@tz.Id" selected>@tz.DisplayName</option>
+                            }
+                            else
+                            {
+                                <option value="@tz.Id">@tz.DisplayName</option>
+                            }
+                        }
+                    </select>
+                    <p class="text-xs text-slate-400 mt-1">@L["Settings.TimeZoneNote"]</p>
+                </div>
+
+                @* Date Format *@
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">@L["Settings.DateFormat"]</label>
+                    <select name="dateFormat" class="form-select w-full">
+                        @foreach (var (val, label) in new[]
+                        {
+                            ("MM/dd/yyyy",  "MM/dd/yyyy (12/31/2024)"),
+                            ("dd/MM/yyyy",  "dd/MM/yyyy (31/12/2024)"),
+                            ("yyyy-MM-dd",  "yyyy-MM-dd (2024-12-31)"),
+                            ("dd MMM yyyy", "dd MMM yyyy (31 Dec 2024)"),
+                        })
+                        {
+                            if (defaultDateFmt == val)
+                            {
+                                <option value="@val" selected>@label</option>
+                            }
+                            else
+                            {
+                                <option value="@val">@label</option>
+                            }
+                        }
+                    </select>
+                    <p class="text-xs text-slate-400 mt-1">@L["Settings.DateFormatNote"]</p>
+                </div>
+
+                <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
+                    <button type="submit" class="btn btn-primary">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        @L["Settings.SaveGeneral"]
+                    </button>
                 </div>
             </div>
         </form>
@@ -269,6 +373,12 @@
 
 @section Scripts {
 <script>
+const _errSelectProvider = '@L["Settings.SelectProvider"].Value.Replace("'", "\\'")';
+const _errFetchModels    = '@L["Settings.ErrorFetchModels"].Value.Replace("'", "\\'")';
+const _errServerComm     = '@L["Settings.ErrorServerComm"].Value.Replace("'", "\\'")';
+const _fetchingLabel     = '@L["Settings.FetchingModels"].Value.Replace("'", "\\'")';
+const _fetchLabel        = '@L["Settings.FetchModels"].Value.Replace("'", "\\'")';
+
 function onProviderChange() {
     document.getElementById('Model').innerHTML = '';
     document.getElementById('modelSection').classList.add('hidden');
@@ -281,10 +391,10 @@ async function fetchModels() {
     const btn      = document.getElementById('fetchModelsBtn');
     const errEl    = document.getElementById('fetchError');
 
-    if (!provider) { errEl.textContent = 'Selecione um provedor.'; errEl.classList.remove('hidden'); return; }
+    if (!provider) { errEl.textContent = _errSelectProvider; errEl.classList.remove('hidden'); return; }
 
     btn.disabled = true;
-    btn.innerHTML = '<svg class="animate-spin w-4 h-4 inline mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>Buscando…';
+    btn.innerHTML = '<svg class="animate-spin w-4 h-4 inline mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>' + _fetchingLabel;
     errEl.classList.add('hidden');
 
     try {
@@ -306,15 +416,15 @@ async function fetchModels() {
             });
             document.getElementById('modelSection').classList.remove('hidden');
         } else {
-            errEl.textContent = data.error ?? 'Erro ao buscar modelos.';
+            errEl.textContent = data.error ?? _errFetchModels;
             errEl.classList.remove('hidden');
         }
     } catch {
-        errEl.textContent = 'Falha na comunicação com o servidor.';
+        errEl.textContent = _errServerComm;
         errEl.classList.remove('hidden');
     } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i data-lucide="refresh-cw" class="w-4 h-4 inline mr-1"></i>Buscar modelos disponíveis';
+        btn.innerHTML = '<i data-lucide="refresh-cw" class="w-4 h-4 inline mr-1"></i>' + _fetchLabel;
         lucide.createIcons();
     }
 }

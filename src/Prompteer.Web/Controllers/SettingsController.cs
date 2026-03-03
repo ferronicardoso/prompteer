@@ -13,7 +13,7 @@ public class SettingsController(
     // GET /Settings  or  /Settings?tab=entra&saved=entra  or  &error=msg
     public async Task<IActionResult> Index(string? tab, string? saved, string? error)
     {
-        ViewData["Title"] = "Configurações";
+        ViewData["Title"] = "Settings";
         ViewData["ActiveTab"]  = tab   ?? "ai";
         ViewData["SavedScope"] = saved ?? "";
         ViewData["ErrorMsg"]   = error ?? "";
@@ -25,6 +25,11 @@ public class SettingsController(
             ApiKey   = all.GetValueOrDefault("AI:ApiKey",   ""),
             Model    = all.GetValueOrDefault("AI:Model",    "")
         };
+
+        ViewData["DefaultLanguage"] = all.GetValueOrDefault("App:Language",   "en");
+        ViewData["DefaultTimeZone"] = all.GetValueOrDefault("App:TimeZone",   "UTC");
+        ViewData["DefaultDateFormat"] = all.GetValueOrDefault("App:DateFormat", "MM/dd/yyyy");
+
         return View(dto);
     }
 
@@ -50,7 +55,7 @@ public class SettingsController(
             apiKey = await settings.GetAsync("AI:ApiKey");
 
         if (string.IsNullOrWhiteSpace(apiKey))
-            return Json(new { success = false, error = "Informe a API Key antes de buscar os modelos." });
+            return Json(new { success = false, error = "Enter the API Key before fetching models." });
 
         try
         {
@@ -74,7 +79,7 @@ public class SettingsController(
         domain       = domain?.Trim() ?? "";
 
         if (string.IsNullOrWhiteSpace(tenantId) || string.IsNullOrWhiteSpace(clientId))
-            return RedirectToAction(nameof(Index), new { tab = "entra", error = "TenantId e ClientId são obrigatórios." });
+            return RedirectToAction(nameof(Index), new { tab = "entra", error = "TenantId and ClientId are required." });
 
         try
         {
@@ -84,7 +89,39 @@ public class SettingsController(
         }
         catch (Exception ex)
         {
-            return RedirectToAction(nameof(Index), new { tab = "entra", error = Uri.EscapeDataString($"Falha ao salvar: {ex.Message}") });
+            return RedirectToAction(nameof(Index), new { tab = "entra", error = Uri.EscapeDataString($"Failed to save: {ex.Message}") });
         }
+    }
+
+    // POST /Settings/SaveGeneral
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SaveGeneral(string? language, string? timeZone, string? dateFormat)
+    {
+        language   = language?.Trim()   ?? "en";
+        timeZone   = timeZone?.Trim()   ?? "UTC";
+        dateFormat = dateFormat?.Trim() ?? "MM/dd/yyyy";
+
+        // Validate language
+        if (language != "en" && language != "pt-BR")
+            language = "en";
+
+        // Validate timezone
+        try { TimeZoneInfo.FindSystemTimeZoneById(timeZone); }
+        catch { timeZone = "UTC"; }
+
+        // Validate date format (whitelist)
+        var validFormats = new[] { "MM/dd/yyyy", "dd/MM/yyyy", "yyyy-MM-dd", "dd MMM yyyy" };
+        if (!validFormats.Contains(dateFormat))
+            dateFormat = "MM/dd/yyyy";
+
+        await settings.SaveManyAsync(new Dictionary<string, string>
+        {
+            ["App:Language"]   = language,
+            ["App:TimeZone"]   = timeZone,
+            ["App:DateFormat"] = dateFormat
+        });
+
+        return RedirectToAction(nameof(Index), new { tab = "general", saved = "general" });
     }
 }

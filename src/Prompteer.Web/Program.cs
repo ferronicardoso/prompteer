@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
 using Prompteer.Web.Extensions;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,12 +76,39 @@ builder.Services.AddAuthorization(options =>
 
 // ─── Serviços ────────────────────────────────────────────────────────────────
 builder.Services.AddMemoryCache();
+builder.Services.AddLocalization(opts => opts.ResourcesPath = "Resources");
 builder.Services.AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization()
     .AddMicrosoftIdentityUI();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
 var app = builder.Build();
+
+// ─── Localização ──────────────────────────────────────────────────────────────
+// Supported cultures: English (default) and Brazilian Portuguese.
+// Priority: 1. Cookie  2. APP_LANGUAGE env var  3. app setting  4. default (en)
+var supportedCultures = new[] { new CultureInfo("en"), new CultureInfo("pt-BR") };
+
+// Resolve default culture: env APP_LANGUAGE → config App:Language → "en"
+var defaultCulture = Environment.GetEnvironmentVariable("APP_LANGUAGE")
+    ?? builder.Configuration["App:Language"]
+    ?? "en";
+if (!supportedCultures.Any(c => c.Name.Equals(defaultCulture, StringComparison.OrdinalIgnoreCase)))
+    defaultCulture = "en";
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(defaultCulture),
+    SupportedCultures     = supportedCultures,
+    SupportedUICultures   = supportedCultures,
+    RequestCultureProviders =
+    [
+        new CookieRequestCultureProvider(),
+        new QueryStringRequestCultureProvider()
+    ]
+});
 
 // ─── Seed do banco ────────────────────────────────────────────────────────────
 await app.Services.SeedDatabaseAsync();

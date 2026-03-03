@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- ── Language names ─────────────────────────────────────────────── -->
+  <data name="Lang.English" xml:space="preserve"><value>English</value></data>
+  <data name="Lang.Portuguese" xml:space="preserve"><value>Portuguese</value></data>
+  <data name="Lang.SelectLanguage" xml:space="preserve"><value>Language</value></data>
+
+  <!-- ── Common ──────────────────────────────────────────────────────── -->
+  <data name="Common.Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Common.Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Common.Edit" xml:space="preserve"><value>Edit</value></data>
+  <data name="Common.Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Common.Configured" xml:space="preserve"><value>Configured</value></data>
+  <data name="Common.NotConfigured" xml:space="preserve"><value>Not configured</value></data>
+
+  <!-- ── Login ───────────────────────────────────────────────────────── -->
+  <data name="Login.PageTitle" xml:space="preserve"><value>Sign In</value></data>
+  <data name="Login.Headline" xml:space="preserve"><value>Generate structured prompts for AI agents.</value></data>
+  <data name="Login.Headline1" xml:space="preserve"><value>Generate</value></data>
+  <data name="Login.Headline2" xml:space="preserve"><value>structured</value></data>
+  <data name="Login.Headline3" xml:space="preserve"><value>prompts for AI agents.</value></data>
+  <data name="Login.SubheadLine" xml:space="preserve"><value>Build complete instructions for Claude, GitHub Copilot and other agents — quickly, consistently and reusably.</value></data>
+  <data name="Login.Feature.Wizard" xml:space="preserve"><value>9-step Wizard</value></data>
+  <data name="Login.Feature.WizardDesc" xml:space="preserve"><value>Generate detailed prompts step by step</value></data>
+  <data name="Login.Feature.Templates" xml:space="preserve"><value>Versioned Templates</value></data>
+  <data name="Login.Feature.TemplatesDesc" xml:space="preserve"><value>Save, clone and compare versions</value></data>
+  <data name="Login.Feature.MultiAI" xml:space="preserve"><value>Multi-provider AI</value></data>
+  <data name="Login.Feature.MultiAIDesc" xml:space="preserve"><value>OpenAI and Anthropic integrated</value></data>
+  <data name="Login.Feature.SecureAccess" xml:space="preserve"><value>Secure Microsoft Access</value></data>
+  <data name="Login.Feature.SecureAccessDesc" xml:space="preserve"><value>Corporate authentication with Entra ID</value></data>
+  <data name="Login.WelcomeBack" xml:space="preserve"><value>Welcome back</value></data>
+  <data name="Login.SubtitleLocal" xml:space="preserve"><value>Sign in with your email and admin password.</value></data>
+  <data name="Login.SubtitleEntra" xml:space="preserve"><value>Sign in with your Microsoft account or email and password.</value></data>
+  <data name="Login.AccountCreated" xml:space="preserve"><value>Account created successfully!</value></data>
+  <data name="Login.HelloUser" xml:space="preserve"><value>Hello, {0}! Sign in to continue the setup.</value></data>
+  <data name="Login.SignInWithMicrosoft" xml:space="preserve"><value>Sign in with Microsoft</value></data>
+  <data name="Login.OrWithLocalPassword" xml:space="preserve"><value>or with local password</value></data>
+  <data name="Login.Email" xml:space="preserve"><value>Email</value></data>
+  <data name="Login.Password" xml:space="preserve"><value>Password</value></data>
+  <data name="Login.Submit" xml:space="preserve"><value>Sign In</value></data>
+  <data name="Login.LocalAdminNote" xml:space="preserve"><value>Local login available for the initial admin only.</value></data>
+  <data name="Login.SetupNote" xml:space="preserve"><value>Configure Microsoft Entra ID in Settings after first access.</value></data>
+
+  <!-- ── Navbar ──────────────────────────────────────────────────────── -->
+  <data name="Nav.NewPrompt" xml:space="preserve"><value>New Prompt</value></data>
+  <data name="Nav.ManageUsers" xml:space="preserve"><value>Manage Users</value></data>
+  <data name="Nav.Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Nav.SignOut" xml:space="preserve"><value>Sign Out</value></data>
+  <data name="Nav.SignIn" xml:space="preserve"><value>Sign In</value></data>
+
+  <!-- ── Sidebar ─────────────────────────────────────────────────────── -->
+  <data name="Sidebar.Main" xml:space="preserve"><value>Main</value></data>
+  <data name="Sidebar.Dashboard" xml:space="preserve"><value>Dashboard</value></data>
+  <data name="Sidebar.PromptGenerator" xml:space="preserve"><value>Prompt Generator</value></data>
+  <data name="Sidebar.Templates" xml:space="preserve"><value>Templates</value></data>
+  <data name="Sidebar.Registrations" xml:space="preserve"><value>Registrations</value></data>
+  <data name="Sidebar.AgentProfiles" xml:space="preserve"><value>Agent Profiles</value></data>
+  <data name="Sidebar.Technologies" xml:space="preserve"><value>Technologies</value></data>
+  <data name="Sidebar.ArchitecturalPatterns" xml:space="preserve"><value>Architectural Patterns</value></data>
+  <data name="Sidebar.BacklogTools" xml:space="preserve"><value>Backlog Tools</value></data>
+  <data name="Sidebar.Users" xml:space="preserve"><value>Users</value></data>
+  <data name="Sidebar.Settings" xml:space="preserve"><value>Settings</value></data>
+
+  <!-- ── Settings ────────────────────────────────────────────────────── -->
+  <data name="Settings.Title" xml:space="preserve"><value>Settings</value></data>
+  <data name="Settings.Subtitle" xml:space="preserve"><value>AI provider, Microsoft Entra ID and general preferences</value></data>
+  <data name="Settings.AIIntegration" xml:space="preserve"><value>AI Integration</value></data>
+  <data name="Settings.MicrosoftEntra" xml:space="preserve"><value>Microsoft Entra ID</value></data>
+  <data name="Settings.General" xml:space="preserve"><value>General</value></data>
+  <data name="Settings.Status" xml:space="preserve"><value>Status:</value></data>
+  <data name="Settings.AIProvider" xml:space="preserve"><value>AI Provider</value></data>
+  <data name="Settings.ApiKey" xml:space="preserve"><value>API Key</value></data>
+  <data name="Settings.ApiKeyNote" xml:space="preserve"><value>The key is stored in the application database.</value></data>
+  <data name="Settings.FetchModels" xml:space="preserve"><value>Fetch available models</value></data>
+  <data name="Settings.FetchingModels" xml:space="preserve"><value>Fetching…</value></data>
+  <data name="Settings.Model" xml:space="preserve"><value>Model</value></data>
+  <data name="Settings.ModelNote" xml:space="preserve"><value>Click "Fetch models" to update the list.</value></data>
+  <data name="Settings.AISaved" xml:space="preserve"><value>AI settings saved successfully.</value></data>
+  <data name="Settings.SaveAI" xml:space="preserve"><value>Save</value></data>
+  <data name="Settings.EntraSaved" xml:space="preserve"><value>Microsoft Entra settings saved. Restart the application to apply.</value></data>
+  <data name="Settings.SaveEntra" xml:space="preserve"><value>Save Entra configuration</value></data>
+  <data name="Settings.EntraRestartNote" xml:space="preserve"><value>Restart the application to activate the changes.</value></data>
+  <data name="Settings.TenantId" xml:space="preserve"><value>Tenant ID</value></data>
+  <data name="Settings.TenantIdNote" xml:space="preserve"><value>Directory GUID — Azure Portal → Microsoft Entra ID → Overview.</value></data>
+  <data name="Settings.ClientId" xml:space="preserve"><value>Client ID (Application ID)</value></data>
+  <data name="Settings.ClientIdNote" xml:space="preserve"><value>Application ID registered in App registrations.</value></data>
+  <data name="Settings.ClientSecret" xml:space="preserve"><value>Client Secret</value></data>
+  <data name="Settings.ClientSecretKeep" xml:space="preserve"><value>(leave blank to keep current)</value></data>
+  <data name="Settings.ClientSecretNote" xml:space="preserve"><value>Azure Portal → App registrations → Certificates &amp; secrets.</value></data>
+  <data name="Settings.Domain" xml:space="preserve"><value>Domain</value></data>
+  <data name="Settings.DomainOptional" xml:space="preserve"><value>(optional)</value></data>
+  <data name="Settings.AzureGuideTitle" xml:space="preserve"><value>How to configure the app registration in Azure:</value></data>
+  <data name="Settings.SelectProvider" xml:space="preserve"><value>Select a provider.</value></data>
+  <data name="Settings.ErrorFetchModels" xml:space="preserve"><value>Error fetching models.</value></data>
+  <data name="Settings.ErrorServerComm" xml:space="preserve"><value>Failed to communicate with the server.</value></data>
+  <data name="Settings.DefaultLanguage" xml:space="preserve"><value>Default Language</value></data>
+  <data name="Settings.DefaultLanguageNote" xml:space="preserve"><value>Language used when no preference is set by the user. Can be overridden via the APP_LANGUAGE environment variable.</value></data>
+  <data name="Settings.TimeZone" xml:space="preserve"><value>Time Zone</value></data>
+  <data name="Settings.TimeZoneNote" xml:space="preserve"><value>Default time zone for displaying dates and times. Can be overridden via the TZ environment variable.</value></data>
+  <data name="Settings.DateFormat" xml:space="preserve"><value>Date Format</value></data>
+  <data name="Settings.DateFormatNote" xml:space="preserve"><value>Format used to display dates throughout the application.</value></data>
+  <data name="Settings.GeneralSaved" xml:space="preserve"><value>General settings saved successfully.</value></data>
+  <data name="Settings.SaveGeneral" xml:space="preserve"><value>Save General Settings</value></data>
+  <data name="Settings.GeneralSubtitle" xml:space="preserve"><value>Language, time zone and date format</value></data>
+</root>
