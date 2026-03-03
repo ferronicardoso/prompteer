@@ -15,6 +15,7 @@
     var defaultLang    = ViewData["DefaultLanguage"] as string ?? "en";
     var defaultTz      = ViewData["DefaultTimeZone"] as string ?? "UTC";
     var defaultDateFmt = ViewData["DefaultDateFormat"] as string ?? "MM/dd/yyyy";
+    var logoUrl        = ViewData["LogoUrl"] as string ?? "";
 }
 
 <div class="max-w-2xl" x-data="{ tab: '@activeTab' }">
@@ -357,6 +358,22 @@
                         }
                     </select>
                     <p class="text-xs text-slate-400 mt-1">@L["Settings.DateFormatNote"]</p>
+                </div>
+
+                @* Logo URL *@
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5">@L["Settings.LogoUrl"]</label>
+                    <input name="logoUrl" value="@logoUrl" type="url"
+                           placeholder="https://example.com/logo.png"
+                           class="form-input w-full text-sm" />
+                    <p class="text-xs text-slate-400 mt-1">@L["Settings.LogoUrlNote"]</p>
+                    @if (!string.IsNullOrWhiteSpace(logoUrl))
+                    {
+                        <div class="mt-2 flex items-center gap-3">
+                            <img src="@logoUrl" alt="Logo preview" class="h-10 max-w-[160px] object-contain rounded border border-slate-200 p-1 bg-white" />
+                            <span class="text-xs text-slate-400">@L["Common.Preview"]</span>
+                        </div>
+                    }
                 </div>
 
                 <div class="flex items-center gap-3 pt-2 border-t border-slate-100">

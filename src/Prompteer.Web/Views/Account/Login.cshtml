@@ -1,4 +1,5 @@
 @model Prompteer.Web.Models.LocalLoginViewModel
+@inject Prompteer.Application.Services.IAppSettingService AppSettings
 @{
     ViewData["Title"] = L["Login.PageTitle"].Value;
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
@@ -7,6 +8,7 @@
     var entraConfigured = (bool)(ViewBag.EntraConfigured ?? false);
     var setupSuccess    = ViewBag.SetupSuccess as string;
     var currentCulture  = System.Globalization.CultureInfo.CurrentUICulture.Name;
+    var logoUrl         = await AppSettings.GetAsync("App:LogoUrl");
 }
 
 <div class="min-h-screen flex">
@@ -64,13 +66,28 @@
     <div class="flex-1 flex flex-col items-center justify-center px-6 sm:px-12 xl:px-20 bg-white">
 
         <div class="flex lg:hidden items-center gap-2.5 mb-10">
-            <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center">
-                <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
-            </div>
-            <span class="text-xl font-bold text-slate-900">Prompteer</span>
+            @if (!string.IsNullOrWhiteSpace(logoUrl))
+            {
+                <img src="@logoUrl" alt="Logo" class="h-9 max-w-[160px] object-contain" />
+            }
+            else
+            {
+                <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-slate-900">Prompteer</span>
+            }
         </div>
 
         <div class="w-full max-w-sm">
+
+            @* Logo above auth fields (when configured) *@
+            @if (!string.IsNullOrWhiteSpace(logoUrl))
+            {
+                <div class="hidden lg:flex items-center justify-center mb-8">
+                    <img src="@logoUrl" alt="Logo" class="h-12 max-w-[200px] object-contain" />
+                </div>
+            }
 
             @* Language switcher *@
             <div class="flex justify-end mb-4">

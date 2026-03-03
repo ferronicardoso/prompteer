@@ -141,6 +141,8 @@
   <data name="Settings.DateFormatNote" xml:space="preserve"><value>Formato utilizado para exibir datas na aplicação.</value></data>
   <data name="Settings.GeneralSaved" xml:space="preserve"><value>Configurações gerais salvas com sucesso.</value></data>
   <data name="Settings.GeneralSubtitle" xml:space="preserve"><value>Configure o idioma padrão, fuso horário e formato de data da aplicação.</value></data>
+  <data name="Settings.LogoUrl" xml:space="preserve"><value>URL do Logo</value></data>
+  <data name="Settings.LogoUrlNote" xml:space="preserve"><value>URL da imagem do logotipo exibida na tela de login e na barra lateral. Deixe em branco para usar o ícone padrão.</value></data>
   <data name="AI.FieldTypeRequired" xml:space="preserve"><value>FieldType é obrigatório.</value></data>
   <data name="AI.GenerateError" xml:space="preserve"><value>Erro ao gerar conteúdo: {0}</value></data>
   <data name="Settings.SaveGeneral" xml:space="preserve"><value>Salvar Configurações Gerais</value></data>
@@ -171,6 +173,7 @@
   <data name="Common.Role" xml:space="preserve"><value>Papel</value></data>
   <data name="Common.Tone" xml:space="preserve"><value>Tom</value></data>
   <data name="Common.GenerateWithAI" xml:space="preserve"><value>Gerar com IA</value></data>
+  <data name="Common.Preview" xml:space="preserve"><value>Prévia</value></data>
   <data name="Common.ActiveAccess" xml:space="preserve"><value>Acesso ativo</value></data>
   <data name="Common.Status" xml:space="preserve"><value>Status</value></data>
   <data name="Common.LastAccess" xml:space="preserve"><value>Último acesso</value></data>
