@@ -20,7 +20,7 @@
         <div class="card space-y-6">
             <!-- Architectural Patterns -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Architectural Patterns</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">@L["PromptGenerator.Step4.ArchitecturalPatterns"]</label>
                 <select id="patternSelect" name="ArchitecturalPatternIds" multiple class="form-select w-full">
                     @foreach (var pattern in Model.ArchitecturalPatterns)
                     {
@@ -38,7 +38,7 @@
                 <button type="button" @@click="open = !open"
                         class="w-full flex items-center gap-2 px-4 py-3 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">
                     <i data-lucide="plus-circle" class="w-4 h-4 text-brand-600"></i>
-                    <span>Add new architectural pattern</span>
+                    <span>@L["PromptGenerator.Step4.AddNewPattern"]</span>
                     <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-auto transition-transform" :class="open && 'rotate-180'"></i>
                 </button>
                 <div x-show="open" x-collapse class="border-t border-slate-200 p-4 space-y-4">
@@ -65,26 +65,26 @@
                     <div id="newPatternError" class="hidden text-xs text-red-600"></div>
                     <button type="button" id="btnCreatePattern" class="btn btn-primary text-sm">
                         <i data-lucide="save" class="w-3.5 h-3.5"></i>
-                        Add Pattern
+                        @L["PromptGenerator.Step4.AddPattern"]
                     </button>
                 </div>
             </div>
 
             <!-- Required Packages -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Required Packages</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">@L["PromptGenerator.Step4.RequiredPackages"]</label>
                 <select id="packagesSelect" name="RequiredPackages" multiple class="form-select w-full">
                     @foreach (var pkg in Model.Data.RequiredPackages)
                     {
                         <option value="@pkg" selected>@pkg</option>
                     }
                 </select>
-                <p class="text-xs text-slate-400 mt-1">Type the package name and press Enter to add.</p>
+                <p class="text-xs text-slate-400 mt-1">@L["PromptGenerator.Step4.PackagesNote"]</p>
             </div>
 
             <!-- Code Conventions -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Code Conventions</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">@L["PromptGenerator.Step4.CodeConventions"]</label>
                 <textarea id="codeConventions" name="CodeConventions" rows="5" class="form-textarea w-full"
                           placeholder="Describe the code conventions to follow...">@Model.Data.CodeConventions</textarea>
                 <div class="flex flex-wrap gap-2 mt-2">
@@ -126,7 +126,7 @@
     // Architectural patterns Tom Select
     new TomSelect('#patternSelect', {
         plugins: ['remove_button'],
-        placeholder: 'Selecione padrões arquiteturais...',
+        placeholder: '@L["PromptGenerator.Step4.SelectPatterns"]',
         closeAfterSelect: false
     });
 
@@ -134,7 +134,7 @@
     new TomSelect('#packagesSelect', {
         plugins: ['remove_button'],
         create: true,
-        placeholder: 'Digite e pressione Enter para adicionar...',
+        placeholder: '@L["PromptGenerator.Step4.SelectPackages"]',
         createOnBlur: true
     });
 

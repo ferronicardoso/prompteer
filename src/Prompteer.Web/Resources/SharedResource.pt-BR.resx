@@ -471,6 +471,60 @@
   <data name="PromptGenerator.StepName.Modules" xml:space="preserve"><value>Módulos</value></data>
   <data name="PromptGenerator.StepName.Rules" xml:space="preserve"><value>Regras</value></data>
   <data name="PromptGenerator.StepName.Preview" xml:space="preserve"><value>Preview</value></data>
+  <!-- ── PromptGenerator Step 3 ─────────────────────────────────────────── -->
+  <data name="PromptGenerator.Step3.ProjectName" xml:space="preserve"><value>Nome do Projeto</value></data>
+  <data name="PromptGenerator.Step3.ProjectDescription" xml:space="preserve"><value>Descrição do Projeto</value></data>
+  <data name="PromptGenerator.Step3.Technologies" xml:space="preserve"><value>Tecnologias</value></data>
+  <data name="PromptGenerator.Step3.AddNewTechnology" xml:space="preserve"><value>Adicionar nova tecnologia</value></data>
+  <data name="PromptGenerator.Step3.AddTechnology" xml:space="preserve"><value>Adicionar Tecnologia</value></data>
+  <data name="PromptGenerator.Step3.SelectTechnologies" xml:space="preserve"><value>Selecione tecnologias...</value></data>
+  <!-- ── PromptGenerator Step 4 ─────────────────────────────────────────── -->
+  <data name="PromptGenerator.Step4.ArchitecturalPatterns" xml:space="preserve"><value>Padrões Arquiteturais</value></data>
+  <data name="PromptGenerator.Step4.AddNewPattern" xml:space="preserve"><value>Adicionar novo padrão arquitetural</value></data>
+  <data name="PromptGenerator.Step4.AddPattern" xml:space="preserve"><value>Adicionar Padrão</value></data>
+  <data name="PromptGenerator.Step4.SelectPatterns" xml:space="preserve"><value>Selecione padrões arquiteturais...</value></data>
+  <data name="PromptGenerator.Step4.RequiredPackages" xml:space="preserve"><value>Pacotes Obrigatórios</value></data>
+  <data name="PromptGenerator.Step4.PackagesNote" xml:space="preserve"><value>Digite o nome do pacote e pressione Enter para adicionar.</value></data>
+  <data name="PromptGenerator.Step4.SelectPackages" xml:space="preserve"><value>Digite e pressione Enter para adicionar...</value></data>
+  <data name="PromptGenerator.Step4.CodeConventions" xml:space="preserve"><value>Convenções de Código</value></data>
+  <!-- ── PromptGenerator Step 5 ─────────────────────────────────────────── -->
+  <data name="PromptGenerator.Step5.Title" xml:space="preserve"><value>Passo 5 — Ambiente</value></data>
+  <data name="PromptGenerator.Step5.IncludeToggle" xml:space="preserve"><value>Incluir configurações de ambiente</value></data>
+  <data name="PromptGenerator.Step5.DisableNote" xml:space="preserve"><value>Desabilite para pular esta seção.</value></data>
+  <data name="PromptGenerator.Step5.DeploymentTargets" xml:space="preserve"><value>Destinos de Implantação</value></data>
+  <data name="PromptGenerator.Step5.BranchStrategy" xml:space="preserve"><value>Estratégia de Branches</value></data>
+  <data name="PromptGenerator.Step5.IncludeCICD" xml:space="preserve"><value>Incluir CI/CD</value></data>
+  <data name="PromptGenerator.Step5.CICDTool" xml:space="preserve"><value>Ferramenta de CI/CD</value></data>
+  <data name="PromptGenerator.Step5.SelectCICD" xml:space="preserve"><value>Selecione...</value></data>
+  <!-- ── PromptGenerator Step 6 ─────────────────────────────────────────── -->
+  <data name="PromptGenerator.Step6.Title" xml:space="preserve"><value>Passo 6 — Testes</value></data>
+  <data name="PromptGenerator.Step6.IncludeToggle" xml:space="preserve"><value>Incluir configurações de testes</value></data>
+  <data name="PromptGenerator.Step6.TestTypes" xml:space="preserve"><value>Tipos de Teste</value></data>
+  <data name="PromptGenerator.Step6.TestFramework" xml:space="preserve"><value>Framework de Testes</value></data>
+  <data name="PromptGenerator.Step6.MinCoverage" xml:space="preserve"><value>Cobertura Mínima (%)</value></data>
+  <data name="PromptGenerator.Step6.TestObservations" xml:space="preserve"><value>Observações de Testes</value></data>
+  <!-- ── PromptGenerator Step 7 ─────────────────────────────────────────── -->
+  <data name="PromptGenerator.Step7.Title" xml:space="preserve"><value>Passo 7 — Módulos</value></data>
+  <data name="PromptGenerator.Step7.AddSubItem" xml:space="preserve"><value>Adicionar sub-item</value></data>
+  <data name="PromptGenerator.Step7.EmptyState" xml:space="preserve"><value>Nenhum módulo adicionado ainda.</value></data>
+  <data name="PromptGenerator.Step7.EmptyStateHint" xml:space="preserve"><value>Clique em "Adicionar módulo" para começar.</value></data>
+  <data name="PromptGenerator.Step7.AddModule" xml:space="preserve"><value>Adicionar módulo</value></data>
+  <!-- ── PromptGenerator Step 8 ─────────────────────────────────────────── -->
+  <data name="PromptGenerator.Step8.Title" xml:space="preserve"><value>Passo 8 — Regras</value></data>
+  <data name="PromptGenerator.Step8.BehaviorRules" xml:space="preserve"><value>Regras de Comportamento</value></data>
+  <data name="PromptGenerator.Step8.AdditionalRules" xml:space="preserve"><value>Regras Adicionais</value></data>
+  <data name="PromptGenerator.Step8.GeneratePrompt" xml:space="preserve"><value>Gerar Prompt</value></data>
+  <!-- ── PromptGenerator Step 9 ─────────────────────────────────────────── -->
+  <data name="PromptGenerator.Step9.Title" xml:space="preserve"><value>Passo 9 — Preview &amp; Exportar</value></data>
+  <data name="PromptGenerator.Step9.SaveTemplate" xml:space="preserve"><value>Salvar como Template</value></data>
+  <data name="PromptGenerator.Step9.TemplateName" xml:space="preserve"><value>Nome do Template</value></data>
+  <data name="PromptGenerator.Step9.SaveTemplateBtn" xml:space="preserve"><value>Salvar Template</value></data>
+  <data name="PromptGenerator.Step9.GeneratedPrompt" xml:space="preserve"><value>Prompt Gerado</value></data>
+  <data name="PromptGenerator.Step9.Copy" xml:space="preserve"><value>Copiar</value></data>
+  <data name="PromptGenerator.Step9.Copied" xml:space="preserve"><value>Copiado!</value></data>
+  <data name="PromptGenerator.Step9.EditRules" xml:space="preserve"><value>Editar Regras</value></data>
+  <!-- ── PromptGenerator shared ──────────────────────────────────────────── -->
+  <data name="PromptGenerator.SkipStep" xml:space="preserve"><value>Pular esta etapa</value></data>
   <data name="ArchitecturalPatterns.DescriptionPlaceholder" xml:space="preserve"><value>Descreva o padrão arquitetural e seu uso...</value></data>
   <data name="Technologies.ShortDescriptionPlaceholder" xml:space="preserve"><value>Breve descrição opcional...</value></data>
   <data name="AgentProfiles.NamePlaceholder" xml:space="preserve"><value>Ex: Arquiteto .NET Sênior</value></data>
