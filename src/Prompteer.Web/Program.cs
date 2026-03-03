@@ -76,7 +76,7 @@ builder.Services.AddAuthorization(options =>
 
 // ─── Serviços ────────────────────────────────────────────────────────────────
 builder.Services.AddMemoryCache();
-builder.Services.AddLocalization(opts => opts.ResourcesPath = "Resources");
+builder.Services.AddLocalization();
 builder.Services.AddControllersWithViews()
     .AddViewLocalization()
     .AddDataAnnotationsLocalization()
