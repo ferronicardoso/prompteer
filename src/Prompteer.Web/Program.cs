@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
@@ -155,6 +156,14 @@ app.UseRequestLocalization(new RequestLocalizationOptions
 await app.Services.SeedDatabaseAsync();
 
 // ─── Pipeline HTTP ────────────────────────────────────────────────────────────
+
+// Respeita X-Forwarded-Proto/For quando rodando atrás de reverse proxy (Docker/nginx).
+// Isso garante que as redirect URIs geradas usem https:// corretamente.
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
