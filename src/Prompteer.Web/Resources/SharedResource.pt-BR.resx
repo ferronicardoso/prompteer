@@ -145,7 +145,7 @@
   <data name="Settings.ErrorEntraRequired" xml:space="preserve"><value>TenantId e ClientId são obrigatórios.</value></data>
   <data name="Settings.ErrorSaveFailed" xml:space="preserve"><value>Falha ao salvar: {0}</value></data>
 
-  <!-- ── Common (new) ───────────────────────────────────────────────────── -->
+  <!-- ── Common ─────────────────────────────────────────────────────────── -->
   <data name="Common.Name" xml:space="preserve"><value>Nome</value></data>
   <data name="Common.Description" xml:space="preserve"><value>Descrição</value></data>
   <data name="Common.Back" xml:space="preserve"><value>Voltar</value></data>
@@ -399,4 +399,16 @@
   <data name="Setup.Submit" xml:space="preserve"><value>Criar conta e continuar</value></data>
   <data name="Setup.FooterHint" xml:space="preserve"><value>Após criar a conta, você configurará a integração com o {0} para que os demais usuários autentiquem com suas contas Microsoft.</value></data>
   <data name="Setup.FooterNote" xml:space="preserve"><value>Prompteer · Configuração executada apenas uma vez</value></data>
+
+  <!-- ── PromptGenerator Step subtitles ──────────────────────────────────── -->
+  <data name="PromptGenerator.Step3.Subtitle" xml:space="preserve"><value>Defina o nome, descrição e tecnologias do projeto.</value></data>
+  <data name="PromptGenerator.Step4.Subtitle" xml:space="preserve"><value>Defina os padrões arquiteturais, pacotes necessários e convenções de código.</value></data>
+  <data name="PromptGenerator.Step5.Subtitle" xml:space="preserve"><value>Configure os destinos de implantação, estratégia de branches e CI/CD.</value></data>
+  <data name="PromptGenerator.Step6.Subtitle" xml:space="preserve"><value>Configure a estratégia de testes do projeto.</value></data>
+  <data name="PromptGenerator.Step7.Subtitle" xml:space="preserve"><value>Defina os módulos do sistema e seus itens. Arraste para reordenar.</value></data>
+  <data name="PromptGenerator.Step8.Subtitle" xml:space="preserve"><value>Defina as regras de comportamento e restrições do agente.</value></data>
+  <data name="PromptGenerator.Step9.Subtitle" xml:space="preserve"><value>Revise o prompt gerado, copie ou salve como template.</value></data>
+
+  <!-- ── Templates Compare ───────────────────────────────────────────────── -->
+  <data name="Templates.Compare.DifferencesBetween" xml:space="preserve"><value>Diferenças entre v{0} e v{1}</value></data>
 </root>

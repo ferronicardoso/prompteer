@@ -19,7 +19,7 @@
         <div>
             <h1 class="text-xl font-semibold text-slate-900">@L["Templates.Compare.Title"] @Model.Template.Name</h1>
             <p class="text-sm text-slate-500 mt-0.5">
-                @L["Templates.Compare.Differences"] v@(Model.Version1.VersionNumber) and v@(Model.Version2.VersionNumber)
+                @string.Format(L["Templates.Compare.DifferencesBetween"].Value, Model.Version1.VersionNumber, Model.Version2.VersionNumber)
             </p>
         </div>
         <a asp-action="Versions" asp-route-id="@Model.Template.Id" class="btn btn-secondary btn-sm">

@@ -145,7 +145,7 @@
   <data name="Settings.ErrorEntraRequired" xml:space="preserve"><value>TenantId and ClientId are required.</value></data>
   <data name="Settings.ErrorSaveFailed" xml:space="preserve"><value>Failed to save: {0}</value></data>
 
-  <!-- ── Common (new) ───────────────────────────────────────────────────── -->
+  <!-- ── Common ─────────────────────────────────────────────────────────── -->
   <data name="Common.Name" xml:space="preserve"><value>Name</value></data>
   <data name="Common.Description" xml:space="preserve"><value>Description</value></data>
   <data name="Common.Back" xml:space="preserve"><value>Back</value></data>
@@ -399,4 +399,16 @@
   <data name="Setup.Submit" xml:space="preserve"><value>Create account and continue</value></data>
   <data name="Setup.FooterHint" xml:space="preserve"><value>After creating the account, you will configure the integration with {0} so that other users can authenticate with their Microsoft accounts.</value></data>
   <data name="Setup.FooterNote" xml:space="preserve"><value>Prompteer · Setup runs only once</value></data>
+
+  <!-- ── PromptGenerator Step subtitles ──────────────────────────────────── -->
+  <data name="PromptGenerator.Step3.Subtitle" xml:space="preserve"><value>Define the project name, description and technologies.</value></data>
+  <data name="PromptGenerator.Step4.Subtitle" xml:space="preserve"><value>Define the architectural patterns, required packages and code conventions.</value></data>
+  <data name="PromptGenerator.Step5.Subtitle" xml:space="preserve"><value>Configure deployment targets, branch strategy and CI/CD.</value></data>
+  <data name="PromptGenerator.Step6.Subtitle" xml:space="preserve"><value>Configure the project testing strategy.</value></data>
+  <data name="PromptGenerator.Step7.Subtitle" xml:space="preserve"><value>Define the system modules and their items. Drag to reorder.</value></data>
+  <data name="PromptGenerator.Step8.Subtitle" xml:space="preserve"><value>Define the agent behavior rules and constraints.</value></data>
+  <data name="PromptGenerator.Step9.Subtitle" xml:space="preserve"><value>Review the generated prompt, copy or save as a template.</value></data>
+
+  <!-- ── Templates Compare ───────────────────────────────────────────────── -->
+  <data name="Templates.Compare.DifferencesBetween" xml:space="preserve"><value>Differences between v{0} and v{1}</value></data>
 </root>
