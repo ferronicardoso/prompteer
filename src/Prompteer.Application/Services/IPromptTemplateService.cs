@@ -10,7 +10,8 @@ public interface IPromptTemplateService
     Task<PromptTemplateDto?> GetByIdAsync(Guid id);
     Task<IEnumerable<PromptTemplateVersionDto>> GetVersionsAsync(Guid templateId);
     Task<PromptTemplateVersionDto?> GetVersionAsync(Guid templateId, int versionNumber);
-    Task<PromptTemplateDto> SaveFromWizardAsync(Guid? templateId, string name, string? description, WizardSessionData data, string generatedPrompt, bool isPublic = true, Guid? createdByUserId = null);
+    Task<PromptTemplateDto> SaveFromWizardAsync(Guid? templateId, string name, string? description, WizardSessionData data, string generatedPrompt, bool isPublic = false, Guid? createdByUserId = null);
+    Task SetVisibilityAsync(Guid id, bool isPublic);
     Task<PromptTemplateDto> CloneAsync(Guid templateId, string newName);
     Task DeleteAsync(Guid id);
     Task<IEnumerable<PromptTemplateSummaryDto>> GetRecentAsync(int count = 5);

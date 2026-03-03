@@ -367,6 +367,11 @@
   <data name="Templates.Details.NoVersions" xml:space="preserve"><value>No versions found.</value></data>
   <data name="Templates.Details.Current" xml:space="preserve"><value>current</value></data>
   <data name="Templates.Details.Compare" xml:space="preserve"><value>Compare</value></data>
+  <data name="Templates.Details.Download" xml:space="preserve"><value>Download</value></data>
+  <data name="Templates.Details.MakePublic" xml:space="preserve"><value>Make public</value></data>
+  <data name="Templates.Details.MakePrivate" xml:space="preserve"><value>Make private</value></data>
+  <data name="Templates.Details.VisibilityPublic" xml:space="preserve"><value>Public</value></data>
+  <data name="Templates.Details.VisibilityPrivate" xml:space="preserve"><value>Private</value></data>
   <data name="Templates.Compare.Title" xml:space="preserve"><value>Compare versions —</value></data>
   <data name="Templates.Compare.Differences" xml:space="preserve"><value>Differences between</value></data>
   <data name="Templates.Compare.Back" xml:space="preserve"><value>Back</value></data>

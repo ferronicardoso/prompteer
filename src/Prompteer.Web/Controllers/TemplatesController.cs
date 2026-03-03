@@ -118,6 +118,22 @@ public class TemplatesController : Controller
 
     // ── Export ────────────────────────────────────────────────────────────────
 
+    // POST /Templates/SetVisibility
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetVisibility(Guid id, bool isPublic)
+    {
+        try
+        {
+            await _templateService.SetVisibilityAsync(id, isPublic);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+        return RedirectToAction(nameof(Details), new { id });
+    }
+
     // GET /Templates/Export/{id}  — exporta um template
     public async Task<IActionResult> Export(Guid id)
     {
