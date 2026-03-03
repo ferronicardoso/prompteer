@@ -8,24 +8,64 @@ using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// ─── Entra ID via environment variables (Docker Swarm / containers) ──────────
+// Supports ENTRA_TENANT_ID, ENTRA_CLIENT_ID, ENTRA_CLIENT_SECRET, ENTRA_DOMAIN.
+// Uses AddInMemoryCollection so the values are stored in a dedicated memory
+// source and are NOT lost if the JSON file provider reloads at runtime.
+var entraOverrides = new Dictionary<string, string?>();
+void OverrideIfSet(string envVar, string configKey)
+{
+    var value = Environment.GetEnvironmentVariable(envVar);
+    if (!string.IsNullOrWhiteSpace(value))
+        entraOverrides[configKey] = value;
+}
+OverrideIfSet("ENTRA_TENANT_ID",     "AzureAd:TenantId");
+OverrideIfSet("ENTRA_CLIENT_ID",     "AzureAd:ClientId");
+OverrideIfSet("ENTRA_CLIENT_SECRET", "AzureAd:ClientSecret");
+OverrideIfSet("ENTRA_DOMAIN",        "AzureAd:Domain");
+if (entraOverrides.Count > 0)
+    builder.Configuration.AddInMemoryCollection(entraOverrides);
+
 // ─── Autenticação Microsoft Entra ID ─────────────────────────────────────────
 var azureAdSection = builder.Configuration.GetSection("AzureAd");
 if (!string.IsNullOrWhiteSpace(azureAdSection["TenantId"]) &&
     !string.IsNullOrWhiteSpace(azureAdSection["ClientId"]))
 {
+    // MSAL gerencia apenas o scheme "EntraCookies" para usuários Entra.
+    // O admin local usa o scheme "LocalAdmin", completamente fora do alcance do MSAL.
+    // Assim, o OnValidatePrincipal do MSAL nunca interfere na sessão do admin local.
     builder.Services
         .AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd",
             openIdConnectScheme: "OpenIdConnect",
-            cookieScheme: "Cookies",
+            cookieScheme: "EntraCookies",
             subscribeToOpenIdConnectMiddlewareDiagnosticsEvents: false)
         .EnableTokenAcquisitionToCallDownstreamApi()
         .AddInMemoryTokenCaches();
 
-    // Force challenge to always show /Account/Login first.
-    // The user explicitly clicks "Entrar com Microsoft" to trigger the OIDC flow.
+    // "LocalAdmin" — cookie simples, sem nenhum envolvimento do MSAL.
+    // "Cookies"    — policy scheme (DefaultAuthenticateScheme / DefaultChallengeScheme).
+    //                Despacha para "LocalAdmin" quando esse cookie está presente,
+    //                caso contrário para "EntraCookies".
+    builder.Services.AddAuthentication()
+        .AddCookie("LocalAdmin", options =>
+        {
+            options.Cookie.Name      = ".AspNetCore.LocalAdmin";
+            options.LoginPath        = "/Account/Login";
+            options.AccessDeniedPath = "/Account/AccessDenied";
+        })
+        .AddPolicyScheme("Cookies", "Combined cookie auth", options =>
+        {
+            options.ForwardDefaultSelector = ctx =>
+                ctx.Request.Cookies.ContainsKey(".AspNetCore.LocalAdmin")
+                    ? "LocalAdmin"
+                    : "EntraCookies";
+        });
+
+    // DefaultAuthenticateScheme e DefaultChallengeScheme apontam para o policy scheme.
     builder.Services.Configure<Microsoft.AspNetCore.Authentication.AuthenticationOptions>(options =>
     {
-        options.DefaultChallengeScheme = "Cookies";
+        options.DefaultAuthenticateScheme = "Cookies";
+        options.DefaultChallengeScheme    = "Cookies";
     });
 
     // Map the "roles" App Roles claim so User.IsInRole("Admin") works
@@ -39,7 +79,7 @@ if (!string.IsNullOrWhiteSpace(azureAdSection["TenantId"]) &&
     });
 
     builder.Services.Configure<Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationOptions>(
-        "Cookies", options =>
+        "EntraCookies", options =>
         {
             options.LoginPath        = "/Account/Login";
             options.AccessDeniedPath = "/Account/AccessDenied";
@@ -50,11 +90,12 @@ else
     // Sem configuração Entra — cookie simples para desenvolvimento local
     builder.Services.AddAuthentication(options =>
     {
-        options.DefaultAuthenticateScheme = "Cookies";
-        options.DefaultChallengeScheme    = "Cookies";
+        options.DefaultAuthenticateScheme = "LocalAdmin";
+        options.DefaultChallengeScheme    = "LocalAdmin";
     })
-    .AddCookie("Cookies", options =>
+    .AddCookie("LocalAdmin", options =>
     {
+        options.Cookie.Name      = ".AspNetCore.LocalAdmin";
         options.LoginPath        = "/Account/Login";
         options.AccessDeniedPath = "/Account/AccessDenied";
     });

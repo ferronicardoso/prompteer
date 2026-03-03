@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Prompteer.Application.DTOs;
@@ -6,6 +7,7 @@ using Prompteer.Web.Helpers;
 
 namespace Prompteer.Web.Controllers;
 
+[Authorize(Policy = "AdminOnly")]
 public class SettingsController(
     IAppSettingService settings,
     IAIService aiService,

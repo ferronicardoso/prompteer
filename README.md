@@ -362,7 +362,7 @@ services:
       POSTGRES_HOST: db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DATABASE: prompteer
+      POSTGRES_DB: prompteer
     ports:
       - "8080:8080"
 
@@ -457,7 +457,7 @@ The application will be available at `https://localhost:7xxx` / `http://localhos
 | `POSTGRES_HOST` | PostgreSQL host | *(must be set)* |
 | `POSTGRES_USER` | PostgreSQL username | `postgres` |
 | `POSTGRES_PASSWORD` | PostgreSQL password | *(must be set)* |
-| `POSTGRES_DATABASE` | PostgreSQL database name | `prompteer` |
+| `POSTGRES_DB` | PostgreSQL database name | `prompteer` |
 | `ASPNETCORE_ENVIRONMENT` | Application environment | `Development` |
 | `ConnectionStrings__DefaultConnection` | Full connection string (fallback if `POSTGRES_HOST` is not set) | — |
 

@@ -101,11 +101,11 @@ public class AccountController : Controller
             new("local_admin",             "true"),
         };
 
-        var identity  = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var identity  = new ClaimsIdentity(claims, "LocalAdmin");
         var principal = new ClaimsPrincipal(identity);
 
         await HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
+            "LocalAdmin",
             principal,
             new AuthenticationProperties { IsPersistent = true });
 
@@ -147,12 +147,13 @@ public class AccountController : Controller
 
         var isLocalAdmin = User.FindFirst("local_admin")?.Value == "true";
 
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignOutAsync("LocalAdmin");
 
         if (!isLocalAdmin && IsEntraConfigured())
         {
             return SignOut(
                 new AuthenticationProperties { RedirectUri = "/" },
+                "EntraCookies",
                 OpenIdConnectDefaults.AuthenticationScheme);
         }
 
@@ -252,7 +253,10 @@ public class AccountController : Controller
         {
             user.DisplayName = _currentUser.DisplayName ?? user.DisplayName;
             user.Email       = email ?? user.Email;
-            user.Role        = roleFromEntra;
+            // Bootstrap admins (with PasswordHash) keep their role unless Entra promotes them.
+            // This prevents Entra from downgrading a local admin that has no App Role assigned.
+            if (user.PasswordHash == null || roleFromEntra > user.Role)
+                user.Role = roleFromEntra;
             user.LastLoginAt = now;
             user.UpdatedAt   = now;
         }
