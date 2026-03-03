@@ -2,7 +2,21 @@
     var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
 }
 
-<aside class="w-64 flex-shrink-0 bg-slate-900 flex flex-col h-full">
+<!-- Mobile backdrop -->
+<div x-show="sidebarOpen"
+     x-cloak
+     @@click="sidebarOpen = false"
+     class="fixed inset-0 z-30 bg-black/50 lg:hidden"
+     x-transition:enter="transition-opacity duration-200"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition-opacity duration-200"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0">
+</div>
+
+<aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+       class="fixed inset-y-0 left-0 z-40 w-64 flex-shrink-0 bg-slate-900 flex flex-col h-full transition-transform duration-200 ease-in-out lg:relative lg:translate-x-0 lg:z-auto">
 
     <!-- Logo -->
     <div class="flex items-center gap-3 px-5 py-5 border-b border-slate-700/50">
