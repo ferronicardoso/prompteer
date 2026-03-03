@@ -328,6 +328,10 @@ AppSetting
 
 The easiest way to run Prompteer is by pulling the pre-built image directly from Docker Hub — no local build required.
 
+```bash
+docker pull ferronicardoso/prompteer:latest
+```
+
 ### 1. Create a `docker-compose.yml`
 
 ```yaml
