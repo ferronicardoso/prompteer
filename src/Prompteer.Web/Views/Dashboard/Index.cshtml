@@ -14,7 +14,7 @@
             </div>
             <div>
                 <p class="text-2xl font-bold text-slate-900">@Model.TotalTemplates</p>
-                <p class="text-xs text-slate-500">Templates salvos</p>
+                <p class="text-xs text-slate-500">@L["Dashboard.SavedTemplates"]</p>
             </div>
         </div>
 
@@ -24,7 +24,7 @@
             </div>
             <div>
                 <p class="text-2xl font-bold text-slate-900">@Model.TotalVersions</p>
-                <p class="text-xs text-slate-500">Versões geradas</p>
+                <p class="text-xs text-slate-500">@L["Dashboard.GeneratedVersions"]</p>
             </div>
         </div>
 
@@ -34,7 +34,7 @@
             </div>
             <div>
                 <p class="text-2xl font-bold text-slate-900">@Model.TotalAgentProfiles</p>
-                <p class="text-xs text-slate-500">Perfis de agente</p>
+                <p class="text-xs text-slate-500">@L["Dashboard.AgentProfiles"]</p>
             </div>
         </div>
 
@@ -44,7 +44,7 @@
             </div>
             <div>
                 <p class="text-2xl font-bold text-slate-900">@Model.TotalTechnologies</p>
-                <p class="text-xs text-slate-500">Tecnologias cadastradas</p>
+                <p class="text-xs text-slate-500">@L["Dashboard.RegisteredTechnologies"]</p>
             </div>
         </div>
 
@@ -56,19 +56,19 @@
         <!-- Recent Templates -->
         <div class="lg:col-span-2 card">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-base font-semibold text-slate-900">Templates Recentes</h2>
+                <h2 class="text-base font-semibold text-slate-900">@L["Dashboard.RecentTemplates"]</h2>
                 <a asp-controller="Templates" asp-action="Index"
-                   class="text-xs text-brand-600 hover:text-brand-700 font-medium">Ver todos →</a>
+                   class="text-xs text-brand-600 hover:text-brand-700 font-medium">@L["Dashboard.ViewAll"]</a>
             </div>
 
             @if (!Model.RecentTemplates.Any())
             {
                 <div class="text-center py-10">
                     <i data-lucide="inbox" class="w-10 h-10 text-slate-300 mx-auto mb-3"></i>
-                    <p class="text-sm text-slate-500">Nenhum template salvo ainda.</p>
+                    <p class="text-sm text-slate-500">@L["Dashboard.NoTemplates"]</p>
                     <a asp-controller="PromptGenerator" asp-action="Index"
                        class="btn btn-primary btn-sm mt-3">
-                        Criar primeiro prompt
+                        @L["Dashboard.CreateFirstPrompt"]
                     </a>
                 </div>
             }
@@ -85,9 +85,10 @@
                                 </p>
                             </div>
                             <a asp-controller="Templates" asp-action="Edit" asp-route-id="@t.Id"
-                               class="btn btn-ghost btn-sm opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                               class="btn btn-ghost btn-sm opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                               title="@L["Dashboard.EditInWizard"]">
                                 <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
-                                Editar
+                                @L["Common.Edit"]
                             </a>
                         </li>
                     }
@@ -100,13 +101,13 @@
 
             <!-- Top Technologies -->
             <div class="card">
-                <h2 class="text-sm font-semibold text-slate-900 mb-4">Tecnologias mais usadas</h2>
+                <h2 class="text-sm font-semibold text-slate-900 mb-4">@L["Dashboard.TopTechnologies"]</h2>
 
                 @if (!Model.TopTechnologies.Any())
                 {
                     <div class="text-center py-6">
                         <i data-lucide="cpu" class="w-7 h-7 text-slate-300 mx-auto mb-2"></i>
-                        <p class="text-xs text-slate-500">Sem dados ainda</p>
+                        <p class="text-xs text-slate-500">@L["Dashboard.NoData"]</p>
                     </div>
                 }
                 else
@@ -132,13 +133,13 @@
 
             <!-- Top Patterns -->
             <div class="card">
-                <h2 class="text-sm font-semibold text-slate-900 mb-4">Padrões mais usados</h2>
+                <h2 class="text-sm font-semibold text-slate-900 mb-4">@L["Dashboard.TopPatterns"]</h2>
 
                 @if (!Model.TopPatterns.Any())
                 {
                     <div class="text-center py-6">
                         <i data-lucide="layout-template" class="w-7 h-7 text-slate-300 mx-auto mb-2"></i>
-                        <p class="text-xs text-slate-500">Sem dados ainda</p>
+                        <p class="text-xs text-slate-500">@L["Dashboard.NoData"]</p>
                     </div>
                 }
                 else

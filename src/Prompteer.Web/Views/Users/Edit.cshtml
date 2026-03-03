@@ -3,7 +3,7 @@
 @model ApplicationUser
 
 @{
-    ViewData["Title"] = "Editar Usuário";
+    ViewData["Title"] = "Edit User";
 
     string RoleBadge(UserRole role) => role switch
     {
@@ -15,8 +15,8 @@
 
 <div class="max-w-lg mx-auto space-y-6">
     <div>
-        <h1 class="text-2xl font-bold text-gray-900">Editar Usuário</h1>
-        <p class="text-sm text-gray-500 mt-0.5">Gerencie o status de acesso do usuário.</p>
+        <h1 class="text-2xl font-bold text-gray-900">@L["Users.Edit.Title"]</h1>
+        <p class="text-sm text-gray-500 mt-0.5">@L["Users.Edit.Subtitle"]</p>
     </div>
 
     <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
@@ -46,21 +46,17 @@
             <div class="flex items-start gap-3">
                 <i data-lucide="shield" class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5"></i>
                 <div>
-                    <p class="text-sm font-semibold text-amber-800">Papel atual (via Entra ID)</p>
+                    <p class="text-sm font-semibold text-amber-800">@L["Users.Edit.CurrentRole"]</p>
                     <div class="flex items-center gap-2 mt-1.5">
                         <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold @RoleBadge(Model.Role)">
                             @Model.Role
                         </span>
                         <span class="text-xs text-amber-700">
-                            Sincronizado no último login
+                            @L["Users.Edit.SyncedLastLogin"]
                         </span>
                     </div>
                     <p class="text-xs text-amber-600 mt-2">
-                        O papel é definido no
-                        <a href="https://entra.microsoft.com" target="_blank" rel="noopener"
-                           class="underline font-medium hover:text-amber-800">Microsoft Entra ID</a>
-                        — em <strong>Enterprise Applications → Users and Groups</strong>.
-                        Alterações aplicadas no próximo login do usuário.
+                        @L["Users.Edit.RoleNote"]
                     </p>
                 </div>
             </div>
@@ -72,8 +68,8 @@
 
             <div class="flex items-center justify-between py-3 border-y border-gray-100">
                 <div>
-                    <p class="text-sm font-medium text-gray-700">Acesso ativo</p>
-                    <p class="text-xs text-gray-400 mt-0.5">Desativar bloqueia o acesso sem remover o registro.</p>
+                    <p class="text-sm font-medium text-gray-700">@L["Users.Edit.ActiveAccess"]</p>
+                    <p class="text-xs text-gray-400 mt-0.5">@L["Users.Edit.ActiveNote"]</p>
                 </div>
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="hidden" name="isActive" value="false" />
@@ -91,11 +87,11 @@
             <div class="flex items-center gap-3">
                 <button type="submit"
                         class="px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
-                    Salvar
+                    @L["Common.Save"]
                 </button>
                 <a asp-action="Index"
                    class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                    Cancelar
+                    @L["Common.Cancel"]
                 </a>
             </div>
         </form>
@@ -105,7 +101,7 @@
     @if (Model.LastLoginAt.HasValue)
     {
         <p class="text-xs text-gray-400 text-center">
-            Último acesso: @Model.LastLoginAt.Value.ToString("dd/MM/yyyy HH:mm") UTC
+            @L["Users.Edit.LastAccess"] @Model.LastLoginAt.Value.ToString("dd/MM/yyyy HH:mm") UTC
         </p>
     }
 </div>

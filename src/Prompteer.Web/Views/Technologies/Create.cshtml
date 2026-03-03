@@ -1,18 +1,18 @@
 @using Prompteer.Application.DTOs
 @model TechnologyFormDto
 @{
-    ViewData["Title"] = "Nova Tecnologia";
+    ViewData["Title"] = "New Technology";
 }
 
 <div class="max-w-2xl">
     <!-- Header -->
     <div class="mb-6">
         <nav class="flex items-center gap-2 text-sm text-slate-500 mb-2">
-            <a asp-action="Index" class="hover:text-slate-700">Tecnologias</a>
+            <a asp-action="Index" class="hover:text-slate-700">@L["Technologies.Title"]</a>
             <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-            <span class="text-slate-900">Nova Tecnologia</span>
+            <span class="text-slate-900">@L["Technologies.Create.Breadcrumb"]</span>
         </nav>
-        <h1 class="text-xl font-semibold text-slate-900">Nova Tecnologia</h1>
+        <h1 class="text-xl font-semibold text-slate-900">@L["Technologies.Create.Title"]</h1>
     </div>
 
     <form asp-action="Create" method="post">
@@ -22,28 +22,28 @@
 
             <!-- Name -->
             <div>
-                <label asp-for="Name" class="block text-sm font-medium text-slate-700 mb-1">Nome <span class="text-red-500">*</span></label>
+                <label asp-for="Name" class="block text-sm font-medium text-slate-700 mb-1">@L["Common.Name"] <span class="text-red-500">*</span></label>
                 <input asp-for="Name" class="form-input w-full" placeholder="Ex: Entity Framework Core" />
                 <span asp-validation-for="Name" class="text-xs text-red-600 mt-1 block"></span>
             </div>
 
             <!-- Category -->
             <div>
-                <label asp-for="Category" class="block text-sm font-medium text-slate-700 mb-1">Categoria <span class="text-red-500">*</span></label>
+                <label asp-for="Category" class="block text-sm font-medium text-slate-700 mb-1">@L["Technologies.Category"] <span class="text-red-500">*</span></label>
                 <select asp-for="Category" asp-items="ViewBag.CategoryItems" class="form-select w-full"></select>
                 <span asp-validation-for="Category" class="text-xs text-red-600 mt-1 block"></span>
             </div>
 
             <!-- Ecosystem -->
             <div>
-                <label asp-for="Ecosystem" class="block text-sm font-medium text-slate-700 mb-1">Ecossistema <span class="text-red-500">*</span></label>
+                <label asp-for="Ecosystem" class="block text-sm font-medium text-slate-700 mb-1">@L["Common.Ecosystem"] <span class="text-red-500">*</span></label>
                 <select asp-for="Ecosystem" asp-items="ViewBag.EcosystemItems" class="form-select w-full"></select>
                 <span asp-validation-for="Ecosystem" class="text-xs text-red-600 mt-1 block"></span>
             </div>
 
             <!-- Version -->
             <div>
-                <label asp-for="Version" class="block text-sm font-medium text-slate-700 mb-1">Versão</label>
+                <label asp-for="Version" class="block text-sm font-medium text-slate-700 mb-1">@L["Technologies.VersionLabel"]</label>
                 <input asp-for="Version" class="form-input w-full" placeholder="Ex: 9.0" />
                 <span asp-validation-for="Version" class="text-xs text-red-600 mt-1 block"></span>
             </div>
@@ -51,8 +51,8 @@
             <!-- Short Description -->
             <div>
                 <div class="flex items-center justify-between mb-1">
-                    <label asp-for="ShortDescription" class="text-sm font-medium text-slate-700">Descrição Curta</label>
-                    <button type="button" onclick="aiGenerate('ShortDescription','TechDescription',{name:document.getElementById('Name').value,category:document.querySelector('[name=Category] option:checked')?.text??'',ecosystem:document.querySelector('[name=Ecosystem] option:checked')?.text??''},this)" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Gerar com IA</button>
+                    <label asp-for="ShortDescription" class="text-sm font-medium text-slate-700">@L["Technologies.ShortDescription"]</label>
+                    <button type="button" onclick="aiGenerate('ShortDescription','TechDescription',{name:document.getElementById('Name').value,category:document.querySelector('[name=Category] option:checked')?.text??'',ecosystem:document.querySelector('[name=Ecosystem] option:checked')?.text??''},this)" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i> @L["Common.GenerateWithAI"]</button>
                 </div>
                 <textarea asp-for="ShortDescription" rows="2" class="form-textarea w-full" placeholder="Breve descrição opcional..."></textarea>
                 <span asp-validation-for="ShortDescription" class="text-xs text-red-600 mt-1 block"></span>
@@ -62,9 +62,9 @@
             <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
                 <button type="submit" class="btn btn-primary">
                     <i data-lucide="save" class="w-4 h-4"></i>
-                    Salvar
+                    @L["Common.Save"]
                 </button>
-                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                <a asp-action="Index" class="btn btn-secondary">@L["Common.Cancel"]</a>
             </div>
         </div>
     </form>

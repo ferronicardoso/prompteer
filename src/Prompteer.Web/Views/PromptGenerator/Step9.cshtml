@@ -1,49 +1,49 @@
 @using Prompteer.Web.Models
 @model WizardViewModel
 @{
-    ViewData["Title"] = "Gerador de Prompts — Preview";
+    ViewData["Title"] = "Prompt Generator — Preview";
 }
 
 <div class="max-w-4xl">
     <partial name="_StepLayout" model="Model" />
 
     <div class="mb-6">
-        <h1 class="text-xl font-semibold text-slate-900">Passo 9 — Preview e Export</h1>
-        <p class="text-sm text-slate-500 mt-1">Revise o prompt gerado, copie ou salve como template.</p>
+        <h1 class="text-xl font-semibold text-slate-900">Step 9 — Preview & Export</h1>
+        <p class="text-sm text-slate-500 mt-1">Review the generated prompt, copy or save as a template.</p>
     </div>
 
     <!-- Save Template -->
     <div class="card mb-6">
         <h2 class="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
             <i data-lucide="bookmark" class="w-4 h-4 text-brand-600"></i>
-            Salvar como Template
+            Save as Template
         </h2>
         <form method="post" asp-action="SaveTemplate" asp-route-draftId="@Model.DraftId">
             @Html.AntiForgeryToken()
             <input type="hidden" name="generatedPrompt" value="@Model.GeneratedPrompt" />
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Nome do Template <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Template Name <span class="text-red-500">*</span></label>
                     <input type="text" name="templateName" required class="form-input w-full"
-                           placeholder="Ex: API REST .NET com Clean Architecture"
+                           placeholder="Ex: REST API .NET with Clean Architecture"
                            value="@Model.Data.ProjectName" />
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Descrição</label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
                     <textarea name="templateDesc" rows="2" class="form-textarea w-full"
-                              placeholder="Descrição opcional do template...">@Model.Data.ProjectDescription</textarea>
+                              placeholder="Optional template description...">@Model.Data.ProjectDescription</textarea>
                 </div>
                 <div class="flex items-center gap-3">
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" name="isPublic" value="true" checked class="sr-only peer" id="toggleIsPublic" />
                         <div class="w-10 h-5 bg-slate-300 peer-focus:ring-2 peer-focus:ring-brand-500 rounded-full peer peer-checked:bg-brand-600 transition-colors"></div>
-                        <span class="ml-2 text-sm text-slate-700">Público</span>
+                        <span class="ml-2 text-sm text-slate-700">Public</span>
                     </label>
-                    <p class="text-xs text-slate-400">Desative para tornar este template privado (visível somente por você e admins).</p>
+                    <p class="text-xs text-slate-400">Disable to make this template private (visible only to you and admins).</p>
                 </div>
                 <button type="submit" class="btn btn-primary">
                     <i data-lucide="save" class="w-4 h-4"></i>
-                    Salvar Template
+                    Save Template
                 </button>
             </div>
         </form>
@@ -54,14 +54,14 @@
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-sm font-semibold text-slate-700 flex items-center gap-2">
                 <i data-lucide="file-code" class="w-4 h-4 text-brand-600"></i>
-                Prompt Gerado
+                Generated Prompt
             </h2>
             <button type="button"
                     @@click="navigator.clipboard.writeText(window.__rawPrompt); copied = true; setTimeout(() => copied = false, 2000)"
                     class="flex items-center gap-2 text-sm px-3 py-1.5 rounded-md border border-slate-300 text-slate-600 hover:border-brand-400 hover:text-brand-700 hover:bg-brand-50 transition-colors">
                 <i data-lucide="copy" class="w-3.5 h-3.5" x-show="!copied"></i>
                 <i data-lucide="check" class="w-3.5 h-3.5 text-green-600" x-show="copied" style="display:none"></i>
-                <span x-text="copied ? 'Copiado!' : 'Copiar'">Copiar</span>
+                <span x-text="copied ? 'Copied!' : 'Copy'">Copy</span>
             </button>
         </div>
         <div class="overflow-auto max-h-[36rem] rounded-lg border border-slate-200 bg-white p-5">
@@ -73,11 +73,11 @@
     <div class="flex items-center justify-between">
         <a asp-action="Step" asp-route-step="8" asp-route-draftId="@Model.DraftId" class="btn btn-secondary">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            Editar Regras
+            Edit Rules
         </a>
         <a asp-action="Index" class="btn btn-ghost text-slate-500 hover:text-slate-700">
             <i data-lucide="plus" class="w-4 h-4"></i>
-            Novo Prompt
+            New Prompt
         </a>
     </div>
 </div>

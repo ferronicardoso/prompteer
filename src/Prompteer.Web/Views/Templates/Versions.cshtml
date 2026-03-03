@@ -1,7 +1,7 @@
 @using Prompteer.Web.Models
 @model VersionsViewModel
 @{
-    ViewData["Title"] = $"Versões — {Model.Template.Name}";
+    ViewData["Title"] = $"Versions — {Model.Template.Name}";
 }
 
 <div class="space-y-4">
@@ -11,17 +11,17 @@
         <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
         <a asp-action="Details" asp-route-id="@Model.Template.Id" class="hover:text-brand-600 transition-colors">@Model.Template.Name</a>
         <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-        <span>Versões</span>
+        <span>@L["Templates.Details.Versions"]</span>
     </div>
 
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-xl font-semibold text-slate-900">Versões de "@Model.Template.Name"</h1>
-            <p class="text-sm text-slate-500 mt-0.5">@Model.Versions.Count() versão(ões) disponíveis</p>
+            <h1 class="text-xl font-semibold text-slate-900">@L["Templates.Versions.Title"] "@Model.Template.Name"</h1>
+            <p class="text-sm text-slate-500 mt-0.5">@Model.Versions.Count() @L["Templates.Versions.Available"]</p>
         </div>
         <a asp-action="Details" asp-route-id="@Model.Template.Id" class="btn btn-secondary btn-sm">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            Voltar
+            @L["Templates.Versions.Back"]
         </a>
     </div>
 
@@ -30,7 +30,7 @@
         {
             <div class="text-center py-12">
                 <i data-lucide="history" class="w-10 h-10 text-slate-300 mx-auto mb-3"></i>
-                <p class="text-sm text-slate-500">Nenhuma versão encontrada.</p>
+                <p class="text-sm text-slate-500">@L["Templates.Versions.NoVersions"]</p>
             </div>
         }
         else
@@ -38,8 +38,8 @@
             <table class="w-full text-sm">
                 <thead>
                     <tr class="border-b border-slate-200 bg-slate-50">
-                        <th class="text-left px-4 py-3 font-medium text-slate-600">Versão</th>
-                        <th class="text-left px-4 py-3 font-medium text-slate-600">Criada em</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">@L["Common.Version"]</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">@L["Common.Created"]</th>
                         <th class="px-4 py-3"></th>
                     </tr>
                 </thead>
@@ -53,7 +53,7 @@
                                 </span>
                                 @if (v.VersionNumber == Model.Template.CurrentVersionNumber)
                                 {
-                                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">atual</span>
+                                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">@L["Templates.Details.Current"]</span>
                                 }
                             </td>
                             <td class="px-4 py-3 text-slate-500">@v.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
@@ -63,7 +63,7 @@
                                    asp-route-versionNumber="@v.VersionNumber"
                                    class="btn btn-ghost btn-sm">
                                     <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                                    Ver esta versão
+                                    @L["Templates.Versions.ViewVersion"]
                                 </a>
                             </td>
                         </tr>

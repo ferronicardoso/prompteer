@@ -19,8 +19,8 @@
                 <p class="text-sm text-slate-500 mt-1">@Model.Template.Description</p>
             }
             <div class="flex items-center gap-4 mt-2 text-xs text-slate-400">
-                <span><i data-lucide="calendar" class="w-3.5 h-3.5 inline-block mr-1"></i>Criado em @Model.Template.CreatedAt.ToString("dd/MM/yyyy")</span>
-                <span><i data-lucide="clock" class="w-3.5 h-3.5 inline-block mr-1"></i>Atualizado em @Model.Template.UpdatedAt.ToString("dd/MM/yyyy")</span>
+                <span><i data-lucide="calendar" class="w-3.5 h-3.5 inline-block mr-1"></i>@L["Templates.Details.CreatedOn"] @Model.Template.CreatedAt.ToString("dd/MM/yyyy")</span>
+                <span><i data-lucide="clock" class="w-3.5 h-3.5 inline-block mr-1"></i>@L["Templates.Details.UpdatedOn"] @Model.Template.UpdatedAt.ToString("dd/MM/yyyy")</span>
                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">
                     v@(Model.Template.CurrentVersionNumber)
                 </span>
@@ -29,11 +29,11 @@
         <div class="flex items-center gap-2">
             <a asp-action="Versions" asp-route-id="@Model.Template.Id" class="btn btn-secondary btn-sm">
                 <i data-lucide="history" class="w-4 h-4"></i>
-                Versões
+                @L["Templates.Details.Versions"]
             </a>
             <a asp-action="Edit" asp-route-id="@Model.Template.Id" class="btn btn-primary btn-sm">
                 <i data-lucide="pencil" class="w-4 h-4"></i>
-                Editar
+                @L["Templates.Details.Edit"]
             </a>
         </div>
     </div>
@@ -43,13 +43,13 @@
     {
         <div class="card">
             <div class="flex items-center justify-between mb-3">
-                <h2 class="text-sm font-semibold text-slate-700">Prompt atual (v@(Model.Template.CurrentVersionNumber))</h2>
+                <h2 class="text-sm font-semibold text-slate-700">@L["Templates.Details.CurrentPrompt"] (v@(Model.Template.CurrentVersionNumber))</h2>
                 <button type="button"
                         x-data="{ copied: false }"
                         @@click="navigator.clipboard.writeText(window.__rawPromptDetails); copied = true; setTimeout(() => copied = false, 2000)"
                         class="btn btn-ghost btn-sm">
                     <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-                    <span x-text="copied ? 'Copiado!' : 'Copiar'">Copiar</span>
+                    <span x-text="copied ? '@L["Templates.Details.Copied"]' : '@L["Templates.Details.Copy"]'">@L["Templates.Details.Copy"]</span>
                 </button>
             </div>
             <div class="overflow-auto max-h-[40rem] rounded-lg border border-slate-200 bg-white p-5">
@@ -61,12 +61,12 @@
     <!-- Version History -->
     <div class="card p-0 overflow-hidden">
         <div class="px-4 py-3 border-b border-slate-200 bg-slate-50">
-            <h2 class="text-sm font-semibold text-slate-700">Histórico de versões</h2>
+            <h2 class="text-sm font-semibold text-slate-700">@L["Templates.Details.VersionHistory"]</h2>
         </div>
         @if (!Model.Versions.Any())
         {
             <div class="text-center py-8">
-                <p class="text-sm text-slate-500">Nenhuma versão encontrada.</p>
+                <p class="text-sm text-slate-500">@L["Templates.Details.NoVersions"]</p>
             </div>
         }
         else
@@ -74,8 +74,8 @@
             <table class="w-full text-sm">
                 <thead>
                     <tr class="border-b border-slate-200">
-                        <th class="text-left px-4 py-3 font-medium text-slate-600">Versão</th>
-                        <th class="text-left px-4 py-3 font-medium text-slate-600">Criada em</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">@L["Common.Version"]</th>
+                        <th class="text-left px-4 py-3 font-medium text-slate-600">@L["Common.Created"]</th>
                         <th class="px-4 py-3"></th>
                     </tr>
                 </thead>
@@ -89,7 +89,7 @@
                                 </span>
                                 @if (v.VersionNumber == Model.Template.CurrentVersionNumber)
                                 {
-                                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">atual</span>
+                                    <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">@L["Templates.Details.Current"]</span>
                                 }
                             </td>
                             <td class="px-4 py-3 text-slate-500">@v.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
@@ -100,7 +100,7 @@
                                        asp-route-versionNumber="@v.VersionNumber"
                                        class="btn btn-ghost btn-sm">
                                         <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                                        Ver
+                                        @L["Common.View"]
                                     </a>
                                     @{
                                         var others = Model.Versions.Where(x => x.VersionNumber != v.VersionNumber).OrderByDescending(x => x.VersionNumber).FirstOrDefault();
@@ -113,7 +113,7 @@
                                            asp-route-v2="@Math.Max(v.VersionNumber, others.VersionNumber)"
                                            class="btn btn-ghost btn-sm">
                                             <i data-lucide="git-compare" class="w-3.5 h-3.5"></i>
-                                            Comparar
+                                            @L["Templates.Details.Compare"]
                                         </a>
                                     }
                                 </div>

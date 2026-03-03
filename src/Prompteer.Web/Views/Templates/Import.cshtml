@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Importar Templates";
+    ViewData["Title"] = "Import Templates";
 }
 
 <div class="max-w-2xl">
@@ -8,8 +8,8 @@
             <i data-lucide="arrow-left" class="w-5 h-5"></i>
         </a>
         <div>
-            <h1 class="text-xl font-semibold text-slate-900">Importar Templates</h1>
-            <p class="text-sm text-slate-500 mt-0.5">Carregue um arquivo .json exportado pelo Prompteer</p>
+            <h1 class="text-xl font-semibold text-slate-900">@L["Templates.Import.Title"]</h1>
+            <p class="text-sm text-slate-500 mt-0.5">@L["Templates.Import.Subtitle"]</p>
         </div>
     </div>
 
@@ -35,8 +35,8 @@
                     <i data-lucide="upload-cloud" class="w-6 h-6 text-indigo-500"></i>
                 </div>
                 <div class="text-center">
-                    <p class="font-medium text-slate-700" x-text="fileName || 'Clique ou arraste o arquivo aqui'"></p>
-                    <p class="text-sm text-slate-400 mt-1">Apenas arquivos .json exportados pelo Prompteer</p>
+                    <p class="font-medium text-slate-700" x-text="fileName || '@L["Templates.Import.DropZone"]'"></p>
+                    <p class="text-sm text-slate-400 mt-1">@L["Templates.Import.FileType"]</p>
                 </div>
                 <input type="file" name="file" accept=".json" x-ref="fileInput"
                        @@change="fileName = $event.target.files[0]?.name ?? ''"
@@ -49,10 +49,8 @@
                        x-model="skipDuplicates"
                        class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />
                 <div>
-                    <p class="text-sm font-medium text-slate-700">Pular templates duplicados</p>
-                    <p class="text-xs text-slate-400 mt-0.5">
-                        Se um template com o mesmo nome já existir, ele será ignorado. Desmarque para criar uma cópia.
-                    </p>
+                    <p class="text-sm font-medium text-slate-700">@L["Templates.Import.SkipDuplicates"]</p>
+                    <p class="text-xs text-slate-400 mt-0.5">@L["Templates.Import.SkipDuplicatesNote"]</p>
                 </div>
             </label>
 
@@ -60,11 +58,11 @@
             <div class="flex items-start gap-2.5 p-3.5 rounded-xl bg-blue-50 border border-blue-200">
                 <i data-lucide="info" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
                 <div class="text-xs text-blue-700 space-y-1">
-                    <p class="font-semibold">O que é importado:</p>
+                    <p class="font-semibold">@L["Templates.Import.InfoTitle"]</p>
                     <ul class="list-disc list-inside space-y-0.5">
-                        <li>Nome, descrição e prompt gerado de cada template</li>
-                        <li>Dados estruturados do wizard (para edição futura)</li>
-                        <li>Tecnologias e padrões arquiteturais — criados automaticamente se não existirem</li>
+                        <li>@L["Templates.Import.InfoItem1"]</li>
+                        <li>@L["Templates.Import.InfoItem2"]</li>
+                        <li>@L["Templates.Import.InfoItem3"]</li>
                     </ul>
                 </div>
             </div>
@@ -74,9 +72,9 @@
                         :disabled="!fileName"
                         :class="fileName ? 'btn btn-primary' : 'btn btn-primary opacity-50 cursor-not-allowed'">
                     <i data-lucide="upload" class="w-4 h-4"></i>
-                    Importar templates
+                    @L["Templates.Import.Submit"]
                 </button>
-                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                <a asp-action="Index" class="btn btn-secondary">@L["Common.Cancel"]</a>
             </div>
         </div>
     </form>

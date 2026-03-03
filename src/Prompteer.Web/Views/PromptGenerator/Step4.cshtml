@@ -1,7 +1,7 @@
 @using Prompteer.Web.Models
 @model WizardViewModel
 @{
-    ViewData["Title"] = "Gerador de Prompts — Passo 4: Arquitetura";
+    ViewData["Title"] = "Prompt Generator — Step 4: Architecture";
     var selectedPatternIds = Model.Data.ArchitecturalPatternIds.Select(id => id.ToString()).ToHashSet();
     var packagesJson = System.Text.Json.JsonSerializer.Serialize(Model.Data.RequiredPackages);
 }
@@ -10,8 +10,8 @@
     <partial name="_StepLayout" model="Model" />
 
     <div class="mb-6">
-        <h1 class="text-xl font-semibold text-slate-900">Passo 4 — Arquitetura</h1>
-        <p class="text-sm text-slate-500 mt-1">Defina os padrões arquiteturais, pacotes obrigatórios e convenções de código.</p>
+        <h1 class="text-xl font-semibold text-slate-900">@L["PromptGenerator.Step4.Title"]</h1>
+        <p class="text-sm text-slate-500 mt-1">Define the architectural patterns, required packages and code conventions.</p>
     </div>
 
     <form method="post" asp-action="Step" asp-route-step="4" asp-route-draftId="@Model.DraftId">
@@ -20,7 +20,7 @@
         <div class="card space-y-6">
             <!-- Architectural Patterns -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Padrões Arquiteturais</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Architectural Patterns</label>
                 <select id="patternSelect" name="ArchitecturalPatternIds" multiple class="form-select w-full">
                     @foreach (var pattern in Model.ArchitecturalPatterns)
                     {
@@ -38,63 +38,63 @@
                 <button type="button" @@click="open = !open"
                         class="w-full flex items-center gap-2 px-4 py-3 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors">
                     <i data-lucide="plus-circle" class="w-4 h-4 text-brand-600"></i>
-                    <span>Adicionar novo padrão arquitetural</span>
+                    <span>Add new architectural pattern</span>
                     <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-auto transition-transform" :class="open && 'rotate-180'"></i>
                 </button>
                 <div x-show="open" x-collapse class="border-t border-slate-200 p-4 space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">Nome <span class="text-red-500">*</span></label>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">@L["Common.Name"] <span class="text-red-500">*</span></label>
                             <input id="newPatternName" type="text" class="form-input w-full" placeholder="Ex: Clean Architecture, DDD, CQRS" />
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-700 mb-1">Ecossistema <span class="text-red-500">*</span></label>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">@L["Common.Ecosystem"] <span class="text-red-500">*</span></label>
                             <select id="newPatternEcosystem" class="form-select w-full">
                                 <option value="0">.NET</option>
                                 <option value="1">Node.js</option>
                                 <option value="2">Python</option>
                                 <option value="3">Java</option>
-                                <option value="4">Agnóstico</option>
+                                <option value="4">Agnostic</option>
                             </select>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-slate-700 mb-1">Descrição <span class="text-red-500">*</span></label>
-                        <textarea id="newPatternDesc" rows="2" class="form-textarea w-full" placeholder="Descreva o padrão arquitetural..."></textarea>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">@L["Common.Description"] <span class="text-red-500">*</span></label>
+                        <textarea id="newPatternDesc" rows="2" class="form-textarea w-full" placeholder="Describe the architectural pattern..."></textarea>
                     </div>
                     <div id="newPatternError" class="hidden text-xs text-red-600"></div>
                     <button type="button" id="btnCreatePattern" class="btn btn-primary text-sm">
                         <i data-lucide="save" class="w-3.5 h-3.5"></i>
-                        Adicionar Padrão
+                        Add Pattern
                     </button>
                 </div>
             </div>
 
             <!-- Required Packages -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Pacotes Obrigatórios</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Required Packages</label>
                 <select id="packagesSelect" name="RequiredPackages" multiple class="form-select w-full">
                     @foreach (var pkg in Model.Data.RequiredPackages)
                     {
                         <option value="@pkg" selected>@pkg</option>
                     }
                 </select>
-                <p class="text-xs text-slate-400 mt-1">Digite o nome do pacote e pressione Enter para adicionar.</p>
+                <p class="text-xs text-slate-400 mt-1">Type the package name and press Enter to add.</p>
             </div>
 
             <!-- Code Conventions -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Convenções de Código</label>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Code Conventions</label>
                 <textarea id="codeConventions" name="CodeConventions" rows="5" class="form-textarea w-full"
-                          placeholder="Descreva as convenções de código a serem seguidas...">@Model.Data.CodeConventions</textarea>
+                          placeholder="Describe the code conventions to follow...">@Model.Data.CodeConventions</textarea>
                 <div class="flex flex-wrap gap-2 mt-2">
                     @{
                         var suggestions = new[]
                         {
-                            "Usar async/await em toda a aplicação",
-                            "Seguir convenções de nomenclatura C# (PascalCase para tipos, camelCase para variáveis)",
-                            "Documentar métodos públicos com XML comments",
-                            "Evitar magic numbers e strings literais"
+                            "Use async/await throughout the application",
+                            "Follow C# naming conventions (PascalCase for types, camelCase for variables)",
+                            "Document public methods with XML comments",
+                            "Avoid magic numbers and string literals"
                         };
                     }
                     @foreach (var s in suggestions)
@@ -110,10 +110,10 @@
         <div class="flex items-center justify-between mt-6">
             <button type="submit" formaction="@Url.Action("Previous", new { step = 4, draftId = Model.DraftId })" class="btn btn-secondary">
                 <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                Voltar
+                @L["PromptGenerator.Back"]
             </button>
             <button type="submit" class="btn btn-primary">
-                Próximo
+                @L["PromptGenerator.Next"]
                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
         </div>
@@ -156,7 +156,7 @@
         const errEl = document.getElementById('newPatternError');
 
         if (!name || !desc) {
-            errEl.textContent = 'Preencha nome e descrição.';
+            errEl.textContent = 'Fill in name and description.';
             errEl.classList.remove('hidden');
             return;
         }
@@ -178,7 +178,7 @@
             document.getElementById('newPatternName').value = '';
             document.getElementById('newPatternDesc').value = '';
         } catch {
-            errEl.textContent = 'Erro ao adicionar padrão. Tente novamente.';
+            errEl.textContent = 'Error adding pattern. Please try again.';
             errEl.classList.remove('hidden');
         }
     });

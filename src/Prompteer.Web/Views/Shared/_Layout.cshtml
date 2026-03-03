@@ -61,7 +61,7 @@
         const field = document.getElementById(fieldId);
         if (!field) return;
         const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
-        if (!token) { alert('Token CSRF não encontrado.'); return; }
+        if (!token) { alert('CSRF token not found.'); return; }
 
         const originalHtml = btn.innerHTML;
         btn.disabled = true;
@@ -78,10 +78,10 @@
                 field.value = data.text;
                 field.dispatchEvent(new Event('input'));
             } else {
-                alert('IA: ' + (data.error ?? 'Erro desconhecido.'));
+                alert('AI: ' + (data.error ?? 'Unknown error.'));
             }
         } catch (e) {
-            alert('Falha na comunicação com o servidor.');
+            alert('Failed to communicate with the server.');
         } finally {
             btn.disabled = false;
             btn.innerHTML = originalHtml;
