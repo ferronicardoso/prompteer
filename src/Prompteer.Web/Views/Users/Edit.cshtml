@@ -101,7 +101,7 @@
     @if (Model.LastLoginAt.HasValue)
     {
         <p class="text-xs text-gray-400 text-center">
-            @L["Users.Edit.LastAccess"] @Model.LastLoginAt.Value.ToString("dd/MM/yyyy HH:mm") UTC
+            @L["Users.Edit.LastAccess"] @Model.LastLoginAt.Value.ToString((string)ViewData["DateTimeFormat"]!) UTC
         </p>
     }
 </div>

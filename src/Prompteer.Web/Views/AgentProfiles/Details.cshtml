@@ -79,8 +79,8 @@
 
         <!-- Metadata -->
         <div class="flex items-center gap-6 text-xs text-slate-400">
-            <span>@L["AgentProfiles.CreatedOn"] <strong class="text-slate-500">@Model.CreatedAt.ToString("dd/MM/yyyy")</strong></span>
-            <span>@L["AgentProfiles.UpdatedOn"] <strong class="text-slate-500">@Model.UpdatedAt.ToString("dd/MM/yyyy HH:mm")</strong></span>
+            <span>@L["AgentProfiles.CreatedOn"] <strong class="text-slate-500">@Model.CreatedAt.ToString((string)ViewData["DateFormat"]!)</strong></span>
+            <span>@L["AgentProfiles.UpdatedOn"] <strong class="text-slate-500">@Model.UpdatedAt.ToString((string)ViewData["DateTimeFormat"]!)</strong></span>
         </div>
     </div>
 

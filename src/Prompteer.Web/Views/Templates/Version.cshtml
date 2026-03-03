@@ -20,7 +20,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-xl font-semibold text-slate-900">@L["Common.Version"] @Model.Version.VersionNumber — @Model.Template.Name</h1>
-            <p class="text-sm text-slate-500 mt-0.5">@L["Common.Created"] @Model.Version.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
+            <p class="text-sm text-slate-500 mt-0.5">@L["Common.Created"] @Model.Version.CreatedAt.ToString((string)ViewData["DateTimeFormat"]!)</p>
         </div>
         <a asp-action="Versions" asp-route-id="@Model.Template.Id" class="btn btn-secondary btn-sm">
             <i data-lucide="arrow-left" class="w-4 h-4"></i>
