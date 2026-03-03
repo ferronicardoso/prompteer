@@ -144,4 +144,25 @@
   <data name="Settings.ErrorApiKeyRequired" xml:space="preserve"><value>Informe a API Key antes de buscar os modelos.</value></data>
   <data name="Settings.ErrorEntraRequired" xml:space="preserve"><value>TenantId e ClientId são obrigatórios.</value></data>
   <data name="Settings.ErrorSaveFailed" xml:space="preserve"><value>Falha ao salvar: {0}</value></data>
+
+  <!-- ── Login errors ──────────────────────────────────────────────────── -->
+  <data name="Login.InvalidCredentials" xml:space="preserve"><value>E-mail ou senha inválidos.</value></data>
+  <data name="Login.AccountDisabled" xml:space="preserve"><value>Sua conta está desativada.</value></data>
+
+  <!-- ── Setup ─────────────────────────────────────────────────────────── -->
+  <data name="Setup.Title" xml:space="preserve"><value>Configuração Inicial</value></data>
+  <data name="Setup.Subtitle" xml:space="preserve"><value>Crie a conta de administrador para começar</value></data>
+  <data name="Setup.Step1" xml:space="preserve"><value>Admin</value></data>
+  <data name="Setup.Step3" xml:space="preserve"><value>Pronto</value></data>
+  <data name="Setup.Description" xml:space="preserve"><value>Esta conta é usada para o {0} e para configurar a autenticação via Microsoft Entra ID. Após a configuração, todos os usuários entrarão com suas contas Microsoft.</value></data>
+  <data name="Setup.DescriptionBoldPart" xml:space="preserve"><value>primeiro acesso</value></data>
+  <data name="Setup.FullName" xml:space="preserve"><value>Nome completo</value></data>
+  <data name="Setup.FullNamePlaceholder" xml:space="preserve"><value>Ex: João Silva</value></data>
+  <data name="Setup.EmailPlaceholder" xml:space="preserve"><value>admin@empresa.com</value></data>
+  <data name="Setup.PasswordPlaceholder" xml:space="preserve"><value>Mínimo 8 caracteres</value></data>
+  <data name="Setup.ConfirmPassword" xml:space="preserve"><value>Confirmar senha</value></data>
+  <data name="Setup.ConfirmPasswordPlaceholder" xml:space="preserve"><value>Repita a senha</value></data>
+  <data name="Setup.Submit" xml:space="preserve"><value>Criar conta e continuar</value></data>
+  <data name="Setup.FooterHint" xml:space="preserve"><value>Após criar a conta, você configurará a integração com o {0} para que os demais usuários autentiquem com suas contas Microsoft.</value></data>
+  <data name="Setup.FooterNote" xml:space="preserve"><value>Prompteer · Configuração executada apenas uma vez</value></data>
 </root>
