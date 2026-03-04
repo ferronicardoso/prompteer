@@ -1,9 +1,11 @@
 @using Prompteer.Web.Models
+@inject Prompteer.Application.Services.IAIService AiService
 @model WizardViewModel
 @{
     ViewData["Title"] = "Prompt Generator — Step 4: Architecture";
     var selectedPatternIds = Model.Data.ArchitecturalPatternIds.Select(id => id.ToString()).ToHashSet();
     var packagesJson = System.Text.Json.JsonSerializer.Serialize(Model.Data.RequiredPackages);
+    var aiConfigured = await AiService.IsConfiguredAsync();
 }
 
 <div class="max-w-3xl">
@@ -84,7 +86,19 @@
 
             <!-- Code Conventions -->
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">@L["PromptGenerator.Step4.CodeConventions"]</label>
+                <div class="flex items-center justify-between mb-1">
+                    <label class="text-sm font-medium text-slate-700">@L["PromptGenerator.Step4.CodeConventions"]</label>
+                    @if (aiConfigured)
+                    {
+                        <button type="button"
+                                onclick="aiGenerate('codeConventions','CodeConventions',{name:_s4ProjName,extra:'Patterns: '+Array.from(document.querySelectorAll('#patternSelect option:checked')).map(o=>o.text).join(', ')+'. Packages: '+Array.from(document.querySelectorAll('#packagesSelect option:checked')).map(o=>o.text).join(', ')},this)"
+                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                title="@L["Common.GenerateWithAI"]">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                            @L["Common.GenerateWithAI"]
+                        </button>
+                    }
+                </div>
                 <textarea id="codeConventions" name="CodeConventions" rows="5" class="form-textarea w-full"
                           placeholder="Describe the code conventions to follow...">@Model.Data.CodeConventions</textarea>
                 <div class="flex flex-wrap gap-2 mt-2">
@@ -122,6 +136,7 @@
 
 @section Scripts {
 <script>
+const _s4ProjName = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Data.ProjectName ?? ""));
 (function () {
     // Architectural patterns Tom Select
     new TomSelect('#patternSelect', {
