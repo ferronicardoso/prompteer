@@ -1,7 +1,9 @@
 @using Prompteer.Web.Models
+@inject Prompteer.Application.Services.IAIService AiService
 @model WizardViewModel
 @{
     ViewData["Title"] = "Prompt Generator — Preview";
+    var aiConfigured = await AiService.IsConfiguredAsync();
 }
 
 <div class="max-w-4xl">
@@ -29,8 +31,20 @@
                            value="@Model.Data.ProjectName" />
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">@L["Common.Description"]</label>
-                    <textarea name="templateDesc" rows="2" class="form-textarea w-full"
+                    <div class="flex items-center justify-between mb-1">
+                        <label class="text-sm font-medium text-slate-700">@L["Common.Description"]</label>
+                        @if (aiConfigured)
+                        {
+                            <button type="button"
+                                    onclick="aiGenerate('templateDesc','TemplateDescription',{name:document.querySelector('[name=templateName]').value,extra:_s9ProjDesc},this)"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    title="@L["Common.GenerateWithAI"]">
+                                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                                @L["Common.GenerateWithAI"]
+                            </button>
+                        }
+                    </div>
+                    <textarea id="templateDesc" name="templateDesc" rows="2" class="form-textarea w-full"
                               placeholder="Optional template description...">@Model.Data.ProjectDescription</textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">
@@ -72,6 +86,7 @@
 
 @section Scripts {
 <script>
+const _s9ProjDesc = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Data.ProjectDescription ?? ""));
 document.addEventListener('DOMContentLoaded', function () {
     const raw = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GeneratedPrompt ?? ""));
     window.__rawPrompt = raw;

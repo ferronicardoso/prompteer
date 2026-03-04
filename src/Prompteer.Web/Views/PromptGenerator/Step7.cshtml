@@ -1,9 +1,11 @@
 @using Prompteer.Web.Models
 @using System.Text.Json
+@inject Prompteer.Application.Services.IAIService AiService
 @model WizardViewModel
 @{
     ViewData["Title"] = "Prompt Generator — Step 7: Modules";
     var modulesJson = JsonSerializer.Serialize(Model.Data.Modules);
+    var aiConfigured = await AiService.IsConfiguredAsync();
 }
 
 <div class="max-w-3xl">
@@ -21,6 +23,17 @@
         <input type="hidden" name="ModulesJson" :value="JSON.stringify(modules)" />
 
         <div class="card space-y-4">
+            @if (aiConfigured)
+            {
+                <div class="flex justify-end">
+                    <button type="button" @@click="generateWithAI($el)"
+                            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            title="@L["Common.GenerateWithAI"]">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        @L["Common.GenerateWithAI"]
+                    </button>
+                </div>
+            }
             <!-- Module List -->
             <div id="moduleList" class="space-y-4">
                 <template x-for="(mod, modIdx) in modules" :key="modIdx">
@@ -96,6 +109,9 @@
 
 @section Scripts {
 <script>
+const _s7ProjName = @Html.Raw(JsonSerializer.Serialize(Model.Data.ProjectName ?? ""));
+const _s7ProjDesc = @Html.Raw(JsonSerializer.Serialize(Model.Data.ProjectDescription ?? ""));
+
 function wizardModules() {
     return {
         modules: [],
@@ -153,6 +169,38 @@ function wizardModules() {
                         this.reorder();
                     }
                 });
+            }
+        },
+
+        async generateWithAI(btn) {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+            const orig = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i>';
+            lucide.createIcons();
+            try {
+                const resp = await fetch('/api/ai/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify({ fieldType: 'Modules', context: { name: _s7ProjName, extra: _s7ProjDesc } })
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    const cleaned = data.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+                    const parsed = JSON.parse(cleaned);
+                    this.modules = parsed.map((m, i) => ({
+                        name: m.name || '',
+                        order: i,
+                        subItems: Array.isArray(m.subItems) ? m.subItems : []
+                    }));
+                    await this.$nextTick(() => { lucide.createIcons(); this.initSortable(); });
+                }
+            } catch (e) {
+                console.error('AI modules generation error', e);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = orig;
+                lucide.createIcons();
             }
         }
     };

@@ -1,10 +1,13 @@
 @* Parâmetros: fieldId (id do input/textarea), fieldType (chave do prompt), contextFields (dict JS inline) *@
+@inject Prompteer.Application.Services.IAIService AiService
 @{
     var fieldId      = (string)ViewData["fieldId"]!;
     var fieldType    = (string)ViewData["fieldType"]!;
     var contextJs    = (string)(ViewData["contextJs"] ?? "{}");
     var btnId        = $"btnAI_{fieldId}";
+    var aiConfigured = await AiService.IsConfiguredAsync();
 }
+@if (!aiConfigured) { return; }
 <button type="button" id="@btnId"
         onclick="aiGenerate('@fieldId','@fieldType',@Html.Raw(contextJs),this)"
         class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium

@@ -58,6 +58,42 @@ public class OpenAIService(IAppSettingService settings, IHttpClientFactory httpC
             Mention the purpose, main stack and target audience if possible.
             Write only the description, without introduction.
             """,
+
+        ["CodeConventions"] = """
+            You are a software engineering expert.
+            Based on the project name, architectural patterns and packages provided, write a set of code conventions and best practices (5-8 items as bullets).
+            Focus on: naming conventions, code organization, formatting, documentation and patterns specific to the stack.
+            Write only the conventions list, without introduction.
+            """,
+
+        ["TestObservations"] = """
+            You are a software testing expert.
+            Based on the project and test configuration provided, write key observations and guidelines for the testing strategy (4-6 items as bullets).
+            Focus on: test structure, mocking strategies, test data management and coverage priorities.
+            Write only the observations, without introduction.
+            """,
+
+        ["Modules"] = """
+            You are a software architect.
+            Based on the project information provided, define the main modules and their sub-items for the application.
+            Return ONLY a valid JSON array — no markdown fences, no explanation — in this exact format:
+            [{"name":"ModuleName","subItems":["SubItem1","SubItem2"]}]
+            Suggest 4-8 modules with 2-4 sub-items each. Module and sub-item names should be concise (1-3 words).
+            """,
+
+        ["AdditionalRules"] = """
+            You are a software development expert.
+            Based on the project context provided, write additional development rules and guidelines for an AI coding agent (4-6 items as bullets).
+            Focus on: code quality, architecture adherence, error handling, documentation and testing requirements specific to this project.
+            Write only the rules, without introduction.
+            """,
+
+        ["TemplateDescription"] = """
+            You are a technical documentation expert.
+            Based on the template name and project context provided, write a brief description (2-3 lines) summarising what this prompt template covers.
+            Mention the main technology stack and purpose.
+            Write only the description, without introduction.
+            """,
     };
 
     public async Task<bool> IsConfiguredAsync()
