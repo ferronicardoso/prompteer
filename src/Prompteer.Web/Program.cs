@@ -162,9 +162,12 @@ await app.Services.SeedDatabaseAsync();
 
 // Respeita X-Forwarded-Proto/For quando rodando atrás de reverse proxy (Docker/nginx).
 // Isso garante que as redirect URIs geradas usem https:// corretamente.
+// KnownNetworks/KnownProxies limpos para aceitar o proxy Docker (não está em loopback).
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    KnownIPNetworks = { },
+    KnownProxies = { }
 });
 
 if (!app.Environment.IsDevelopment())
@@ -174,7 +177,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseStatusCodePagesWithReExecute("/Home/StatusCode/{0}");
-app.UseHttpsRedirection();
+if (!app.Environment.IsProduction())
+    app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseMiddleware<Prompteer.Web.Middleware.SetupRedirectMiddleware>();
