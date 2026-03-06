@@ -37,8 +37,11 @@ services:
       - ENTRA_CLIENT_ID=${ENTRA_CLIENT_ID}
       - ENTRA_CLIENT_SECRET=${ENTRA_CLIENT_SECRET}
       - ENTRA_DOMAIN=${ENTRA_DOMAIN}
+    volumes:
+      - dataprotection_keys:/app/keys
     ports:
       - "8080:8080"
 
 volumes:
   postgres_data:
+  dataprotection_keys:
