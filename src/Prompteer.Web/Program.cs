@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Identity.Web;
@@ -117,6 +118,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("EditorOrAbove", p => p.RequireRole("Admin", "Editor"));
 });
 
+var keysPath = Environment.GetEnvironmentVariable("DATAPROTECTION_KEYS_PATH")
+    ?? Path.Combine(builder.Environment.ContentRootPath, "keys");
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new System.IO.DirectoryInfo(keysPath));
+
 // ─── Serviços ────────────────────────────────────────────────────────────────
 builder.Services.AddMemoryCache();
 builder.Services.AddLocalization();
@@ -162,13 +168,15 @@ await app.Services.SeedDatabaseAsync();
 
 // Respeita X-Forwarded-Proto/For quando rodando atrás de reverse proxy (Docker/nginx).
 // Isso garante que as redirect URIs geradas usem https:// corretamente.
-// KnownNetworks/KnownProxies limpos para aceitar o proxy Docker (não está em loopback).
-app.UseForwardedHeaders(new ForwardedHeadersOptions
+// KnownNetworks/KnownProxies são limpos explicitamente para aceitar o proxy Docker
+// (que não está em loopback). A sintaxe "= { }" NÃO limpa os defaults; é preciso .Clear().
+var forwardedOptions = new ForwardedHeadersOptions
 {
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-    KnownIPNetworks = { },
-    KnownProxies = { }
-});
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+};
+forwardedOptions.KnownIPNetworks.Clear();
+forwardedOptions.KnownProxies.Clear();
+app.UseForwardedHeaders(forwardedOptions);
 
 if (!app.Environment.IsDevelopment())
 {
