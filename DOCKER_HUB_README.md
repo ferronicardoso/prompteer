@@ -90,6 +90,37 @@ Corporate SSO can be configured from within the app after the first login (**Set
 
 ---
 
+## Reverse Proxy (Nginx)
+
+When running behind Nginx, you must increase the proxy buffer sizes. The Microsoft Entra authentication cookie contains an encrypted JWT with all identity claims and can exceed Nginx's default buffer size (~4–8 KB), causing a **502 Bad Gateway** on the `/signin-oidc` callback.
+
+Add the following to your `location /` block:
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name your-domain.com;
+    # ssl_certificate / ssl_certificate_key ...
+
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # Required: Entra auth cookie exceeds Nginx default buffer size
+        proxy_buffer_size       128k;
+        proxy_buffers           4 256k;
+        proxy_busy_buffers_size 256k;
+    }
+}
+```
+
+Without these settings, the login flow with Microsoft Entra will silently fail with 502 even though the application logs show successful token acquisition.
+
+---
+
 ## First Run
 
 On the very first startup, Prompteer automatically redirects to `/Setup` where you create the local admin account (display name, email, and password). No pre-seeded credentials — you define them on first use.
