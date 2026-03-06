@@ -66,7 +66,7 @@ public static class ServiceCollectionExtensions
         await DatabaseSeeder.SeedAsync(db);
     }
 
-    private static string BuildConnectionString(IConfiguration configuration)
+    internal static string BuildConnectionString(IConfiguration configuration)
     {
         var host     = configuration["POSTGRES_HOST"];
         var user     = configuration["POSTGRES_USER"];
