@@ -2,10 +2,9 @@
 @model AISettingsDto
 @{
     ViewData["Title"] = L["Settings.Title"].Value;
-    var cfg          = ViewContext.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-    var tenantId     = cfg["AzureAd:TenantId"] ?? "";
-    var clientId     = cfg["AzureAd:ClientId"] ?? "";
-    var domain       = cfg["AzureAd:Domain"]   ?? "";
+    var tenantId     = ViewData["AzureAd:TenantId"] as string ?? "";
+    var clientId     = ViewData["AzureAd:ClientId"] as string ?? "";
+    var domain       = ViewData["AzureAd:Domain"]   as string ?? "";
     var entraEnabled = !string.IsNullOrWhiteSpace(tenantId) && !string.IsNullOrWhiteSpace(clientId);
 
     // Read from ViewData (set by controller via query-string, no TempData)

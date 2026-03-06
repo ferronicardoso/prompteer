@@ -2,41 +2,61 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Microsoft.IdentityModel.Tokens;
+using Prompteer.Infrastructure.Data;
 using Prompteer.Web.Extensions;
 using Prompteer.Web.Filters;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ─── Entra ID via environment variables (Docker Swarm / containers) ──────────
-// Supports ENTRA_TENANT_ID, ENTRA_CLIENT_ID, ENTRA_CLIENT_SECRET, ENTRA_DOMAIN.
-// Uses AddInMemoryCollection so the values are stored in a dedicated memory
-// source and are NOT lost if the JSON file provider reloads at runtime.
+try
+{
+    var connStr = Prompteer.Web.Extensions.ServiceCollectionExtensions.BuildConnectionString(builder.Configuration);
+    var dbOpts  = new DbContextOptionsBuilder<AppDbContext>().UseNpgsql(connStr).Options;
+    using var tempDb = new AppDbContext(dbOpts);
+    var entraKeys = new[]
+    {
+        "AzureAd:TenantId", 
+        "AzureAd:ClientId", 
+        "AzureAd:ClientSecret", 
+        "AzureAd:Domain",
+        "AzureAd:Instance",
+        "AzureAd:CallbackPath"
+    };
+    var dbEntra = await tempDb.AppSettings
+        .Where(s => entraKeys.Contains(s.Key))
+        .ToDictionaryAsync(s => s.Key, s => (string?)s.Value);
+    if (dbEntra.Count > 0)
+        builder.Configuration.AddInMemoryCollection(dbEntra);
+}
+catch { }
+
 var entraOverrides = new Dictionary<string, string?>();
-void OverrideIfSet(string envVar, string configKey)
+void OverrideIfSet(string envVar, string configKey, string? defaultValue = null)
 {
     var value = Environment.GetEnvironmentVariable(envVar);
     if (!string.IsNullOrWhiteSpace(value))
         entraOverrides[configKey] = value;
+    else if (defaultValue != null)
+        entraOverrides[configKey] = defaultValue;
 }
 OverrideIfSet("ENTRA_TENANT_ID",     "AzureAd:TenantId");
 OverrideIfSet("ENTRA_CLIENT_ID",     "AzureAd:ClientId");
 OverrideIfSet("ENTRA_CLIENT_SECRET", "AzureAd:ClientSecret");
 OverrideIfSet("ENTRA_DOMAIN",        "AzureAd:Domain");
+OverrideIfSet("ENTRA_INSTANCE",      "AzureAd:Instance", "https://login.microsoftonline.com/");
+OverrideIfSet("ENTRA_CALLBACK_PATH", "AzureAd:CallbackPath", "/signin-oidc");
 if (entraOverrides.Count > 0)
     builder.Configuration.AddInMemoryCollection(entraOverrides);
 
-// ─── Autenticação Microsoft Entra ID ─────────────────────────────────────────
 var azureAdSection = builder.Configuration.GetSection("AzureAd");
 if (!string.IsNullOrWhiteSpace(azureAdSection["TenantId"]) &&
     !string.IsNullOrWhiteSpace(azureAdSection["ClientId"]))
 {
-    // MSAL gerencia apenas o scheme "EntraCookies" para usuários Entra.
-    // O admin local usa o scheme "LocalAdmin", completamente fora do alcance do MSAL.
-    // Assim, o OnValidatePrincipal do MSAL nunca interfere na sessão do admin local.
     builder.Services
         .AddMicrosoftIdentityWebAppAuthentication(builder.Configuration, "AzureAd",
             openIdConnectScheme: "OpenIdConnect",
@@ -45,10 +65,6 @@ if (!string.IsNullOrWhiteSpace(azureAdSection["TenantId"]) &&
         .EnableTokenAcquisitionToCallDownstreamApi()
         .AddInMemoryTokenCaches();
 
-    // "LocalAdmin" — cookie simples, sem nenhum envolvimento do MSAL.
-    // "Cookies"    — policy scheme (DefaultAuthenticateScheme / DefaultChallengeScheme).
-    //                Despacha para "LocalAdmin" quando esse cookie está presente,
-    //                caso contrário para "EntraCookies".
     builder.Services.AddAuthentication()
         .AddCookie("LocalAdmin", options =>
         {
@@ -64,19 +80,16 @@ if (!string.IsNullOrWhiteSpace(azureAdSection["TenantId"]) &&
                     : "EntraCookies";
         });
 
-    // DefaultAuthenticateScheme e DefaultChallengeScheme apontam para o policy scheme.
     builder.Services.Configure<Microsoft.AspNetCore.Authentication.AuthenticationOptions>(options =>
     {
         options.DefaultAuthenticateScheme = "Cookies";
         options.DefaultChallengeScheme    = "Cookies";
     });
 
-    // Map the "roles" App Roles claim so User.IsInRole("Admin") works
     builder.Services.Configure<OpenIdConnectOptions>("OpenIdConnect", options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            // "roles" claim from Entra App Roles → ASP.NET Core role checks
             RoleClaimType = "roles"
         };
     });
@@ -90,7 +103,6 @@ if (!string.IsNullOrWhiteSpace(azureAdSection["TenantId"]) &&
 }
 else
 {
-    // Sem configuração Entra — cookie simples para desenvolvimento local
     builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = "LocalAdmin";
@@ -104,12 +116,8 @@ else
     });
 }
 
-// ─── Autorização ──────────────────────────────────────────────────────────────
-// Roles são definidos no App Registration do Entra (App Roles: Admin, Editor, Viewer)
-// e atribuídos em Enterprise Applications → Users and Groups.
 builder.Services.AddAuthorization(options =>
 {
-    // Require authentication globally — controllers/actions opt out with [AllowAnonymous]
     options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
@@ -123,7 +131,6 @@ var keysPath = Environment.GetEnvironmentVariable("DATAPROTECTION_KEYS_PATH")
 builder.Services.AddDataProtection()
     .PersistKeysToFileSystem(new System.IO.DirectoryInfo(keysPath));
 
-// ─── Serviços ────────────────────────────────────────────────────────────────
 builder.Services.AddMemoryCache();
 builder.Services.AddLocalization();
 builder.Services.AddScoped<AppSettingsViewDataFilter>();
@@ -137,12 +144,8 @@ builder.Services.AddApplication();
 
 var app = builder.Build();
 
-// ─── Localização ──────────────────────────────────────────────────────────────
-// Supported cultures: English (default) and Brazilian Portuguese.
-// Priority: 1. Cookie  2. APP_LANGUAGE env var  3. app setting  4. default (en)
 var supportedCultures = new[] { new CultureInfo("en"), new CultureInfo("pt-BR") };
 
-// Resolve default culture: env APP_LANGUAGE → config App:Language → "en"
 var defaultCulture = Environment.GetEnvironmentVariable("APP_LANGUAGE")
     ?? builder.Configuration["App:Language"]
     ?? "en";
@@ -161,15 +164,8 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     ]
 });
 
-// ─── Seed do banco ────────────────────────────────────────────────────────────
 await app.Services.SeedDatabaseAsync();
 
-// ─── Pipeline HTTP ────────────────────────────────────────────────────────────
-
-// Respeita X-Forwarded-Proto/For quando rodando atrás de reverse proxy (Docker/nginx).
-// Isso garante que as redirect URIs geradas usem https:// corretamente.
-// KnownNetworks/KnownProxies são limpos explicitamente para aceitar o proxy Docker
-// (que não está em loopback). A sintaxe "= { }" NÃO limpa os defaults; é preciso .Clear().
 var forwardedOptions = new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
@@ -185,8 +181,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseStatusCodePagesWithReExecute("/Home/StatusCode/{0}");
-if (!app.Environment.IsProduction())
-    app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseMiddleware<Prompteer.Web.Middleware.SetupRedirectMiddleware>();
@@ -197,10 +192,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Dashboard}/{action=Index}/{id?}");
 
-// Rotas do Microsoft Identity Web UI (signin-oidc, signout-callback-oidc)
 app.MapControllerRoute(
     name: "MicrosoftIdentity",
     pattern: "MicrosoftIdentity/{controller=Account}/{action=SignIn}");
 
-app.Run();
+await app.RunAsync();
 

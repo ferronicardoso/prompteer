@@ -1,10 +1,8 @@
 <Solution>
-  <Folder Name="/src/">
-    <Project Path="Prompteer.Application/Prompteer.Application.csproj" />
-    <Project Path="Prompteer.Domain/Prompteer.Domain.csproj" />
-    <Project Path="Prompteer.Infrastructure/Prompteer.Infrastructure.csproj" />
-    <Project Path="Prompteer.Web/Prompteer.Web.csproj" />
-    <Project Path="Prompteer.Application.Tests/Prompteer.Application.Tests.csproj" />
-    <Project Path="Prompteer.Domain.Tests/Prompteer.Domain.Tests.csproj" />
-  </Folder>
+  <Project Path="Prompteer.Application.Tests/Prompteer.Application.Tests.csproj" />
+  <Project Path="Prompteer.Application/Prompteer.Application.csproj" />
+  <Project Path="Prompteer.Domain.Tests/Prompteer.Domain.Tests.csproj" />
+  <Project Path="Prompteer.Domain/Prompteer.Domain.csproj" />
+  <Project Path="Prompteer.Infrastructure/Prompteer.Infrastructure.csproj" />
+  <Project Path="Prompteer.Web/Prompteer.Web.csproj" />
 </Solution>

@@ -5,7 +5,6 @@ using Microsoft.Extensions.Localization;
 using Prompteer.Application.DTOs;
 using Prompteer.Application.Services;
 using Prompteer.Web.Filters;
-using Prompteer.Web.Helpers;
 
 namespace Prompteer.Web.Controllers;
 
@@ -13,7 +12,6 @@ namespace Prompteer.Web.Controllers;
 public class SettingsController(
     IAppSettingService settings,
     IAIService aiService,
-    IWebHostEnvironment env,
     IStringLocalizer<SharedResource> localizer,
     IMemoryCache cache) : Controller
 {
@@ -37,6 +35,9 @@ public class SettingsController(
         ViewData["DefaultTimeZone"] = all.GetValueOrDefault("App:TimeZone",   "UTC");
         ViewData["DefaultDateFormat"] = all.GetValueOrDefault("App:DateFormat", "MM/dd/yyyy");
         ViewData["LogoUrl"] = all.GetValueOrDefault("App:LogoUrl", "");
+        ViewData["AzureAd:TenantId"] = all.GetValueOrDefault("AzureAd:TenantId", "");
+        ViewData["AzureAd:ClientId"] = all.GetValueOrDefault("AzureAd:ClientId", "");
+        ViewData["AzureAd:Domain"]   = all.GetValueOrDefault("AzureAd:Domain",   "");
 
         return View(dto);
     }
@@ -79,7 +80,7 @@ public class SettingsController(
     // POST /Settings/SaveEntra
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult SaveEntra(string? tenantId, string? clientId, string? clientSecret, string? domain)
+    public async Task<IActionResult> SaveEntra(string? tenantId, string? clientId, string? clientSecret, string? domain)
     {
         tenantId     = tenantId?.Trim();
         clientId     = clientId?.Trim();
@@ -91,8 +92,16 @@ public class SettingsController(
 
         try
         {
-            var path = Path.Combine(env.ContentRootPath, "appsettings.json");
-            AppSettingsWriter.WriteAzureAd(path, tenantId, clientId, clientSecret, domain);
+            var dict = new Dictionary<string, string>
+            {
+                ["AzureAd:TenantId"] = tenantId,
+                ["AzureAd:ClientId"] = clientId,
+                ["AzureAd:Domain"]   = domain
+            };
+            if (!string.IsNullOrWhiteSpace(clientSecret))
+                dict["AzureAd:ClientSecret"] = clientSecret;
+
+            await settings.SaveManyAsync(dict);
             return RedirectToAction(nameof(Index), new { tab = "entra", saved = "entra" });
         }
         catch (Exception ex)
